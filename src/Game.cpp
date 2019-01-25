@@ -38,7 +38,6 @@
  * ****************************************************************************/
 
 static GsSprite enemyShip;
-static Player players[2];
 
 /* *****************************************************************************
  * Local prototypes declaration
@@ -47,7 +46,7 @@ static Player players[2];
 static void GameStart(const size_t players);
 static void GameInit(const size_t players);
 static void GameInitFiles(void);
-static void GameLoop(void);
+static void GameLoop(Player &p1, Player &p2);
 
 /* *****************************************************************************
  * Functions definition
@@ -64,10 +63,6 @@ void Game(void)
      * next steps depending on its result. */
     switch (Menu())
     {
-        case MENU_RESULT_EDITOR:
-
-        break;
-
         case MENU_RESULT_GAME_START:
             /* Start gameplay given number of players. */
             GameStart(2);
@@ -92,11 +87,14 @@ void Game(void)
 *******************************************************************************/
 static void GameStart(const size_t players)
 {
+    Player p1(Player::PLAYER_ONE);
+    Player p2(Player::PLAYER_TWO);
+
     /* Game initialization. */
     GameInit(players);
 
     /* Gameplay. */
-    GameLoop();
+    GameLoop(p1, p2);
 }
 
 /***************************************************************************//**
@@ -132,9 +130,7 @@ static void GameInitFiles(void)
     GfxSpriteFromFile("DATA\\SPRITES\\ENEMY.TIM", &enemyShip);
 }
 
-static void GameLoop(void)
+static void GameLoop(Player &p1, Player &p2)
 {
-    for (;;)
-    {
-    }
+    for (;;);
 }

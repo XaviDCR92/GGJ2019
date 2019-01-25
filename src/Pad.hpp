@@ -47,9 +47,7 @@ class Pad
             KEY_UP,
             KEY_RIGHT,
             KEY_DOWN,
-            KEY_LEFT,
-
-            MAX_KEYS
+            KEY_LEFT
         };
 
         Pad(const unsigned int _pad_n);

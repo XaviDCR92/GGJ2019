@@ -15,6 +15,7 @@
  * Includes
  * *************************************/
 
+#include "Pad.hpp"
 #include <stddef.h>
 #include <stdbool.h>
 
@@ -37,11 +38,18 @@
 class Player
 {
     public:
-        Player();
+        enum playern
+        {
+            PLAYER_ONE,
+            PLAYER_TWO
+        };
+
+        Player(const playern _player_n);
         bool isActive(void);
         void handler(void);
 
     private:
+        Pad pad;
 };
 
 #endif /* PLAYER_H */

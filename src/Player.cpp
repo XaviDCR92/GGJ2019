@@ -12,7 +12,9 @@
  * Includes
  * *************************************/
 
+#include "Pad.hpp"
 #include "Player.hpp"
+#include <stdio.h>
 
 /* *************************************
  * Defines
@@ -38,7 +40,8 @@
  * Functions definition
  * *************************************/
 
-Player::Player(void)
+Player::Player(const playern _player_n) :
+    pad(static_cast<unsigned int>(_player_n))
 {
 }
 
