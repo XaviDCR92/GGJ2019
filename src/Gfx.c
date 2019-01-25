@@ -486,18 +486,4 @@ static void ISR_VBlank(void)
 {
     /* Set VSYNC flag. */
     bSyncFlag = true;
-
-#if 0
-    static bool bState;
-
-    if ((bState = !bState))
-    {
-        void* const pSubThreadTCB = (*(unsigned int**)0x110) + (0xC0 / sizeof (void*));
-        **(unsigned int**)0x108 = (unsigned int)pSubThreadTCB;
-    }
-    else
-    {
-        **(unsigned int**)0x108 = *(unsigned int*)0x110;
-    }
-#endif /* 0 */
 }

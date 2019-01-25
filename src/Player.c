@@ -13,7 +13,6 @@
  * *************************************/
 
 #include "Player.h"
-#include "Paddle.h"
 #include "Pad.h"
 #include <stdint.h>
 
@@ -57,23 +56,6 @@ static struct PlayerData
 ************************************************************************/
 void PlayerInit(const size_t players)
 {
-    enum Player player;
-
-    for (player = 0; player < MAX_PLAYERS; player++)
-    {
-        /* Retrieve PlayerData instance for selected player. */
-        struct PlayerData* const data = &playerData[player];
-
-        /* Set active flag according to
-         * selected number of players. */
-        data->active = player < players;
-
-        /* Reset player score. */
-        data->score = 0;
-
-        /* Initialize paddle for selected player. */
-        PaddleInit(player);
-    }
 }
 
 bool PlayerIsActive(const enum Player player)
@@ -99,8 +81,6 @@ void PlayerHandler(void)
         {
             /* Update low-level pad data for selected player. */
             PadHandler(player);
-
-            Paddle(player);
         }
         else
         {

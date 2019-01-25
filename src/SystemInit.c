@@ -59,18 +59,4 @@ void SystemInit(void)
 
     /* Initialize Timers module. */
     TimersInit();
-
-#if 0
-    if (ThreadsCreate(&Thread2))
-    {
-        /* New thread could be allocated successfully. */
-        while (1)
-        {
-        }
-    }
-    else
-    {
-        /* Thread could not be created. Exit. */
-    }
-#endif /* 0 */
 }

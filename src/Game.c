@@ -149,7 +149,6 @@ static void GameInit(const size_t players)
 
 static void GameInitFiles(void)
 {
-
 }
 
 static void GameLoop(void)
