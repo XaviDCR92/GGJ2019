@@ -12,9 +12,7 @@
  * Includes
  * *************************************/
 
-#include "Player.h"
-#include "Pad.h"
-#include <stdint.h>
+#include "Player.hpp"
 
 /* *************************************
  * Defines
@@ -32,12 +30,6 @@
  * Local variables definition
  * *************************************/
 
-static struct PlayerData
-{
-    bool active;
-    uint32_t score;
-} playerData[MAX_PLAYERS];
-
 /* *************************************
  *  Local prototypes declaration
  * *************************************/
@@ -46,45 +38,14 @@ static struct PlayerData
  * Functions definition
  * *************************************/
 
-/*******************************************************************//**
-*
-* \brief    Player module initialization.
-*
-* \param    players
-*               Number of active players.
-*
-************************************************************************/
-void PlayerInit(const size_t players)
+Player::Player(void)
 {
 }
 
-bool PlayerIsActive(const enum Player player)
+bool Player::isActive(void)
 {
-    if (player < MAX_PLAYERS)
-    {
-        return playerData[player].active;
-    }
-
-    return false;
 }
 
-void PlayerHandler(void)
+void Player::handler(void)
 {
-    enum Player player;
-
-    for (player = 0; player < MAX_PLAYERS; player++)
-    {
-        /* Retrieve PlayerData instance for selected player. */
-        struct PlayerData* const pData = &playerData[player];
-
-        if (pData->active)
-        {
-            /* Update low-level pad data for selected player. */
-            PadHandler(player);
-        }
-        else
-        {
-            /* Selected player is not active. */
-        }
-    }
 }

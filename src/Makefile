@@ -80,9 +80,9 @@ SOUND_OBJECTS =
 
 # Sprite objects:
 BMP2TIM = bmp2tim
-SRC_SPRITES_PATH = $(PROJECT_DIR)/Sprites
+SRC_SPRITES_PATH = $(PROJECT_DIR)/src/sprites
 OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
-SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/,	)
+SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, ENEMY.TIM)
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.
@@ -137,7 +137,7 @@ $(EXE_PATH)/$(PROJECT).exe: $(EXE_PATH)/$(PROJECT).elf
 
 run: $(BIN_TARGET_PATH)/$(PROJECT).bin
 	export PATH=$$PATH:$(EMULATOR_DIR)
-	$(EMULATOR) -cdfile $(PROJECT_DIR)/Bin/$(PROJECT).bin $(EMULATOR_FLAGS)
+	$(EMULATOR) -cdfile $(BIN_TARGET_PATH)/$(PROJECT).bin $(EMULATOR_FLAGS)
 
 $(OBJ_SPRITES_PATH)/%.TIM: $(SRC_SPRITES_PATH)/%.bmp $(SRC_SPRITES_PATH)/%.flags
 	mkdir -p $(OBJ_SPRITES_PATH)

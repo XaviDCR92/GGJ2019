@@ -1,6 +1,6 @@
 /***************************************************************************//**
 *
-* \file     Game.c
+* \file     Game.cpp
 *
 * \brief    Game main module and entry point for game logic.
 *
@@ -37,11 +37,14 @@
  * Local variables definition
  * ****************************************************************************/
 
+static GsSprite enemyShip;
+static Player players[2];
+
 /* *****************************************************************************
  * Local prototypes declaration
  * ****************************************************************************/
 
-static void GameStart(const enum tLevel eSelectedLevel, const size_t players);
+static void GameStart(const size_t players);
 static void GameInit(const size_t players);
 static void GameInitFiles(void);
 static void GameLoop(void);
@@ -66,24 +69,8 @@ void Game(void)
         break;
 
         case MENU_RESULT_GAME_START:
-        {
-            /* Get selected level from Menu. */
-            const enum tLevel eSelectedLevel = MenuGetSelectedLevel();
-
-            /* Get number of active players. */
-            const size_t players = MenuGetSelectedPlayers();
-
-            if (eSelectedLevel < MAX_LEVELS)
-            {
-                /* Start gameplay given level number. */
-                GameStart(eSelectedLevel, players);
-            }
-            else
-            {
-                /* Invalid level number has been selected.
-                 * Exit function and return to start point. */
-            }
-        }
+            /* Start gameplay given number of players. */
+            GameStart(2);
         break;
 
         case MENU_RESULT_UNDEFINED:
@@ -99,14 +86,11 @@ void Game(void)
 * \brief    Initializes a level indicated by eSelectedLevel and
 *           all game structures.
 *
-* \param    eSelectedLevel
-*               Reportedly, selected level from the list.
-*
 * \param    players
 *               Number of active players.
 *
 *******************************************************************************/
-static void GameStart(const enum tLevel eSelectedLevel, const size_t players)
+static void GameStart(const size_t players)
 {
     /* Game initialization. */
     GameInit(players);
@@ -141,14 +125,11 @@ static void GameInit(const size_t players)
         /* Set first game initialization flag. */
         initDone = true;
     }
-
-    /* Initialize player data according
-     * number of selected players. */
-    PlayerInit(players);
 }
 
 static void GameInitFiles(void)
 {
+    GfxSpriteFromFile("DATA\\SPRITES\\ENEMY.TIM", &enemyShip);
 }
 
 static void GameLoop(void)

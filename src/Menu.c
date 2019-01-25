@@ -53,7 +53,7 @@ static enum tMenuResult MenuLoop(void);
 ************************************************************************/
 static bool MenuInit(void)
 {
-    return GfxSpriteFromFile("DATA\\SPRITES\\GLOBAL.TIM", &globalSprite);
+    return true;
 }
 
 /*******************************************************************//**
@@ -75,15 +75,12 @@ enum tMenuResult Menu(void)
 
     /* This result will be returned in case
      * menu initialization fails. */
-    return MENU_RESULT_UNDEFINED;
+    return MENU_RESULT_GAME_START;
 }
 
 static enum tMenuResult MenuLoop(void)
 {
-    for (;;)
-    {
-        return MENU_RESULT_GAME_START;
-    }
+    return MENU_RESULT_GAME_START;
 }
 
 /*******************************************************************//**
