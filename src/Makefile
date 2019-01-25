@@ -7,7 +7,7 @@ MAKEFLAGS := -j$(NUMBER_OF_PROCESSORS)
 # GNU Toolchain definitions
 PREFIX = mipsel-unknown-elf
 CC = psx-gcc
-CXX = psx-gxx
+CXX = psx-g++
 AS = $(PREFIX)-as
 LINKER = psx-gcc
 GNU_SIZE = $(PREFIX)-size
