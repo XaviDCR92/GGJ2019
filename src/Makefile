@@ -7,6 +7,7 @@ MAKEFLAGS := -j$(NUMBER_OF_PROCESSORS)
 # GNU Toolchain definitions
 PREFIX = mipsel-unknown-elf
 CC = psx-gcc
+CXX = psx-gxx
 AS = $(PREFIX)-as
 LINKER = psx-gcc
 GNU_SIZE = $(PREFIX)-size
@@ -115,8 +116,14 @@ clean:
 	rm -f $(OBJ_SPRITES_PATH)/*.TIM
 	rm -f $(OBJ_FONTS_PATH)/*.TIM
 
+$(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
+	$(CXX) $< $(DEFINE) $(CC_FLAGS) -MM > $@
+
 $(OBJ_DIR)/%.d: $(SRC_DIR)/%.c
 	$(CC) $< $(DEFINE) $(CC_FLAGS) -MM > $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
+	$(CXX) $< -o $@ $(DEFINE) $(CC_FLAGS) -MMD
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(OBJ_DIR)/%.d
 	$(CC) $< -o $@ $(DEFINE) $(CC_FLAGS) -MMD
