@@ -15,7 +15,7 @@
  * Includes
  * *************************************/
 
-#include "Game.h"
+#include "Game.hpp"
 #include <stddef.h>
 #include <psxgpu.h>
 
@@ -23,11 +23,17 @@
  * Defines
  * *************************************/
 
+#ifdef __cplusplus
+#define EXTERNC extern "C"
+#else
+#define EXTERNC
+#endif
+
 /* *************************************
  * Public types definition
  * *************************************/
 
-enum tMenuResult
+EXTERNC enum tMenuResult
 {
     MENU_RESULT_UNDEFINED,
     MENU_RESULT_EDITOR,
@@ -38,14 +44,12 @@ enum tMenuResult
  * Public variables declaration
  * *************************************/
 
-extern GsSprite globalSprite;
-
 /* *************************************
  * Public functions declaration
  * *************************************/
 
-enum tMenuResult Menu(void);
-enum tLevel MenuGetSelectedLevel(void);
-size_t MenuGetSelectedPlayers(void);
+EXTERNC enum tMenuResult Menu(void);
+EXTERNC enum tLevel MenuGetSelectedLevel(void);
+EXTERNC size_t MenuGetSelectedPlayers(void);
 
 #endif /* MENU_H */

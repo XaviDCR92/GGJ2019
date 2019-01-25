@@ -44,6 +44,7 @@ Player::Player(void)
 
 bool Player::isActive(void)
 {
+    return false;
 }
 
 void Player::handler(void)

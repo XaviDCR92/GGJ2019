@@ -38,8 +38,10 @@ class Player
 {
     public:
         Player();
+        bool isActive(void);
+        void handler(void);
 
     private:
-}
+};
 
 #endif /* PLAYER_H */

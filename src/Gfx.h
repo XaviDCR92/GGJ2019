@@ -33,6 +33,12 @@
 
 #define SPRITE_INDEX_INVALID    (size_t)(0xFFFFFFFF)
 
+#ifdef __cplusplus
+#define EXTERNC extern "C"
+#else
+#define EXTERNC
+#endif
+
 /* *************************************
  * Public types definition
  * *************************************/
@@ -51,11 +57,11 @@ enum
  * Public functions declaration
  * *************************************/
 
-void GfxInit(void);
-bool GfxSpriteFromFile(const char* const strFilePath, GsSprite* const pSpr);
-void GfxSortSprite(GsSprite* const psSpr);
-bool GfxIsInsideScreenArea(const short x, const short y, const short w, const short h);
-void GfxDrawScene(void);
+EXTERNC void GfxInit(void);
+EXTERNC bool GfxSpriteFromFile(const char* const strFilePath, GsSprite* const pSpr);
+EXTERNC void GfxSortSprite(GsSprite* const psSpr);
+EXTERNC bool GfxIsInsideScreenArea(const short x, const short y, const short w, const short h);
+EXTERNC void GfxDrawScene(void);
 
 /** \} */
 

@@ -19,6 +19,12 @@
  * Defines
  * *************************************/
 
+#ifdef __cplusplus
+#define EXTERNC extern "C"
+#else
+#define EXTERNC
+#endif
+
 /* *************************************
  * Public types definition
  * *************************************/
@@ -31,8 +37,8 @@
  * Public functions declaration
  * *************************************/
 
-void TimersInit(void);
-unsigned int RootCounter1Get(void);
-unsigned int RootCounter2Get(void);
+EXTERNC void TimersInit(void);
+EXTERNC unsigned int RootCounter1Get(void);
+EXTERNC unsigned int RootCounter2Get(void);
 
 #endif /* TIMERS_H */

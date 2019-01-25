@@ -11,7 +11,7 @@
  * *************************************/
 
 #include "Menu.h"
-#include "Game.h"
+#include "Game.hpp"
 #include "stdbool.h"
 #include "Gfx.h"
 #include <psxgpu.h>
@@ -32,8 +32,6 @@
 /* *************************************
  * Local variables definition
  * *************************************/
-
-GsSprite globalSprite;
 
 /* *************************************
  *  Local prototypes declaration

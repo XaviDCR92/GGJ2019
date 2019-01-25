@@ -11,6 +11,7 @@
 *
 ************************************************************************/
 
+
 /* *************************************
  * Includes
  * *************************************/
@@ -39,6 +40,11 @@ enum tLevel
  * Public functions declaration
  * *************************************/
 
+#ifdef __cplusplus
+
+extern "C" void Game(void);
+#else
 void Game(void);
+#endif
 
 #endif /* GAME_H */

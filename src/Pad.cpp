@@ -12,12 +12,13 @@
  * Includes
  * *************************************/
 
-#include "Player.h"
-#include "Pad.h"
+#include "Player.hpp"
+#include "Pad.hpp"
 #include <assert.h>
 #include <psx.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 /* *************************************
  * Defines
@@ -37,8 +38,6 @@
  * Local variables definition
  * *************************************/
 
-static psx_pad_state padsState[MAX_PLAYERS];
-
 /* *************************************
  *  Local prototypes declaration
  * *************************************/
@@ -47,7 +46,8 @@ static psx_pad_state padsState[MAX_PLAYERS];
  * Functions definition
  * *************************************/
 
-void PadInit(void)
+Pad::Pad(const unsigned int _pad_n) :
+    pad_n(_pad_n)
 {
     /* Perform compile-time assertions
      * in order to ensure consistency
@@ -68,35 +68,20 @@ void PadInit(void)
     PAD_CHECK(LANALOGB);
     PAD_CHECK(RANALOGB);
     PAD_CHECK(START);
+
+    memset(rawData, 0, Pad::RAW_DATA_SIZE);
 }
 
-void PadHandler(const enum Player player)
+void Pad::handler(void)
 {
-    if (player < MAX_PLAYERS)
-    {
-        enum
-        {
-            RAW_DATA_SIZE = 16
-        };
+    pad_read_raw(pad_n, rawData);
 
-        static uint8_t padRawData[MAX_PLAYERS][RAW_DATA_SIZE];
-
-        psx_pad_state* const padState = &padsState[player];
-
-        pad_read_raw(player, padRawData[player]);
-
-        PSX_PollPad_Fast_Ex(padRawData[player], padState);
-    }
+    PSX_PollPad_Fast_Ex(rawData, &state);
 }
 
-enum psx_pad_types PadType(const enum Player player)
+psx_pad_types Pad::getType(void)
 {
-    if (player < MAX_PLAYERS)
-    {
-        return padsState[player].type;
-    }
-
-    return PADTYPE_UNKNOWN;
+    return static_cast<psx_pad_types>(state.type);
 }
 
 /*******************************************************************//**
@@ -104,18 +89,7 @@ enum psx_pad_types PadType(const enum Player player)
 * \brief
 *
 ************************************************************************/
-bool PadKeyPressed(const enum Player player, const enum Key key)
+bool Pad::keyPressed(const enum Pad::Key key)
 {
-    if (player < MAX_PLAYERS)
-    {
-        if (key < MAX_KEYS)
-        {
-            if (padsState[player].buttons & (1 << key))
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    return state.buttons & (1 << key);
 }

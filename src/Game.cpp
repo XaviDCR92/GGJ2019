@@ -10,10 +10,10 @@
  * Includes
  * ****************************************************************************/
 
-#include "Game.h"
+#include "Game.hpp"
 #include "Gfx.h"
 #include "Menu.h"
-#include "Player.h"
+#include "Player.hpp"
 #include "Timers.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -136,6 +136,5 @@ static void GameLoop(void)
 {
     for (;;)
     {
-        PlayerHandler();
     }
 }

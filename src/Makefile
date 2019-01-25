@@ -9,7 +9,7 @@ PREFIX = mipsel-unknown-elf
 CC = psx-gcc
 CXX = psx-g++
 AS = $(PREFIX)-as
-LINKER = psx-gcc
+LINKER = psx-g++
 GNU_SIZE = $(PREFIX)-size
 
 # Custom define flags for GCC
