@@ -27,11 +27,27 @@ void Ship::SetDesiredDirection(int desiredAngle)
     SetDesiredDirection(Fix16(fix16_from_int(desiredAngle)));
 }
 
-void SetDesiredDirection(Fix16 desiredAngle)
+void Ship::SetDesiredDirection(Fix16 desiredAngle)
 {
-    mAngle = fix16_pi*(desiredAngle / 360);
+    Fix16 intermediate(desiredAngle/360);
+    mAngle = fix16_pi*intermediate.value;
+    mAngle = mAngle % (fix16_pi*2);
     mDesiredDirection.X = fix16_sin(mAngle);
     mDesiredDirection.Y = fix16_cos(mAngle);
+}
+
+int Ship::GetAngleToDesired()
+{
+    Fix16 current_angle(fix16_atan2(mCurrentDirection.Y, mCurrentDirection.X));
+    Fix16 desired_angle(fix16_atan2(mDesiredDirection.Y, mDesiredDirection.X));
+
+    Fix16 angle = desired_angle - current_angle;
+    if (angle > fix16_pi)
+        angle -= (fix16_pi*2);
+    else if (angle < -fix16_pi)
+        angle += (fix16_pi*2);
+
+    return fix16_to_int(angle);
 }
 
 void Ship::UpdateLocation()

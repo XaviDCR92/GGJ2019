@@ -17,6 +17,7 @@ protected:
     // Both take DEGREES
     void SetDesiredDirection(int desiredAngle = 0);
     void SetDesiredDirection(Fix16 desiredAngle);
+    int GetAngleToDesired();
 
     Vector2 mPosition;
     Fix16 mAngle;
