@@ -17,6 +17,7 @@
 #include "Player.hpp"
 #include "Timers.h"
 #include "ArrayManager.hpp"
+#include "GlobalData.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -137,25 +138,38 @@ static void GameInitFiles(void)
 
 static void GameLoop(const size_t players)
 {
+    GlobalData data;
+
+    // Players
     Player player_array[2] =
     {
         {Player::PLAYER_ONE, players >= Player::PLAYER_ONE, playerSpr},
         {Player::PLAYER_TWO, players >= Player::PLAYER_TWO, playerSpr}
     };
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
+    data.Players = &pl;
 
+    // Enemies
     Enemy enemy_array[2] =
     {
         {enemyShip},
         {enemyShip}
     };
-
     ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
+    data.Enemies = &e;
+
+    // Planets
+    Planet planet_array[2] = 
+    {
+        {planet},
+        {planet}
+    };
 
     for (;;)
     {
         // Game logic
-        pl.Update(&e);
+        pl.Update(&data);
+        e.Update(&data);
 
         // Rendering
         while (GfxIsBusy());

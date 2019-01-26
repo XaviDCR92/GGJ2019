@@ -14,6 +14,7 @@
 
 #include "Pad.hpp"
 #include "Player.hpp"
+#include "GlobalData.h"
 #include <stdio.h>
 
 /* *************************************
@@ -61,7 +62,7 @@ bool Player::isActive(void)
 
 void Player::Update(void* const data)
 {
-    ArrayManager<Enemy>& e = *(ArrayManager<Enemy>*)data;
+    GlobalData* gData = static_cast<GlobalData*>(data);
 
     if (isActive())
     {

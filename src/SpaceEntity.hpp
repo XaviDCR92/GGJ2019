@@ -21,4 +21,6 @@ protected:
     Fix16 mRadius;
     Vector2 mPosition;
     GsSprite& mSpr;
+
+    uint16_t mArrayIdx;
 };

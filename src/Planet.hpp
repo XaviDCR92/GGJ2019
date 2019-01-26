@@ -10,4 +10,7 @@ public:
     virtual void Update(void* const data) override;
 
 private:
+
+    int mConsumerAmount, mHealth, mConsuptionSpeed;
+
 };
