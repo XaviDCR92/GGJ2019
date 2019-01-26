@@ -69,7 +69,7 @@ public:
         }
     }
 
-    T *get(const size_t i)
+    T *get(const size_t i) const
     {
         if (i < mSize)
         {
@@ -77,6 +77,11 @@ public:
         }
 
         return nullptr;
+    }
+
+    size_t count(void) const
+    {
+        return mSize;
     }
 
 private:

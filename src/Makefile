@@ -28,7 +28,7 @@ CDROM_ROOT=$(PROJECT_DIR)/src/cdimg
 BIN_TARGET_PATH = $(PROJECT_DIR)/release
 
 #Uncomment this DEFINE below to use Pinballoid together with OpenSend + QPSXSerial toolchain.
-#DEFINE +=  -DSERIAL_INTERFACE
+DEFINE +=  -DSERIAL_INTERFACE
 
 # PSXSDK tools definitions
 # ELF2EXE:
@@ -51,7 +51,7 @@ SRC_DIR = .
 OBJECTS = $(addprefix $(OBJ_DIR)/,	\
 			main.o Gfx.o Interrupts.o IO.o Timers.o SystemInit.o	\
 			Menu.o Game.o Threads.o FileData.o Player.o 	\
-			Pad.o \
+			Pad.o Serial.o \
 			Ship.o Player.o Vector2.o Enemy.o SpaceEntity.o ArrayManager.o)
 
 # Source dependencies:
@@ -110,6 +110,9 @@ rebuild:
 #music_objects:	$(addprefix ../Music/, TRACK01.bin TRACK02.bin TRACK03.bin)
 
 clean:
+	rm -f $(EXE_DIR)/*.EXE
+	rm -f $(EXE_DIR)/*.iso
+	rm -f $(EXE_DIR)/*.elf
 	rm -f $(OBJ_DIR)/*.o
 	rm -f $(OBJ_SOUNDS_DIR)/*.VAG
 	rm -f $(OBJ_LEVELS_DIR)/*.LVL
@@ -135,10 +138,10 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.s
 $(EXE_PATH)/$(PROJECT).elf: $(OBJECTS)
 	$(LINKER) $^ -o $@ $(LIBS) -Wl,--gc-sections -flto
 
-$(EXE_PATH)/$(PROJECT).iso: $(EXE_PATH)/$(PROJECT).exe $(SOUND_OBJECTS) $(LEVEL_OBJECTS) $(SPRITE_OBJECTS) $(APPS_OBJECTS)
+$(EXE_PATH)/$(PROJECT).iso: $(EXE_PATH)/$(PROJECT).EXE $(SOUND_OBJECTS) $(LEVEL_OBJECTS) $(SPRITE_OBJECTS) $(APPS_OBJECTS)
 	mkisofs -o $@ -V $(PROJECT) -sysid PLAYSTATION $(CDROM_ROOT)
 
-$(EXE_PATH)/$(PROJECT).exe: $(EXE_PATH)/$(PROJECT).elf
+$(EXE_PATH)/$(PROJECT).EXE: $(EXE_PATH)/$(PROJECT).elf
 	$(ELF2EXE) $< $@ $(ELF2EXE_FLAGS)
 	mkdir -p $(CDROM_ROOT)
 	cp $@ $(CDROM_ROOT)
