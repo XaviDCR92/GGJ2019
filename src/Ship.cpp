@@ -10,7 +10,7 @@ Ship::Ship(GsSprite& spr) :
 {
 }
 
-void Ship::Update(void* const)
+void Ship::Update(GlobalData& gData)
 {
     UpdateLocation();
     UpdateRotation();
@@ -128,4 +128,19 @@ void Ship::UpdateRotation()
 
     mCurrentDirection.X.value = fix16_cos(mCurrentAngle);
     mCurrentDirection.Y.value = fix16_sin(mCurrentAngle);
+}
+
+void Ship::render(const Camera& camera)
+{
+    short x, y;
+
+    Ship::GetRenderPosition(x, y);
+
+    camera.getPosition(x, y);
+
+    mSpr.x = x;
+    mSpr.y = y;
+    mSpr.rotate = GetRenderAngle();
+
+    GfxSortSprite(&mSpr);
 }

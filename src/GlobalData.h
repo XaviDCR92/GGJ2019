@@ -1,7 +1,11 @@
-#include "ArrayManager.hpp"
-#include "Player.hpp"
-#include "Enemy.hpp"
-#include "Planet.hpp"
+#pragma once
+
+class Player;
+class Enemy;
+class Planet;
+class Camera;
+template<class T>
+class ArrayManager;
 
 struct GlobalData
 {

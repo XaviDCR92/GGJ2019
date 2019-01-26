@@ -5,6 +5,8 @@
 #include <stddef.h>
 #include <stdio.h>
 
+struct GlobalData;
+
 template<class T>
 class ArrayManager
 {
@@ -57,7 +59,7 @@ public:
         return nullptr;
     }
 
-    void Update(void* const data)
+    void Update(GlobalData& data)
     {
         for (size_t i = 0; i < mSize; i++)
         {
@@ -99,6 +101,7 @@ public:
     }
 
 private:
-    size_t mSize, mLast;
+    const size_t mSize;
+    size_t mLast;
     T *const mArray;
 };

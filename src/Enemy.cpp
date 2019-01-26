@@ -1,19 +1,20 @@
 #include "Enemy.hpp"
 #include "Player.hpp"
 #include "ArrayManager.hpp"
+#include "GlobalData.h"
 #include <stdio.h>
 
 Enemy::Enemy(GsSprite& spr) :
     Ship(spr)
 {
-    mPosition = Vector2(60, 60);
+    mPosition = Vector2(120, 60);
 }
 
-void Enemy::Update(void* const data)
+void Enemy::Update(GlobalData& gData)
 {
-    Ship::Update(data);
+    Ship::Update(gData);
 
-    ArrayManager<Player>& playerData = *static_cast<ArrayManager<Player> *>(data);
+    ArrayManager<Player>& playerData = gData.Players;
     Player* const nearest_player = nearestPlayer(playerData);
 
     if (nearest_player)
@@ -23,6 +24,7 @@ void Enemy::Update(void* const data)
     else
     {
         // Retreat?
+        Brake();
     }
 }
 
@@ -48,6 +50,8 @@ Player* Enemy::nearestPlayer(ArrayManager<Player>& playerData) const
             }
         }
     }
+
+    printf("targetplayer = 0x%08X\n", targetPlayer);
 
     return targetPlayer;
 }

@@ -66,35 +66,28 @@ bool Player::isUnderCover(void) const
     return mUnderCover;
 }
 
-void Player::Update(void* const data)
+void Player::Update(GlobalData& gData)
 {
     if (isActive())
     {
-        GlobalData* gData = static_cast<GlobalData*>(data);
+        pad.handler();
 
-        if (gData)
+        Ship::Update(gData);
+
+        bool any_pressed;
+
+        const int angle = calculateAngle(any_pressed);
+
+        if (any_pressed)
         {
-            GlobalData& dataref = *gData;
-
-            pad.handler();
-
-            Ship::Update(data);
-
-            bool any_pressed;
-
-            const int angle = calculateAngle(any_pressed);
-
-            if (any_pressed)
-            {
-                SetDesiredDirection(angle);
-            }
-            else
-            {
-                Brake();
-            }
-
-            checkFire();
+            SetDesiredDirection(angle);
         }
+        else
+        {
+            Brake();
+        }
+
+        checkFire();
     }
 }
 
@@ -155,19 +148,4 @@ int Player::calculateAngle(bool& change)
 
 void Player::checkFire(void)
 {
-}
-
-void Player::render(const Camera& camera)
-{
-    short x, y;
-
-    Ship::GetRenderPosition(x, y);
-
-    camera.getPosition(x, y);
-
-    mSpr.x = x;
-    mSpr.y = y;
-    mSpr.rotate = GetRenderAngle();
-
-    GfxSortSprite(&mSpr);
 }

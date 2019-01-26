@@ -1,5 +1,7 @@
 #include "Planet.hpp"
 #include "GlobalData.h"
+#include "Player.hpp"
+#include "ArrayManager.hpp"
 #include "Gfx.h"
 
 Planet::Planet(GsSprite& spr, const Camera& cam) : SpaceEntity(spr), CompositeSpriteEntity(spr),
@@ -16,26 +18,22 @@ Planet::Planet(GsSprite& spr, const Camera& cam) : SpaceEntity(spr), CompositeSp
     mSpriteOffsets[4] = 16;
 }
 
-void Planet::Update(void* const data)
+void Planet::Update(GlobalData& gData)
 {
-    GlobalData* gData = static_cast<GlobalData*>(data);
     mConsumerAmount = 0;
 
-    if(gData)
+    ArrayManager<Player>& players = gData.Players;
+
+    for (size_t i = 0; i < players.count(); i++)
     {
-        ArrayManager<Player>& players = gData->Players;
+        Player& player = *players.get(i);
 
-        for (size_t i = 0; i < players.count(); i++)
+        if(player.isActive())
         {
-            Player& player = *players.get(i);
-
-            if(player.isActive())
+            if(IsColliding(player))
             {
-                if(IsColliding(player))
-                {
-                    mConsumerAmount++;
-                    break;
-                }
+                mConsumerAmount++;
+                break;
             }
         }
     }
@@ -58,7 +56,6 @@ void Planet::render(const Camera& cam)
     GetSpriteOrigin(u, v);
     mSpr.u = u;
     mSpr.v = v;
-    int i;
     //for(i = 0; i < idx; i++)
     //    mSpr.u += mSpriteOffsets[i];
     //mSpr.w = mSpriteOffsets[i];

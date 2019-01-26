@@ -10,6 +10,7 @@
  * Includes
  * ****************************************************************************/
 
+#include "GlobalData.h"
 #include "Game.hpp"
 #include "Gfx.h"
 #include "Menu.h"
@@ -18,7 +19,6 @@
 #include "Planet.hpp"
 #include "Timers.h"
 #include "ArrayManager.hpp"
-#include "GlobalData.h"
 #include "Camera.hpp"
 #include <stdbool.h>
 #include <stdint.h>
@@ -178,12 +178,14 @@ static void GameLoop(const size_t players)
         cam
     };
 
+    enemy_array[0].setActive(true);
+
     for (;;)
     {
         // Game logic
-        pl.Update(&data);
-        e.Update(&data);
-        planets.Update(&data);
+        pl.Update(data);
+        e.Update(data);
+        planets.Update(data);
 
         cam.Update( pl.get(Player::PLAYER_ONE)->getPosition(),
                     pl.get(Player::PLAYER_TWO)->getPosition());

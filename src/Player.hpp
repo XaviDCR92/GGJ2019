@@ -20,6 +20,7 @@
 #include "Gfx.h"
 #include "Enemy.hpp"
 #include "ArrayManager.hpp"
+#include "GlobalData.h"
 #include <stddef.h>
 #include <stdbool.h>
 
@@ -35,8 +36,7 @@ public:
     Player(const playern _player_n, const bool _active, GsSprite& _spr);
     bool isActive(void) const;
     bool isUnderCover(void) const;
-    void Update(void* const data);
-    void render(const Camera& camera);
+    void Update(GlobalData& gData);
 
 private:
     Pad pad;

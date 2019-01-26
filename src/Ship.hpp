@@ -9,10 +9,11 @@ class Ship : public SpaceEntity
 public:
 
     Ship(GsSprite& spr);
-    virtual void Update(void* const);
+    virtual void Update(GlobalData& gData);
 
     int GetRenderAngle() const;
     void GetRenderPosition(short& X, short& Y) const;
+    void render(const Camera& camera);
 
 protected:
 

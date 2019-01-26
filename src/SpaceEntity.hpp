@@ -3,6 +3,7 @@
 #include "Vector2.hpp"
 #include "Gfx.h"
 #include "Camera.hpp"
+#include "GlobalData.h"
 #include <fixmath.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -11,7 +12,7 @@ class SpaceEntity
 {
 public:
     SpaceEntity(GsSprite& spr);
-    virtual void Update(void* const) = 0;
+    virtual void Update(GlobalData& gData) = 0;
     bool isActive(void) const;
     void setActive(const bool state);
     bool IsColliding(const SpaceEntity& otherEntity) const;

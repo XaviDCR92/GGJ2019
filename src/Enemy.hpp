@@ -2,6 +2,7 @@
 
 #include "Ship.hpp"
 
+class GlobalData;
 class Player;
 template<class T>
 class ArrayManager;
@@ -10,7 +11,7 @@ class Enemy : public Ship
 {
 public:
     Enemy(GsSprite& spr);
-    virtual void Update(void* const data) override;
+    virtual void Update(GlobalData& gData) override;
 
 private:
     Player* nearestPlayer(ArrayManager<Player>& playerData) const;

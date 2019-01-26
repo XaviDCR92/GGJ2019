@@ -11,7 +11,6 @@ SpaceEntity::SpaceEntity(GsSprite& spr) :
 
 bool SpaceEntity::IsColliding(const SpaceEntity& otherEntity) const
 {
-    printf("Distance: %d\n", fix16_to_int((mPosition - otherEntity.mPosition).Distance()));
     return (mPosition - otherEntity.mPosition).DistanceSqrt() < (mRadius+otherEntity.mRadius)*(mRadius+otherEntity.mRadius);
 }
 

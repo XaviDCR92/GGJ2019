@@ -10,7 +10,7 @@ class Planet : public SpaceEntity, public CompositeSpriteEntity
 public:
 
     Planet(GsSprite& spr, const Camera& cam);
-    virtual void Update(void* const data) override;
+    virtual void Update(GlobalData& data) override;
 
     virtual void render(const Camera& cam);
 
