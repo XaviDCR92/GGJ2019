@@ -84,6 +84,19 @@ public:
         return mSize;
     }
 
+    void render(void)
+    {
+        for (size_t i = 0; i < mSize; i++)
+        {
+            T& t = mArray[i];
+
+            if (t.isActive())
+            {
+                t.render();
+            }
+        }
+    }
+
 private:
     size_t mSize, mLast;
     T *const mArray;

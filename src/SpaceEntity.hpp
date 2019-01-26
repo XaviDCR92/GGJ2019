@@ -12,9 +12,9 @@ public:
     bool isActive(void) const;
     void setActive(const bool state);
     bool IsColliding(const SpaceEntity& otherEntity) const;
+    void render(void);
 
 protected:
-    void render(void);
     void GetRenderPosition(short& outX, short &outY) const;
 
     bool mActive;

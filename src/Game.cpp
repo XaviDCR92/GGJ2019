@@ -40,6 +40,8 @@
  * ****************************************************************************/
 
 static GsSprite enemyShip;
+static GsSprite planet;
+static GsSprite playerSpr;
 
 /* *****************************************************************************
  * Local prototypes declaration
@@ -126,7 +128,9 @@ static void GameInit(const size_t players)
 
 static void GameInitFiles(void)
 {
+    GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
     GfxSpriteFromFile("DATA\\SPRITES\\ENEMY.TIM", &enemyShip);
+    GfxSpriteFromFile("DATA\\SPRITES\\PLANET.TIM", &planet);
 }
 
 #define ARRAY_SIZE(a)   (sizeof (a) / sizeof (a[0]))
@@ -135,8 +139,8 @@ static void GameLoop(const size_t players)
 {
     Player player_array[2] =
     {
-        {Player::PLAYER_ONE, players >= Player::PLAYER_ONE, enemyShip},
-        {Player::PLAYER_TWO, players >= Player::PLAYER_TWO, enemyShip}
+        {Player::PLAYER_ONE, players >= Player::PLAYER_ONE, playerSpr},
+        {Player::PLAYER_TWO, players >= Player::PLAYER_TWO, playerSpr}
     };
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
 
@@ -145,14 +149,19 @@ static void GameLoop(const size_t players)
         {enemyShip},
         {enemyShip}
     };
+
     ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
 
     for (;;)
     {
-        GfxClear();
-
+        // Game logic
         pl.Update(&e);
 
+        // Rendering
+        while (GfxIsBusy());
+        GfxClear();
+        pl.render();
+        //e.render();
         GfxDrawScene();
     }
 }

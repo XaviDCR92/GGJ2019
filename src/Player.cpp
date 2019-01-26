@@ -83,8 +83,6 @@ void Player::Update(void* const data)
         }
 
         checkFire();
-
-        render();
     }
 }
 
@@ -161,8 +159,6 @@ void Player::render(void)
     mSpr.x = x;
     mSpr.y = y;
     mSpr.rotate = GetRenderAngle();
-    mSpr.mx = mSpr.w >> 1;
-    mSpr.my = mSpr.h >> 1;
 
     GfxSortSprite(&mSpr);
 }

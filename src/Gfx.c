@@ -166,6 +166,8 @@ bool GfxSpriteFromFile(const char* const strFilePath, GsSprite* const pSpr)
             /* sGsi is now filled with data. Create
              * a GsSprite instance from it. */
 
+            printf("Opening %s...\n", strFilePath);
+
             /* Call PSXSDK libs to upload image data to VRAM. "const" flag must be removed. */
             if (GsSpriteFromImage(pSpr, &sGsi, UPLOAD_IMAGE_FLAG) == 1 /* Success code. */)
             {
@@ -221,9 +223,11 @@ void GfxDrawScene(void)
 
     /* Draw all primitives into screen. */
     GsDrawList();
+}
 
-    /* Swap low-level primitive data buffers. */
-    GfxSetPrimList();
+bool GfxIsBusy(void)
+{
+    return GsIsDrawing();
 }
 
 /***************************************************************************//**
@@ -437,20 +441,10 @@ static void GfxSetPrimList(void)
     };
 
     /* Buffers that will hold all primitive low-level data. */
-    static uint32_t primLists[PRIMITIVE_LIST_SIZE][2];
-
-    /* This flag is reversed each time this function is called,
-     * so that only one buffer is used at a time. */
-    static size_t primListIdx;
-
-    /* Select buffer depending on bPrimListUsed. */
-    uint32_t* const primList = primLists[primListIdx];
+    static uint32_t primList[PRIMITIVE_LIST_SIZE];
 
     /* Set primitive list. */
     GsSetList(primList);
-
-    /* Invert index. */
-    primListIdx ^= 1;
 }
 
 /*******************************************************************//**

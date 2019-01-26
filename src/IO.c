@@ -14,6 +14,7 @@
 
 #include "IO.h"
 #include "Interrupts.h"
+#include "Gfx.h"
 #include "Serial.h"
 #include <stdio.h>
 #include <stdint.h>
@@ -128,24 +129,17 @@ const uint8_t* IOLoadFile(const char* const strFilePath, size_t* const fileSize)
 #ifndef SERIAL_INTERFACE
 static const uint8_t* IOLoadFileFromCd(char* const buffer, size_t* const fileSize, uint8_t* const fileBuffer)
 {
-    volatile size_t i;
-
-    /* Temporarily disable VBlank interrupt. */
     InterruptsDisableInt(INT_SOURCE_VBLANK);
-
-    /* Temporarily disable root counter 2 interrupt. */
+    InterruptsDisableInt(INT_SOURCE_RCNT0);
+    InterruptsDisableInt(INT_SOURCE_RCNT1);
     InterruptsDisableInt(INT_SOURCE_RCNT2);
 
-    for (i = 0; i < 0xFFFF; i++);
-
     /* Get file data from input file path. */
-    FILE* const pFile = fopen((char*)buffer, "r");
-    printf("After\n");
+    FILE* pFile = fopen((char*)buffer, "r");
 
-    /* Re-enable VBlank interrupt. */
     InterruptsEnableInt(INT_SOURCE_VBLANK);
-
-    /* Re-enable root counter 2 interrupt. */
+    InterruptsEnableInt(INT_SOURCE_RCNT0);
+    InterruptsEnableInt(INT_SOURCE_RCNT1);
     InterruptsEnableInt(INT_SOURCE_RCNT2);
 
     if (pFile != NULL)

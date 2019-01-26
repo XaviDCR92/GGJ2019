@@ -28,7 +28,7 @@ CDROM_ROOT=$(PROJECT_DIR)/src/cdimg
 BIN_TARGET_PATH = $(PROJECT_DIR)/release
 
 #Uncomment this DEFINE below to use Pinballoid together with OpenSend + QPSXSerial toolchain.
-DEFINE +=  -DSERIAL_INTERFACE
+#DEFINE +=  -DSERIAL_INTERFACE
 
 # PSXSDK tools definitions
 # ELF2EXE:
@@ -84,7 +84,7 @@ SOUND_OBJECTS =
 BMP2TIM = bmp2tim
 SRC_SPRITES_PATH = $(PROJECT_DIR)/src/sprites
 OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
-SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, ENEMY.TIM)
+SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, PLAYER.TIM ENEMY.TIM PLANET.TIM)
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.
