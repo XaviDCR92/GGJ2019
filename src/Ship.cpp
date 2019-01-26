@@ -1,20 +1,27 @@
 #include "Ship.hpp"
 #include <stdio.h>
 
-Ship::Ship() :
-    mCurrentDirection(Vector2(1, 0))
+Ship::Ship()
 {
 }
 
 void Ship::Update()
 {
-    UpdateLocation();
-    UpdateRotation();
+    //~ UpdateLocation();
+    //~ UpdateRotation();
 }
 
 int Ship::GetRenderAngle()
 {
-    return mAngle >> 4;
+    /* Perform degrees to radians conversion. */
+    Fix16 intermediate;
+
+    intermediate.value = fix16_smul(mAngle.value, fix16_from_int(180));
+
+    intermediate.value = fix16_div(intermediate.value, fix16_pi);
+
+    //~ printf("mAngle = %d\n", mAngle.value);
+    return fix16_to_int(intermediate.value) * 4096;
 }
 
 void Ship::GetRenderPosition(int& outX, int& outY)
@@ -30,12 +37,12 @@ void Ship::SetDesiredDirection(int desiredAngle)
 
 void Ship::SetDesiredDirection(Fix16 desiredAngle)
 {
+    /* Perform degrees to radians conversion. */
+    Fix16 intermediate(desiredAngle * fix16_pi);
+    mAngle.value = fix16_div(intermediate.value, fix16_from_int(180));
 
-    Fix16 intermediate(desiredAngle/360);
-    mAngle = fix16_pi*intermediate.value;
-    mAngle = mAngle % (fix16_pi*2);
-    mDesiredDirection.X = fix16_sin(mAngle);
-    mDesiredDirection.Y = fix16_cos(mAngle);
+    mDesiredDirection.X.value = fix16_cos(mAngle);
+    mDesiredDirection.Y.value = fix16_sin(mAngle);
 }
 
 int Ship::GetAngleToDesired()
@@ -59,21 +66,4 @@ void Ship::UpdateLocation()
 
 void Ship::UpdateRotation()
 {
-    Fix16 current_angle(fix16_atan2(mCurrentDirection.Y, mCurrentDirection.X));
-    Fix16 desired_angle(fix16_atan2(mDesiredDirection.Y, mDesiredDirection.X));
-
-    printf("c = %i\n", current_angle.value);
-
-    Fix16 comp = desired_angle - current_angle;
-    if(comp > fix16_pi || (comp < 0 && comp > -fix16_pi))
-    {
-       current_angle -= mRotationSpeed;
-    }
-    else
-    {
-        current_angle += mRotationSpeed;
-    }
-
-    SetDesiredDirection(current_angle);
-
 }

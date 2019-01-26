@@ -53,8 +53,7 @@ Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
     mRotationSpeed = Fix16((uint16_t)3);
     mSpeed = Fix16((int16_t)3);
 
-    mPosition.X = Fix16((int16_t)40);
-    mPosition.Y = Fix16((int16_t)20);
+    mPosition = Vector2(40, 20);
 }
 
 bool Player::isActive(void)
@@ -87,13 +86,17 @@ int Player::calculateAngle(void)
         if (pad.keyPressed(Pad::LEFT))
         {
             angle = 235;
+            mDesiredDirection = Vector2(-1, -1);
         }
         else if (pad.keyPressed(Pad::RIGHT))
         {
             angle = 315;
+
+            mDesiredDirection = Vector2(1, -1);
         }
         else
         {
+            mDesiredDirection = Vector2(0, -1);
             angle = 270;
         }
     }
@@ -137,6 +140,7 @@ void Player::render(void)
     spr.x = x;
     spr.y = y;
     spr.rotate = GetRenderAngle();
+    printf("spr.rotate = %d\n", spr.rotate / 4096);
     spr.mx = spr.w >> 1;
     spr.my = spr.h >> 1;
 
