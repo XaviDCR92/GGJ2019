@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Camera.hpp"
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -83,7 +84,7 @@ public:
         return mSize;
     }
 
-    void render(void)
+    void render(const Camera& cam)
     {
         for (size_t i = 0; i < mSize; i++)
         {
@@ -91,7 +92,7 @@ public:
 
             if (t.isActive())
             {
-                t.render();
+                t.render(cam);
             }
         }
     }

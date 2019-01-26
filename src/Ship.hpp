@@ -8,7 +8,7 @@ class Ship : public SpaceEntity
 {
 public:
 
-    Ship(GsSprite& spr, const Camera& cam);
+    Ship(GsSprite& spr);
     virtual void Update(void* const);
 
     int GetRenderAngle() const;

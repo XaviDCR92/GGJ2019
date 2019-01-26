@@ -3,10 +3,9 @@
 #include "ArrayManager.hpp"
 #include <stdio.h>
 
-Enemy::Enemy(GsSprite& spr, const Camera& camera) :
-    Ship(spr, camera)
+Enemy::Enemy(GsSprite& spr) :
+    Ship(spr)
 {
-    printf("Enemy constructor\n");
 }
 
 void Enemy::Update(void* const data)

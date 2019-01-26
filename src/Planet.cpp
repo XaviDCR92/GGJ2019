@@ -2,7 +2,7 @@
 #include "GlobalData.h"
 #include "Gfx.h"
 
-Planet::Planet(GsSprite& spr, const Camera& cam) : SpaceEntity(spr, cam),
+Planet::Planet(GsSprite& spr, const Camera& cam) : SpaceEntity(spr),
     mConsumerAmount(0), mHealth(3000), mConsuptionSpeed(3)
 {
     setActive(true);

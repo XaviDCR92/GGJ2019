@@ -144,8 +144,8 @@ static void GameLoop(const size_t players)
     // Players
     Player player_array[2] =
     {
-        {Player::PLAYER_ONE, players >= Player::PLAYER_ONE, playerSpr, cam},
-        {Player::PLAYER_TWO, players >= Player::PLAYER_TWO, playerSpr, cam}
+        {Player::PLAYER_ONE, players >= Player::PLAYER_ONE, playerSpr},
+        {Player::PLAYER_TWO, players >= Player::PLAYER_TWO, playerSpr}
     };
 
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
@@ -153,8 +153,8 @@ static void GameLoop(const size_t players)
     // Enemies
     Enemy enemy_array[2] =
     {
-        {enemyShip, cam},
-        {enemyShip, cam}
+        {enemyShip},
+        {enemyShip}
     };
     ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
 
@@ -183,13 +183,14 @@ static void GameLoop(const size_t players)
         // Game logic
         pl.Update(&data);
         e.Update(&data);
-        cam.Update(pl);
+        cam.Update( pl.get(Player::PLAYER_ONE)->getPosition(),
+                    pl.get(Player::PLAYER_TWO)->getPosition());
 
         // Rendering
         while (GfxIsBusy());
         GfxClear();
-        pl.render();
-        planets.render();
+        pl.render(cam);
+        planets.render(cam);
         //e.render();
 
         GfxDrawScene();

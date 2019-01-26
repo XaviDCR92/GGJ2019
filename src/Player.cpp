@@ -46,10 +46,9 @@
  * Functions definition
  * *************************************/
 
-Player::Player(const playern _player_n, const bool _active, GsSprite& _spr, const Camera& camera) :
-    Ship(_spr, camera),
+Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
+    Ship(_spr),
     pad(_player_n),
-    mCamera(camera),
     active(_active)
 {
     mRotationSpeed = Fix16((uint16_t)3);
@@ -152,11 +151,13 @@ void Player::checkFire(void)
 {
 }
 
-void Player::render(void)
+void Player::render(const Camera& camera)
 {
     int x, y;
 
     Ship::GetRenderPosition(x, y);
+
+    camera.getPosition(x, y);
 
     mSpr.x = x;
     mSpr.y = y;
