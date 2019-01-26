@@ -2,11 +2,10 @@
 #include "GlobalData.h"
 #include "Gfx.h"
 
-Planet::Planet(GsSprite& spr) :
-    SpaceEntity(spr),
+Planet::Planet(GsSprite& spr) : SpaceEntity(spr),
     mConsumerAmount(0), mHealth(3000), mConsuptionSpeed(3)
 {
-    mPosition = Vector2(200, 200);
+    mPosition = Vector2(40, 20);
 }
 
 void Planet::Update(void* const data)
@@ -36,4 +35,3 @@ void Planet::Update(void* const data)
     mHealth -= mConsumerAmount*mConsuptionSpeed;
     if(mHealth <= 0)
         setActive(false);
-}

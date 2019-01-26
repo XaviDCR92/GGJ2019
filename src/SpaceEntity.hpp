@@ -15,12 +15,14 @@ public:
     void render(void);
     Vector2 getPosition(void) const;
 
+Vector2 mPosition;
+
 protected:
     void GetRenderPosition(short& outX, short &outY) const;
 
     bool mActive;
     Fix16 mRadius;
-    Vector2 mPosition;
+    
     GsSprite& mSpr;
 
     uint16_t mArrayIdx;

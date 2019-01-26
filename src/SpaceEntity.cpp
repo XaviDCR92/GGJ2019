@@ -1,5 +1,6 @@
 #include "SpaceEntity.hpp"
 #include "Gfx.h"
+#include <stdio.h>
 
 SpaceEntity::SpaceEntity(GsSprite& spr) :
     mActive(false),
