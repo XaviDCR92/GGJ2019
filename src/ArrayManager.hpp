@@ -33,7 +33,6 @@ public:
 
             if (!t.isActive())
             {
-                // Use it!
                 t = element;
 
                 t.setActive(true);
