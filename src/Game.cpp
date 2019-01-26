@@ -191,7 +191,7 @@ static void GameLoop(const size_t players)
         while (GfxIsBusy());
         GfxClear();
         pl.render(cam);
-        //~ planets.render(cam);
+        planets.render(cam);
         //e.render();
 
         GfxDrawScene();

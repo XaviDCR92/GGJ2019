@@ -317,7 +317,7 @@ void GfxSortSprite(GsSprite* const psSpr)
     {
         /* Small sprites can be directly drawn using PSXSDK function.
          * On the other hand, big sprites need some more processing. */
-        psSpr->w < MAX_SIZE_FOR_GSSPRITE ? GfxSortBigSprite(psSpr) : GsSortSprite(psSpr);
+        psSpr->w > MAX_SIZE_FOR_GSSPRITE ? GfxSortBigSprite(psSpr) : GsSortSprite(psSpr);
     }
     else
     {
