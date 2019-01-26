@@ -39,15 +39,27 @@ void Planet::Update(void* const data)
         setActive(false);
 }
 
-void Planet::render()
+void Planet::render(const Camera& cam)
 {
+    SetSpriteOriginOnce(mSpr.u, mSpr.v);
+
     int divisor = mMaxHealth / 6;
     int idx = mHealth / divisor;
-    const sprite_width = 32;
-    mSpr.u = sprite_width*idx;
-    mSpr.v = 0;
-    mSpre.w = 32;
-    mSpre.h = 32;
 
-    SpaceEntity::render();
+    int offset = 0;
+    int adder = 128;
+    for(int i = 0; i < idx; i++)
+    {
+        offset += adder;
+        adder /= 2;
+    }
+        
+    unsigned char u, v;
+    GetSpriteOrigin(u, v);
+    //mSpr.u = u + offset;
+    //mSpr.v = v;
+    mSpr.w = 16; // adder
+    mSpr.h = 32; // adder
+
+    SpaceEntity::render(cam);
 }
