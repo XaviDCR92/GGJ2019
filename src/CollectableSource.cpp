@@ -1,12 +1,12 @@
-#include "Planet.hpp"
+#include "CollectableSource.hpp"
 #include "GlobalData.h"
 #include "Gfx.h"
 
-Planet::Planet(GsSprite& spr, const Camera& cam) : SpaceEntity(spr), CompositeSpriteEntity(spr),
-    mConsumerAmount(0), mHealth(4000), mConsuptionSpeed(5), mMaxHealth(4000), mSpriteAmount(5)
+CollectableSource::CollectableSource(GsSprite& spr, const Camera& cam): SpaceEntity(spr), CompositeSpriteEntity(spr),
+    mHealth(4000), mConsuptionSpeed(5), mMaxHealth(4000), mSpriteAmount(5)
 {
     setActive(true);
-    mPosition = Vector2(210, 0);
+    mPosition = Vector2(100, 100);
 
     mSpriteOffsets[0] = 64;
     mSpriteOffsets[1] = 48;
@@ -15,11 +15,9 @@ Planet::Planet(GsSprite& spr, const Camera& cam) : SpaceEntity(spr), CompositeSp
     mSpriteOffsets[4] = 16;
 }
 
-void Planet::Update(void* const data)
+void CollectableSource::Update(void* const data)
 {
     GlobalData* gData = static_cast<GlobalData*>(data);
-    mConsumerAmount = 0;
-
     if(gData)
     {
         ArrayManager<Player>& players = gData->Players;
@@ -32,18 +30,18 @@ void Planet::Update(void* const data)
             {
                 if(IsColliding(player))
                 {
-                    mConsumerAmount++;
+                    mHealth -= mConsuptionSpeed;
+
+                    // Player needs get resources here
+
+                    if(mHealth <= 0)
+                        break;
                 }
             }
         }
     }
-
-    mHealth -= mConsumerAmount*mConsuptionSpeed;
-    if(mHealth <= 0)
-        setActive(false);
 }
-
-void Planet::render(const Camera& cam)
+void CollectableSource::render(const Camera& cam)
 {
     int divisor = mMaxHealth /mSpriteAmount;
     int safe_health = mHealth - 1;
