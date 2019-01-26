@@ -1,20 +1,21 @@
 #include "Vector2.hpp"
 
-Vector2::Vector2()
+Vector2::Vector2() :
+    X(0),
+    Y(0)
 {
-    X = Y = 0;
 }
 
-Vector2::Vector2(int initialX, int initialY)
+Vector2::Vector2(int initialX, int initialY) :
+    X(Fix16((int16_t)initialX)),
+    Y(Fix16((int16_t)initialY))
 {
-    X = Fix16(initialX);
-    Y = Fix16(initialY);
 }
 
-Vector2::Vector2(Fix16 initialX, Fix16 initialY)
+Vector2::Vector2(Fix16 initialX, Fix16 initialY) :
+    X(initialX),
+    Y(initialY)
 {
-    X = initialX;
-    Y = initialY;
 }
 
 Fix16 Vector2::Distance()

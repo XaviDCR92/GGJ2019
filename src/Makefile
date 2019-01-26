@@ -18,7 +18,7 @@ DEFINE += -DPSXSDK_DEBUG
 
 # Compiler flags
 LIBS= -lfixmath
-CC_FLAGS = -Wall -c -O3 -Wfatal-errors -Werror
+CC_FLAGS = -Wall -c -O3 -Wfatal-errors
 
 # Path definitions
 PSXSDK_PATH = /usr/local/psxsdk

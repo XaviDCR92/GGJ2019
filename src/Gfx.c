@@ -193,6 +193,11 @@ bool GfxSpriteFromFile(const char* const strFilePath, GsSprite* const pSpr)
     return false;
 }
 
+void GfxClear(void)
+{
+    GsSortCls(0, 0, 0);
+}
+
 /***************************************************************************//**
 *
 * \brief    Draws current primitive list into screen and performs double

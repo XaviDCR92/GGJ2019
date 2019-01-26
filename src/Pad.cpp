@@ -24,7 +24,7 @@
  * Defines
  * *************************************/
 
-#define PAD_CHECK(p) STATIC_ASSERT((1 << KEY_##p) == PAD_##p);
+#define PAD_CHECK(p) STATIC_ASSERT((1 << p) == PAD_##p);
 
 /* *************************************
  * Types definition
@@ -47,6 +47,8 @@
  * *************************************/
 
 Pad::Pad(const unsigned int _pad_n) :
+    rawData{0},
+    prev{0},
     pad_n(_pad_n)
 {
     /* Perform compile-time assertions
@@ -68,14 +70,12 @@ Pad::Pad(const unsigned int _pad_n) :
     PAD_CHECK(LANALOGB);
     PAD_CHECK(RANALOGB);
     PAD_CHECK(START);
-
-    memset(rawData, 0, Pad::RAW_DATA_SIZE);
 }
 
 void Pad::handler(void)
 {
+    prev = state;
     pad_read_raw(pad_n, rawData);
-
     PSX_PollPad_Fast_Ex(rawData, &state);
 }
 
@@ -84,12 +84,17 @@ psx_pad_types Pad::getType(void)
     return static_cast<psx_pad_types>(state.type);
 }
 
-/*******************************************************************//**
-*
-* \brief
-*
-************************************************************************/
 bool Pad::keyPressed(const enum Pad::Key key)
 {
     return state.buttons & (1 << key);
+}
+
+bool Pad::singlePress(const enum Pad::Key key)
+{
+    return keyPressed(key) && !(prev.buttons & (1 << key));
+}
+
+bool Pad::released(const enum Pad::Key key)
+{
+    return !keyPressed(key) && (prev.buttons & (1 << key));
 }

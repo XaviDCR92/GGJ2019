@@ -46,7 +46,7 @@ static GsSprite enemyShip;
 static void GameStart(const size_t players);
 static void GameInit(const size_t players);
 static void GameInitFiles(void);
-static void GameLoop(Player &p1, Player &p2);
+static void GameLoop(Player &p1);
 
 /* *****************************************************************************
  * Functions definition
@@ -87,14 +87,13 @@ void Game(void)
 *******************************************************************************/
 static void GameStart(const size_t players)
 {
-    Player p1(Player::PLAYER_ONE);
-    Player p2(Player::PLAYER_TWO);
+    Player p1(Player::PLAYER_ONE, players >= 1, enemyShip);
 
     /* Game initialization. */
     GameInit(players);
 
     /* Gameplay. */
-    GameLoop(p1, p2);
+    GameLoop(p1);
 }
 
 /***************************************************************************//**
@@ -130,7 +129,14 @@ static void GameInitFiles(void)
     GfxSpriteFromFile("DATA\\SPRITES\\ENEMY.TIM", &enemyShip);
 }
 
-static void GameLoop(Player &p1, Player &p2)
+static void GameLoop(Player &p1)
 {
-    for (;;);
+    for (;;)
+    {
+        GfxClear();
+
+        p1.handler();
+
+        GfxDrawScene();
+    }
 }

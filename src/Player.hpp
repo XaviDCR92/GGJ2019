@@ -16,26 +16,13 @@
  * *************************************/
 
 #include "Pad.hpp"
+#include "Ship.hpp"
+#include "Gfx.h"
 #include <stddef.h>
 #include <stdbool.h>
 
-/* *************************************
- * Defines
- * *************************************/
 
-/* *************************************
- * Public types definition
- * *************************************/
-
-/* *************************************
- * Public variables declaration
- * *************************************/
-
-/* *************************************
- * Public functions declaration
- * *************************************/
-
-class Player
+class Player : private Ship
 {
     public:
         enum playern
@@ -44,12 +31,17 @@ class Player
             PLAYER_TWO
         };
 
-        Player(const playern _player_n);
+        Player(const playern _player_n, const bool _active, GsSprite& _spr);
         bool isActive(void);
         void handler(void);
+        void render(void);
 
     private:
         Pad pad;
+        const bool active;
+        GsSprite& spr;
+        int calculateAngle(void);
+        void checkFire(void);
 };
 
 #endif /* PLAYER_H */

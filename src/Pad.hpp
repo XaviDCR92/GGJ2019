@@ -32,37 +32,41 @@ class Pad
     public:
         enum Key
         {
-            KEY_L2,
-            KEY_R2,
-            KEY_L1,
-            KEY_R1,
-            KEY_TRIANGLE,
-            KEY_CIRCLE,
-            KEY_CROSS,
-            KEY_SQUARE,
-            KEY_SELECT,
-            KEY_LANALOGB,
-            KEY_RANALOGB,
-            KEY_START,
-            KEY_UP,
-            KEY_RIGHT,
-            KEY_DOWN,
-            KEY_LEFT
+            L2,
+            R2,
+            L1,
+            R1,
+            TRIANGLE,
+            CIRCLE,
+            CROSS,
+            SQUARE,
+            SELECT,
+            LANALOGB,
+            RANALOGB,
+            START,
+            UP,
+            RIGHT,
+            DOWN,
+            LEFT,
+
+            MAX
         };
 
         Pad(const unsigned int _pad_n);
         void handler(void);
         bool keyPressed(const enum Key key);
+        bool singlePress(const enum Key key);
+        bool released(const enum Key key);
         psx_pad_types getType(void);
 
     private:
         enum
         {
-            RAW_DATA_SIZE = 16
+            RAW_DATA_SIZE = 21
         };
 
         uint8_t rawData[RAW_DATA_SIZE];
-        psx_pad_state state;
+        psx_pad_state prev, state;
         const unsigned int pad_n;
 };
 
