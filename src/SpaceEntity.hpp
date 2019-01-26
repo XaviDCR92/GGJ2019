@@ -4,18 +4,19 @@
 #include "Gfx.h"
 #include "Camera.hpp"
 #include <fixmath.h>
-
-class Camera;
+#include <stdint.h>
+#include <stddef.h>
 
 class SpaceEntity
 {
 public:
-    SpaceEntity(GsSprite& spr, const Camera& cam);
+    SpaceEntity(GsSprite& spr);
     virtual void Update(void* const) = 0;
     bool isActive(void) const;
     void setActive(const bool state);
     bool IsColliding(const SpaceEntity& otherEntity) const;
-    virtual void render(void);
+
+    virtual void render(const Camera& cam);
     Vector2 getPosition(void) const;
 
 Vector2 mPosition;
@@ -26,6 +27,5 @@ protected:
     bool mActive;
     Fix16 mRadius;
     GsSprite& mSpr;
-    const Camera& mCamera;
     size_t mArrayIdx;
 };

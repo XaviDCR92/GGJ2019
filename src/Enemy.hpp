@@ -7,7 +7,7 @@ class Camera;
 class Enemy : public Ship
 {
 public:
-    Enemy(GsSprite& spr, const Camera& camera);
+    Enemy(GsSprite& spr);
     virtual void Update(void* const data) override;
 
 private:

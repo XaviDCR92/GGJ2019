@@ -23,8 +23,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-class Camera;
-
 class Player : public Ship
 {
 public:
@@ -34,11 +32,10 @@ public:
         PLAYER_TWO
     };
 
-
-    Player(const playern _player_n, const bool _active, GsSprite& _spr, const Camera& camera);
+    Player(const playern _player_n, const bool _active, GsSprite& _spr);
     bool isActive(void) const;
     void Update(void* const data);
-    void render(void);
+    void render(const Camera& camera);
 
 private:
     Pad pad;
