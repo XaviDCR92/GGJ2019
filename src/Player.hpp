@@ -23,7 +23,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-class Player : private Ship
+class Player : public Ship
 {
 public:
     enum playern

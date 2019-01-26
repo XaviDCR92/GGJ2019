@@ -15,6 +15,7 @@
 #include "Menu.h"
 #include "Enemy.hpp"
 #include "Player.hpp"
+#include "Planet.hpp"
 #include "Timers.h"
 #include "ArrayManager.hpp"
 #include "GlobalData.h"
@@ -40,8 +41,8 @@
  * Local variables definition
  * ****************************************************************************/
 
+static GsSprite planetSprite;
 static GsSprite enemyShip;
-static GsSprite planet;
 static GsSprite playerSpr;
 
 /* *****************************************************************************
@@ -131,7 +132,7 @@ static void GameInitFiles(void)
 {
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
     GfxSpriteFromFile("DATA\\SPRITES\\ENEMY.TIM", &enemyShip);
-    GfxSpriteFromFile("DATA\\SPRITES\\PLANET.TIM", &planet);
+    GfxSpriteFromFile("DATA\\SPRITES\\PLANET.TIM", &planetSprite);
 }
 
 #define ARRAY_SIZE(a)   (sizeof (a) / sizeof (a[0]))
@@ -161,9 +162,11 @@ static void GameLoop(const size_t players)
     // Planets
     Planet planet_array[2] = 
     {
-        {planet},
-        {planet}
+        {planetSprite},
+        {planetSprite}
     };
+    ArrayManager<Planet> planets(ARRAY_SIZE(planet_array), planet_array);
+    data.Planets = &planets;
 
     for (;;)
     {
@@ -171,11 +174,17 @@ static void GameLoop(const size_t players)
         pl.Update(&data);
         e.Update(&data);
 
+
+        Vector2 pos = planets.get(0)->mPosition;
+        printf("planet render pos: %d %d", fix16_to_int(pos.X), fix16_to_int(pos.Y));
+
         // Rendering
         while (GfxIsBusy());
         GfxClear();
         pl.render();
+        planets.render();
         //e.render();
+
         GfxDrawScene();
     }
 }

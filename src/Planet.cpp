@@ -1,10 +1,10 @@
 #include "Planet.hpp"
 #include "GlobalData.h"
 
-Planet(GsSprite& spr) : public SpaceEntity(spr)
-    : mConsumerAmount(0), mHealth(3000), mConsuptionSpeed(3)
+Planet::Planet(GsSprite& spr) : SpaceEntity(spr), 
+    mConsumerAmount(0), mHealth(3000), mConsuptionSpeed(3)
 {
-    mPosition = Vector2(200, 200);
+    mPosition = Vector2(40, 20);
 }
 
 void Planet::Update(void* const data)
@@ -16,21 +16,24 @@ void Planet::Update(void* const data)
     {
         if(ArrayManager<Player>* players = gData->Players)
         {
-            for(int i = 0; i < players.mSize; i++)
+            for(unsigned i = 0; i < players->count(); i++)
             {
-                if(player.isActive())
+                if(Player* player = players->get(i))
                 {
-                    if(IsColliding(player))
+                    if(player->isActive())
                     {
-                        mConsumerAmount++;
-                        break;
+                        if(IsColliding(*player))
+                        {
+                            mConsumerAmount++;
+                            break;
+                        }
                     }
                 }
             }
         }
     }
 
-    mHealth -= mConsumerAmount*mConsuptionSPeed;
+    mHealth -= mConsumerAmount*mConsuptionSpeed;
     if(mHealth <= 0)
-        IsActive = false;
+        mActive = false;
 }
