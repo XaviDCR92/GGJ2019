@@ -9,6 +9,13 @@ Camera::Camera() :
 {
 }
 
+/* 1 player tracking. */
+void Camera::Update(const Vector2& p1)
+{
+    mPosition = p1;
+}
+
+/* 2 player tracking. */
 void Camera::Update(const Vector2& p1, const Vector2& p2)
 {
     mPosition.X.value = abs(p1.X.value - p2.X.value) / 2;
