@@ -17,5 +17,7 @@ public:
 private:
 
     int mConsumerAmount, mHealth, mConsuptionSpeed, mMaxHealth;
+    const int mSpriteAmount = 5;
+    int mSpriteOffsets[5];
 
 };

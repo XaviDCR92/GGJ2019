@@ -1,13 +1,14 @@
 #pragma once
 
+#include "Gfx.h"
+
 class CompositeSpriteEntity
 {
 public:
 
-    CompositeSpriteEntity() : mOriginSet(false)
+    CompositeSpriteEntity(GsSprite& spr) : mOriginSet(false), mStartU(spr.u), mStartV(spr.v)
     {}
 
-    void SetSpriteOriginOnce(unsigned char startU, unsigned char startV);
     void SetSpriteOrigin(unsigned char startU, unsigned char startV);
     void GetSpriteOrigin(unsigned char& startU, unsigned char& startV) const;
 

@@ -13,9 +13,7 @@ void Enemy::Update(void* const data)
 {
     Ship::Update(data);
 
-    Vector2 minDistance(0x7FFF, 0x7FFF);
     ArrayManager<Player>& playerData = *static_cast<ArrayManager<Player> *>(data);
-
     Player* const nearest_player = nearestPlayer(playerData);
 
     if (nearest_player)

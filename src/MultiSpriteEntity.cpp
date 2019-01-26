@@ -1,13 +1,5 @@
 #include "MultiSpriteEntity.hpp"
 
-void CompositeSpriteEntity::SetSpriteOriginOnce(unsigned char startU, unsigned char startV)
-{
-    if(mOriginSet)
-        return;
-
-    SetSpriteOrigin(mStartU, mStartV);
-}
-
 void CompositeSpriteEntity::SetSpriteOrigin(unsigned char startU, unsigned char startV) 
 {
     mStartU = startU;
