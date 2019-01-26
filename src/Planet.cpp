@@ -3,10 +3,10 @@
 #include "Gfx.h"
 
 Planet::Planet(GsSprite& spr, const Camera& cam) : SpaceEntity(spr), CompositeSpriteEntity(spr),
-    mConsumerAmount(0), mHealth(4000), mConsuptionSpeed(20), mMaxHealth(4000)
+    mConsumerAmount(0), mHealth(4000), mConsuptionSpeed(5), mMaxHealth(4000), mSpriteAmount(5)
 {
     setActive(true);
-    mPosition = Vector2(40, 20);
+    mPosition = Vector2(110, 0);
     mActive = true;
 
     mSpriteOffsets[0] = 64;
@@ -34,7 +34,6 @@ void Planet::Update(void* const data)
                 if(IsColliding(player))
                 {
                     mConsumerAmount++;
-                    break;
                 }
             }
         }
@@ -47,8 +46,6 @@ void Planet::Update(void* const data)
 
 void Planet::render(const Camera& cam)
 {
-    //SetSpriteOriginOnce(mSpr.u, mSpr.v);
-
     int divisor = mMaxHealth /mSpriteAmount;
     int safe_health = mHealth - 1;
     int idx = safe_health / divisor;
@@ -59,12 +56,10 @@ void Planet::render(const Camera& cam)
     mSpr.u = u;
     mSpr.v = v;
     int i;
-    //for(i = 0; i < idx; i++)
-    //    mSpr.u += mSpriteOffsets[i];
-    //mSpr.w = mSpriteOffsets[i];
-    //mSpr.h = mSpriteOffsets[i];
-    mSpr.w = 64;
-    mSpr.h = 64;
-
+    for(i = 0; i < idx; i++)
+        mSpr.u += mSpriteOffsets[i];
+    mSpr.w = mSpriteOffsets[i];
+    mSpr.h = mSpriteOffsets[i];
+    
     SpaceEntity::render(cam);
 }

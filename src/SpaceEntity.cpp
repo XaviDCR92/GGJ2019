@@ -5,14 +5,14 @@
 SpaceEntity::SpaceEntity(GsSprite& spr) :
     mActive(false),
     mSpr(spr),
-    mArrayIdx(0)
+    mArrayIdx(0),
+    mRadius(fix16_from_int(32))
 {
 }
 
 bool SpaceEntity::IsColliding(const SpaceEntity& otherEntity) const
 {
-    printf("Distance: %d\n", fix16_to_int((mPosition - otherEntity.mPosition).Distance()));
-    return (mPosition - otherEntity.mPosition).DistanceSqrt() < (mRadius+otherEntity.mRadius)*(mRadius+otherEntity.mRadius);
+    return (mPosition - otherEntity.mPosition).Distance() < (mRadius+otherEntity.mRadius);
 }
 
 bool SpaceEntity::isActive(void) const
