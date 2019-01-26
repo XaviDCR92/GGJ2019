@@ -52,7 +52,7 @@ OBJECTS = $(addprefix $(OBJ_DIR)/,	\
 			main.o Gfx.o Interrupts.o IO.o Timers.o SystemInit.o	\
 			Menu.o Game.o Threads.o FileData.o Player.o 	\
 			Pad.o \
-			Ship.o Player.o Vector2.o Enemy.o SpaceEntity.o)
+			Ship.o Player.o Vector2.o Enemy.o SpaceEntity.o ArrayManager.o)
 
 # Source dependencies:
 DEPS = $(OBJECTS:.o=.d)

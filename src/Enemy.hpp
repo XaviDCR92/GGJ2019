@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include "Ship.hpp"
 
@@ -6,7 +6,8 @@ class Enemy : public Ship
 {
 public:
 
-    virtual void Update() override;
+    Enemy();
+    virtual void Update(void* const data) override;
 
 private:
     void Attack();

@@ -61,13 +61,15 @@ bool Player::isActive(void)
     return active;
 }
 
-void Player::handler(void)
+void Player::Update(void* const data)
 {
+    ArrayManager<Enemy>& e = *(ArrayManager<Enemy>*)data;
+
     if (isActive())
     {
         pad.handler();
 
-        Ship::Update();
+        Ship::Update(data);
 
         bool any_pressed;
 
@@ -86,6 +88,11 @@ void Player::handler(void)
 
         render();
     }
+}
+
+void Player::print(void)
+{
+    printf("I am a Player!\n");
 }
 
 int Player::calculateAngle(bool& change)
@@ -137,7 +144,6 @@ int Player::calculateAngle(bool& change)
     }
     else
     {
-        printf("Nothing pressed\n");
         change = false;
     }
 
@@ -157,7 +163,6 @@ void Player::render(void)
     spr.x = x;
     spr.y = y;
     spr.rotate = GetRenderAngle();
-    printf("spr.rotate = %d\n", spr.rotate / 4096);
     spr.mx = spr.w >> 1;
     spr.my = spr.h >> 1;
 

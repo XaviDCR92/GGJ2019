@@ -1,12 +1,12 @@
 #include "Ship.hpp"
 #include <stdio.h>
 
-Ship::Ship()
+Ship::Ship() :
+    brake(true)
 {
 }
 
-void Ship::Update() :
-    brake(true)
+void Ship::Update(void* const)
 {
     UpdateLocation();
     UpdateRotation();
@@ -80,20 +80,6 @@ void Ship::UpdateLocation()
     const fix16_t y_diff = fix16_mul(mCurrentDirection.Y.value, mSpeed.value);
     mPosition.X.value += x_diff;
     mPosition.Y.value += y_diff;
-    printf("x_diff = %d, y_diff = %d\n", x_diff, y_diff);
-
-    printf("mCurrentDirection.X = %d, mCurrentDirection.Y = %d\n",
-            mCurrentDirection.X.value,
-            mCurrentDirection.Y.value);
-
-    printf("mDesiredDirection.X = %d, mDesiredDirection.Y = %d\n",
-            mDesiredDirection.X.value,
-            mDesiredDirection.Y.value);
-
-    printf("mSpeed = %d\n", fix16_to_int(mSpeed.value));
-    printf("mPosition.X = %d, mPosition.Y = %d\n",
-            fix16_to_int(mPosition.X.value),
-            fix16_to_int(mPosition.Y.value));
 }
 
 void Ship::UpdateRotation()

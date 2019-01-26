@@ -7,7 +7,7 @@ class Ship : public SpaceEntity
 public:
 
     Ship();
-    virtual void Update();
+    virtual void Update(void* const);
 
     int GetRenderAngle();
     void GetRenderPosition(int& X, int& Y);

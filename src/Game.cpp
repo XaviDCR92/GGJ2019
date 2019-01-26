@@ -13,8 +13,10 @@
 #include "Game.hpp"
 #include "Gfx.h"
 #include "Menu.h"
+#include "Enemy.hpp"
 #include "Player.hpp"
 #include "Timers.h"
+#include "ArrayManager.hpp"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -46,7 +48,7 @@ static GsSprite enemyShip;
 static void GameStart(const size_t players);
 static void GameInit(const size_t players);
 static void GameInitFiles(void);
-static void GameLoop(Player &p1);
+static void GameLoop(const size_t players);
 
 /* *****************************************************************************
  * Functions definition
@@ -87,13 +89,11 @@ void Game(void)
 *******************************************************************************/
 static void GameStart(const size_t players)
 {
-    Player p1(Player::PLAYER_ONE, players >= 1, enemyShip);
-
     /* Game initialization. */
     GameInit(players);
 
     /* Gameplay. */
-    GameLoop(p1);
+    GameLoop(players);
 }
 
 /***************************************************************************//**
@@ -129,13 +129,25 @@ static void GameInitFiles(void)
     GfxSpriteFromFile("DATA\\SPRITES\\ENEMY.TIM", &enemyShip);
 }
 
-static void GameLoop(Player &p1)
+#define ARRAY_SIZE(a)   (sizeof (a) / sizeof (a[0]))
+
+static void GameLoop(const size_t players)
 {
+    Player player_array[2] =
+    {
+        {Player::PLAYER_ONE, players >= Player::PLAYER_ONE, enemyShip},
+        {Player::PLAYER_TWO, players >= Player::PLAYER_TWO, enemyShip}
+    };
+    ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
+
+    Enemy enemy_array[2];
+    ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
+
     for (;;)
     {
         GfxClear();
 
-        p1.handler();
+        pl.Update(&e);
 
         GfxDrawScene();
     }
