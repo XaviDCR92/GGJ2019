@@ -40,7 +40,7 @@ class Player : private Ship
         Pad pad;
         const bool active;
         GsSprite& spr;
-        int calculateAngle(void);
+        int calculateAngle(bool& change);
         void checkFire(void);
 };
 

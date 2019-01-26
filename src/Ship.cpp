@@ -5,10 +5,11 @@ Ship::Ship()
 {
 }
 
-void Ship::Update()
+void Ship::Update() :
+    brake(true)
 {
-    //~ UpdateLocation();
-    //~ UpdateRotation();
+    UpdateLocation();
+    UpdateRotation();
 }
 
 int Ship::GetRenderAngle()
@@ -43,6 +44,16 @@ void Ship::SetDesiredDirection(Fix16 desiredAngle)
 
     mDesiredDirection.X.value = fix16_cos(mAngle);
     mDesiredDirection.Y.value = fix16_sin(mAngle);
+
+    brake = false;
+}
+
+void Ship::Brake(void)
+{
+    mDesiredDirection.X.value = 0;
+    mDesiredDirection.Y.value = 0;
+
+    brake = true;
 }
 
 int Ship::GetAngleToDesired()
@@ -61,9 +72,31 @@ int Ship::GetAngleToDesired()
 
 void Ship::UpdateLocation()
 {
-    mPosition += mCurrentDirection*mSpeed;
+    mCurrentDirection.X.value = mDesiredDirection.X.value;
+    mCurrentDirection.Y.value = mDesiredDirection.Y.value;
+
+    //~ mPosition += mCurrentDirection * mSpeed;
+    const fix16_t x_diff = fix16_mul(mCurrentDirection.X.value, mSpeed.value);
+    const fix16_t y_diff = fix16_mul(mCurrentDirection.Y.value, mSpeed.value);
+    mPosition.X.value += x_diff;
+    mPosition.Y.value += y_diff;
+    printf("x_diff = %d, y_diff = %d\n", x_diff, y_diff);
+
+    printf("mCurrentDirection.X = %d, mCurrentDirection.Y = %d\n",
+            mCurrentDirection.X.value,
+            mCurrentDirection.Y.value);
+
+    printf("mDesiredDirection.X = %d, mDesiredDirection.Y = %d\n",
+            mDesiredDirection.X.value,
+            mDesiredDirection.Y.value);
+
+    printf("mSpeed = %d\n", fix16_to_int(mSpeed.value));
+    printf("mPosition.X = %d, mPosition.Y = %d\n",
+            fix16_to_int(mPosition.X.value),
+            fix16_to_int(mPosition.Y.value));
 }
 
 void Ship::UpdateRotation()
 {
+
 }

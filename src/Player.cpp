@@ -69,7 +69,18 @@ void Player::handler(void)
 
         Ship::Update();
 
-        SetDesiredDirection(calculateAngle());
+        bool any_pressed;
+
+        const int angle = calculateAngle(any_pressed);
+
+        if (any_pressed)
+        {
+            SetDesiredDirection(angle);
+        }
+        else
+        {
+            Brake();
+        }
 
         checkFire();
 
@@ -77,9 +88,10 @@ void Player::handler(void)
     }
 }
 
-int Player::calculateAngle(void)
+int Player::calculateAngle(bool& change)
 {
     int angle = 0;
+    change = true;
 
     if (pad.keyPressed(Pad::UP))
     {
@@ -122,6 +134,11 @@ int Player::calculateAngle(void)
     else if (pad.keyPressed(Pad::RIGHT))
     {
         /* Default case. */
+    }
+    else
+    {
+        printf("Nothing pressed\n");
+        change = false;
     }
 
     return angle;
