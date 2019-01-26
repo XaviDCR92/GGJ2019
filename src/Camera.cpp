@@ -23,3 +23,8 @@ void Camera::Update(const ArrayManager<Player>& players)
 
     mPosition /= Fix16(2);
 }
+
+Vector2 Camera::getPosition(const Vector2& origPos)
+{
+    return Vector2(mPosition - origPos);
+}

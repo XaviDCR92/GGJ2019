@@ -46,8 +46,8 @@
  * Functions definition
  * *************************************/
 
-Player::Player(const playern _player_n, const bool _active, GsSprite& _spr, Camera& camera) :
-    Ship(_spr),
+Player::Player(const playern _player_n, const bool _active, GsSprite& _spr, const Camera& camera) :
+    Ship(_spr, camera),
     pad(_player_n),
     mCamera(camera),
     active(_active)
@@ -70,8 +70,6 @@ void Player::Update(void* const data)
         if (gData)
         {
             GlobalData& dataref = *gData;
-
-            dataref.camera.Update(dataref.Players);
 
             pad.handler();
 

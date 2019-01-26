@@ -147,25 +147,23 @@ static void GameLoop(const size_t players)
         {Player::PLAYER_ONE, players >= Player::PLAYER_ONE, playerSpr, cam},
         {Player::PLAYER_TWO, players >= Player::PLAYER_TWO, playerSpr, cam}
     };
+
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
 
     // Enemies
     Enemy enemy_array[2] =
     {
-        {enemyShip},
-        {enemyShip}
+        {enemyShip, cam},
+        {enemyShip, cam}
     };
     ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
 
     // Planets
     Planet planet_array[2] =
     {
-        {planetSprite},
-        {planetSprite}
+        {planetSprite, cam},
+        {planetSprite, cam}
     };
-    ArrayManager<Planet> planets(ARRAY_SIZE(planet_array), planet_array);
-    data.Planets = &planets;
-
     ArrayManager<Planet> planets(ARRAY_SIZE(planet_array), planet_array);
 
     GlobalData data =
@@ -185,10 +183,7 @@ static void GameLoop(const size_t players)
         // Game logic
         pl.Update(&data);
         e.Update(&data);
-
-
-        Vector2 pos = planets.get(0)->mPosition;
-        printf("planet render pos: %d %d", fix16_to_int(pos.X), fix16_to_int(pos.Y));
+        cam.Update(pl);
 
         // Rendering
         while (GfxIsBusy());

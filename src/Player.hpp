@@ -20,7 +20,6 @@
 #include "Gfx.h"
 #include "Enemy.hpp"
 #include "ArrayManager.hpp"
-#include "Camera.hpp"
 #include <stddef.h>
 #include <stdbool.h>
 
@@ -35,14 +34,14 @@ public:
         PLAYER_TWO
     };
 
-    Player(const playern _player_n, const bool _active, GsSprite& _spr, Camera& camera);
+
+    Player(const playern _player_n, const bool _active, GsSprite& _spr, const Camera& camera);
     bool isActive(void) const;
     void Update(void* const data);
     void render(void);
 
 private:
     Pad pad;
-    Camera& mCamera;
     const bool active;
     int calculateAngle(bool& change);
     void checkFire(void);

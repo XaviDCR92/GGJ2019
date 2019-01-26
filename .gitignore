@@ -57,5 +57,6 @@ Mkfile.old
 dkms.conf
 
 # Intermediate files
-exe/*.*
-obj/*
+exe/
+obj/
+src/cdimg

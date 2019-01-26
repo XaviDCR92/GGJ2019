@@ -2,7 +2,7 @@
 PROJECT = GGJ2019
 
 # Make flags
-MAKEFLAGS := -j$(NUMBER_OF_PROCESSORS)
+#MAKEFLAGS := -j$(NUMBER_OF_PROCESSORS)
 
 # GNU Toolchain definitions
 PREFIX = mipsel-unknown-elf
@@ -18,7 +18,7 @@ DEFINE += -DPSXSDK_DEBUG
 
 # Compiler flags
 LIBS= -lfixmath
-CC_FLAGS = -Wall -c -O3 -Wfatal-errors
+CC_FLAGS = -Wall -c -Os
 
 # Path definitions
 PSXSDK_PATH = /usr/local/psxsdk

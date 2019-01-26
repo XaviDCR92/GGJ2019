@@ -2,9 +2,11 @@
 #include "Gfx.h"
 #include <stdio.h>
 
-SpaceEntity::SpaceEntity(GsSprite& spr) :
+SpaceEntity::SpaceEntity(GsSprite& spr, const Camera& cam) :
     mActive(false),
-    mSpr(spr)
+    mSpr(spr),
+    mCamera(cam),
+    mArrayIdx(0)
 {
 }
 

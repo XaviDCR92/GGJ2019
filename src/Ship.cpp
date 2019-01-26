@@ -1,10 +1,11 @@
 #include "Ship.hpp"
 #include "Gfx.h"
+#include "Camera.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 
-Ship::Ship(GsSprite& spr) :
-    SpaceEntity(spr),
+Ship::Ship(GsSprite& spr, const Camera& cam) :
+    SpaceEntity(spr, cam),
     brake(true)
 {
 }
