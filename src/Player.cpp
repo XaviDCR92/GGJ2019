@@ -53,8 +53,7 @@ Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
     mRotationSpeed = Fix16((uint16_t)3);
     mSpeed = Fix16((int16_t)3);
 
-    mPosition.X = Fix16((int16_t)40);
-    mPosition.Y = Fix16((int16_t)20);
+    mPosition = Vector2(40, 20);
 }
 
 bool Player::isActive(void)
@@ -70,7 +69,18 @@ void Player::handler(void)
 
         Ship::Update();
 
-        SetDesiredDirection(calculateAngle());
+        bool any_pressed;
+
+        const int angle = calculateAngle(any_pressed);
+
+        if (any_pressed)
+        {
+            SetDesiredDirection(angle);
+        }
+        else
+        {
+            Brake();
+        }
 
         checkFire();
 
@@ -78,22 +88,27 @@ void Player::handler(void)
     }
 }
 
-int Player::calculateAngle(void)
+int Player::calculateAngle(bool& change)
 {
     int angle = 0;
+    change = true;
 
     if (pad.keyPressed(Pad::UP))
     {
         if (pad.keyPressed(Pad::LEFT))
         {
             angle = 235;
+            mDesiredDirection = Vector2(-1, -1);
         }
         else if (pad.keyPressed(Pad::RIGHT))
         {
             angle = 315;
+
+            mDesiredDirection = Vector2(1, -1);
         }
         else
         {
+            mDesiredDirection = Vector2(0, -1);
             angle = 270;
         }
     }
@@ -120,6 +135,11 @@ int Player::calculateAngle(void)
     {
         /* Default case. */
     }
+    else
+    {
+        printf("Nothing pressed\n");
+        change = false;
+    }
 
     return angle;
 }
@@ -137,6 +157,7 @@ void Player::render(void)
     spr.x = x;
     spr.y = y;
     spr.rotate = GetRenderAngle();
+    printf("spr.rotate = %d\n", spr.rotate / 4096);
     spr.mx = spr.w >> 1;
     spr.my = spr.h >> 1;
 

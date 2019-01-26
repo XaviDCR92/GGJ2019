@@ -24,24 +24,24 @@
 
 class Player : private Ship
 {
-    public:
-        enum playern
-        {
-            PLAYER_ONE,
-            PLAYER_TWO
-        };
+public:
+    enum playern
+    {
+        PLAYER_ONE,
+        PLAYER_TWO
+    };
 
-        Player(const playern _player_n, const bool _active, GsSprite& _spr);
-        bool isActive(void);
-        void handler(void);
-        void render(void);
+    Player(const playern _player_n, const bool _active, GsSprite& _spr);
+    bool isActive(void);
+    void handler(void);
+    void render(void);
 
-    private:
-        Pad pad;
-        const bool active;
-        GsSprite& spr;
-        int calculateAngle(void);
-        void checkFire(void);
+private:
+    Pad pad;
+    const bool active;
+    GsSprite& spr;
+    int calculateAngle(bool& change);
+    void checkFire(void);
 };
 
 #endif /* PLAYER_H */
