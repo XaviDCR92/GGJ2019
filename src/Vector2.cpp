@@ -18,14 +18,30 @@ Vector2::Vector2(Fix16 initialX, Fix16 initialY) :
 {
 }
 
-Fix16 Vector2::Distance()
+Vector2::Vector2(const Vector2& otherVector)
 {
-    return fix16_sqrt(DistanceSqr());
+    X = otherVector.X;
+    Y = otherVector.Y;
 }
 
-Fix16 Vector2::DistanceSqr()
+Fix16 Vector2::Distance() const
+{
+    return fix16_sqrt(DistanceSqrt());
+}
+
+Fix16 Vector2::DistanceSqrt() const
 {
     return X*X + Y*Y;
+}
+
+Fix16 Vector2::DistanceToPoint(const Vector2& otherPoint) const
+{
+    return (otherPoint - *this).Distance();
+}
+
+Fix16 Vector2::DistanceToPointSqrt(const Vector2& otherPoint) const
+{
+    return Vector2(otherPoint - *this).DistanceSqrt();
 }
 
 Vector2 Vector2::operator+=(const Vector2& rhs)
@@ -35,12 +51,12 @@ Vector2 Vector2::operator+=(const Vector2& rhs)
     return *this;
 }
 
-Vector2 Vector2::operator+(const Vector2& rhs)
+Vector2 Vector2::operator+(const Vector2& rhs) const
 {
     return Vector2(X+rhs.X, Y+rhs.Y);
 }
 
-Vector2 Vector2::operator-(const Vector2& rhs)
+Vector2 Vector2::operator-(const Vector2& rhs) const
 {
     return Vector2(X-rhs.X, Y - rhs.Y);
 }
@@ -52,7 +68,7 @@ Vector2 Vector2::operator-=(const Vector2& rhs)
     return *this;
 }
 
-Vector2 Vector2::operator*(const Fix16& rhs)
+Vector2 Vector2::operator*(const Fix16& rhs) const
 {
     return Vector2(X * rhs, Y * rhs);
 }

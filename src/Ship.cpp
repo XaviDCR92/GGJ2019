@@ -6,7 +6,7 @@ Ship::Ship() :
 {
 }
 
-void Ship::UpdateTransform()
+void Ship::Update()
 {
     UpdateLocation();
     UpdateRotation();
