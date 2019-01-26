@@ -183,6 +183,7 @@ static void GameLoop(const size_t players)
         // Game logic
         pl.Update(&data);
         e.Update(&data);
+        planets.Update(&data);
 
         cam.Update( pl.get(Player::PLAYER_ONE)->getPosition(),
                     pl.get(Player::PLAYER_TWO)->getPosition());
