@@ -37,6 +37,7 @@ public:
                 t = element;
 
                 t.setActive(true);
+                printf("Planet is active: %b", t.isActive());
 
                 printf("Inserted element into offset %d\n", i);
 

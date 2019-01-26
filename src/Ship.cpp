@@ -21,6 +21,7 @@ int Ship::GetRenderAngle() const
     /* Perform degrees to radians conversion. */
     Fix16 intermediate;
 
+    //printf("mCurrentAngle.value = %d\n", mCurrentAngle.value);
     intermediate.value = fix16_smul(mCurrentAngle.value, fix16_from_int(180));
     intermediate.value = fix16_div(intermediate.value, fix16_pi);
 

@@ -15,7 +15,8 @@ public:
     bool isActive(void) const;
     void setActive(const bool state);
     bool IsColliding(const SpaceEntity& otherEntity) const;
-    void render(const Camera& cam);
+
+    virtual void render(const Camera& cam);
     Vector2 getPosition(void) const;
 
 Vector2 mPosition;
