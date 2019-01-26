@@ -140,7 +140,11 @@ static void GameLoop(const size_t players)
     };
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
 
-    Enemy enemy_array[2];
+    Enemy enemy_array[2] =
+    {
+        {enemyShip},
+        {enemyShip}
+    };
     ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
 
     for (;;)

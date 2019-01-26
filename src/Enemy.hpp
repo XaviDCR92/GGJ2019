@@ -6,7 +6,7 @@ class Enemy : public Ship
 {
 public:
 
-    Enemy();
+    Enemy(GsSprite& spr);
     virtual void Update(void* const data) override;
 
 private:

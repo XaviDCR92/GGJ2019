@@ -33,6 +33,8 @@
 
 # Executables
 *.exe
+*.iso
+*.elf
 *.out
 *.app
 *.i*86
@@ -53,3 +55,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Intermediate files
+exe/*.*
+obj/*

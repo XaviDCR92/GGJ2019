@@ -46,13 +46,11 @@
  * *************************************/
 
 Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
+    Ship(_spr),
     pad(_player_n),
-    active(_active),
-    spr(_spr)
+    active(_active)
 {
     mRotationSpeed = Fix16((uint16_t)3);
-    mSpeed = Fix16((int16_t)3);
-
     mPosition = Vector2(40, 20);
 }
 
@@ -160,11 +158,11 @@ void Player::render(void)
 
     Ship::GetRenderPosition(x, y);
 
-    spr.x = x;
-    spr.y = y;
-    spr.rotate = GetRenderAngle();
-    spr.mx = spr.w >> 1;
-    spr.my = spr.h >> 1;
+    mSpr.x = x;
+    mSpr.y = y;
+    mSpr.rotate = GetRenderAngle();
+    mSpr.mx = mSpr.w >> 1;
+    mSpr.my = mSpr.h >> 1;
 
-    GfxSortSprite(&spr);
+    GfxSortSprite(&mSpr);
 }

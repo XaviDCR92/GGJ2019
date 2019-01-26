@@ -63,6 +63,8 @@ EXTERNC void GfxSortSprite(GsSprite* const psSpr);
 EXTERNC bool GfxIsInsideScreenArea(const short x, const short y, const short w, const short h);
 EXTERNC void GfxDrawScene(void);
 EXTERNC void GfxClear(void);
+EXTERNC int GfxToDegrees(const int rotate);
+EXTERNC int GfxFromDegrees(const int degrees);
 
 /** \} */
 

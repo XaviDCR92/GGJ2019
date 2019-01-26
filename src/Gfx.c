@@ -321,6 +321,16 @@ void GfxSortSprite(GsSprite* const psSpr)
     }
 }
 
+int GfxToDegrees(const int rotate)
+{
+    return rotate >> 12;
+}
+
+int GfxFromDegrees(const int degrees)
+{
+    return degrees << 12;
+}
+
 /***************************************************************************//**
 *
 * \brief    Processes big sprites (e.g.: more than 256 px wide) by drawing two

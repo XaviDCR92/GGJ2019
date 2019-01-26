@@ -6,17 +6,17 @@ class Ship : public SpaceEntity
 {
 public:
 
-    Ship();
+    explicit Ship(GsSprite& spr);
     virtual void Update(void* const);
 
-    int GetRenderAngle();
-    void GetRenderPosition(int& X, int& Y);
+    int GetRenderAngle() const;
+    void GetRenderPosition(int& X, int& Y) const;
 
 protected:
 
     // Both take DEGREES
-    void SetDesiredDirection(int desiredAngle);
-    void SetDesiredDirection(Fix16 desiredAngle);
+    void SetDesiredDirection(const int desiredAngle);
+    void SetDesiredDirection(const Fix16 desiredAngle);
     int GetAngleToDesired();
     void Brake(void);
 

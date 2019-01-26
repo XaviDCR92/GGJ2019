@@ -72,3 +72,8 @@ Vector2 Vector2::operator*(const Fix16& rhs) const
 {
     return Vector2(X * rhs, Y * rhs);
 }
+
+bool Vector2::operator!=(const Vector2& rhs) const
+{
+    return (X != rhs.X) || (Y != rhs.Y);
+}

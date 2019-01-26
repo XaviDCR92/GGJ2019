@@ -41,7 +41,6 @@ public:
 private:
     Pad pad;
     const bool active;
-    GsSprite& spr;
     int calculateAngle(bool& change);
     void checkFire(void);
 };
