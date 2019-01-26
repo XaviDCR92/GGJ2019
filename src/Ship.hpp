@@ -17,10 +17,9 @@ protected:
     // Both take DEGREES
     void SetDesiredDirection(const int desiredAngle);
     void SetDesiredDirection(const Fix16 desiredAngle);
-    int GetAngleToDesired();
     void Brake(void);
 
-    Fix16 mAngle;
+    Fix16 mDesiredAngle, mCurrentAngle;
     Fix16 mSpeed, mRotationSpeed;
     Vector2 mDesiredDirection, mCurrentDirection;
 

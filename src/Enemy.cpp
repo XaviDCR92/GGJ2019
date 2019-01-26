@@ -26,13 +26,6 @@ void Enemy::Update(void* const data)
 
 void Enemy::Attack()
 {
-    const int shot_try_angle = 15;
-
-    int angle = GetAngleToDesired();
-    if(angle < 0)
-        angle = -angle;
-    if(angle < shot_try_angle)
-        SpawnBullet();
 }
 
 void Enemy::SpawnBullet()

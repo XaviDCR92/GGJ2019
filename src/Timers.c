@@ -55,22 +55,22 @@ static void ISR_RootCounter2(void);
 ************************************************************************/
 void TimersInit(void)
 {
-    enum
-    {
-        /* Root counter (aka timer) index. */
-        RCNT2_INDEX = 2,
+    //~ enum
+    //~ {
+        //~ /* Root counter (aka timer) index. */
+        //~ RCNT2_INDEX = 2,
 
-        /* Value to be reached by the timer internal counter.
-         * Configured to generate an interrupt every 1 ms. */
-        RCNT2_COMPARE_VALUE = 0x844C
-    };
+        //~ /* Value to be reached by the timer internal counter.
+         //~ * Configured to generate an interrupt every 1 ms. */
+        //~ RCNT2_COMPARE_VALUE = 0x844C
+    //~ };
 
-    /* Configure interrupt address, index and
-     * compare value to root counter 2. */
-    SetRCntHandler(&ISR_RootCounter2, RCNT2_INDEX, RCNT2_COMPARE_VALUE);
+    //~ /* Configure interrupt address, index and
+     //~ * compare value to root counter 2. */
+    //~ SetRCntHandler(&ISR_RootCounter2, RCNT2_INDEX, RCNT2_COMPARE_VALUE);
 
-    /* Enable RCnt2 interrupt. */
-    InterruptsEnableInt(INT_SOURCE_RCNT2);
+    //~ /* Enable RCnt2 interrupt. */
+    //~ InterruptsEnableInt(INT_SOURCE_RCNT2);
 }
 
 /*******************************************************************//**
