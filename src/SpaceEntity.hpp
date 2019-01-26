@@ -13,6 +13,7 @@ public:
     void setActive(const bool state);
     bool IsColliding(const SpaceEntity& otherEntity) const;
     void render(void);
+    Vector2 getPosition(void) const;
 
 protected:
     void GetRenderPosition(short& outX, short &outY) const;

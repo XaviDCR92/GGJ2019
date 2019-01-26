@@ -1,8 +1,10 @@
 #include "Planet.hpp"
 #include "GlobalData.h"
+#include "Gfx.h"
 
-Planet(GsSprite& spr) : public SpaceEntity(spr)
-    : mConsumerAmount(0), mHealth(3000), mConsuptionSpeed(3)
+Planet::Planet(GsSprite& spr) :
+    SpaceEntity(spr),
+    mConsumerAmount(0), mHealth(3000), mConsuptionSpeed(3)
 {
     mPosition = Vector2(200, 200);
 }
@@ -14,23 +16,24 @@ void Planet::Update(void* const data)
 
     if(gData)
     {
-        if(ArrayManager<Player>* players = gData->Players)
+        ArrayManager<Player>& players = gData->Players;
+
+        for (size_t i = 0; i < players.count(); i++)
         {
-            for(int i = 0; i < players.mSize; i++)
+            Player& player = *players.get(i);
+
+            if(player.isActive())
             {
-                if(player.isActive())
+                if(IsColliding(player))
                 {
-                    if(IsColliding(player))
-                    {
-                        mConsumerAmount++;
-                        break;
-                    }
+                    mConsumerAmount++;
+                    break;
                 }
             }
         }
     }
 
-    mHealth -= mConsumerAmount*mConsuptionSPeed;
+    mHealth -= mConsumerAmount*mConsuptionSpeed;
     if(mHealth <= 0)
-        IsActive = false;
+        setActive(false);
 }

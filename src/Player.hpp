@@ -20,10 +20,13 @@
 #include "Gfx.h"
 #include "Enemy.hpp"
 #include "ArrayManager.hpp"
+#include "Camera.hpp"
 #include <stddef.h>
 #include <stdbool.h>
 
-class Player : private Ship
+class Camera;
+
+class Player : public Ship
 {
 public:
     enum playern
@@ -32,14 +35,14 @@ public:
         PLAYER_TWO
     };
 
-    Player(const playern _player_n, const bool _active, GsSprite& _spr);
-    bool isActive(void);
+    Player(const playern _player_n, const bool _active, GsSprite& _spr, Camera& camera);
+    bool isActive(void) const;
     void Update(void* const data);
     void render(void);
-    void print(void);
 
 private:
     Pad pad;
+    Camera& mCamera;
     const bool active;
     int calculateAngle(bool& change);
     void checkFire(void);

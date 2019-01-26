@@ -39,3 +39,8 @@ void SpaceEntity::GetRenderPosition(short& outX, short &outY) const
     outX = fix16_to_int(mPosition.X.value);
     outY = fix16_to_int(mPosition.Y.value);
 }
+
+Vector2 SpaceEntity::getPosition(void) const
+{
+    return mPosition;
+}

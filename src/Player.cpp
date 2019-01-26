@@ -46,50 +46,53 @@
  * Functions definition
  * *************************************/
 
-Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
+Player::Player(const playern _player_n, const bool _active, GsSprite& _spr, Camera& camera) :
     Ship(_spr),
     pad(_player_n),
+    mCamera(camera),
     active(_active)
 {
     mRotationSpeed = Fix16((uint16_t)3);
     mPosition = Vector2(40, 20);
 }
 
-bool Player::isActive(void)
+bool Player::isActive(void) const
 {
     return active;
 }
 
 void Player::Update(void* const data)
 {
-    GlobalData* gData = static_cast<GlobalData*>(data);
-
     if (isActive())
     {
-        pad.handler();
+        GlobalData* gData = static_cast<GlobalData*>(data);
 
-        Ship::Update(data);
-
-        bool any_pressed;
-
-        const int angle = calculateAngle(any_pressed);
-
-        if (any_pressed)
+        if (gData)
         {
-            SetDesiredDirection(angle);
-        }
-        else
-        {
-            Brake();
-        }
+            GlobalData& dataref = *gData;
 
-        checkFire();
+            dataref.camera.Update(dataref.Players);
+
+            pad.handler();
+
+            Ship::Update(data);
+
+            bool any_pressed;
+
+            const int angle = calculateAngle(any_pressed);
+
+            if (any_pressed)
+            {
+                SetDesiredDirection(angle);
+            }
+            else
+            {
+                Brake();
+            }
+
+            checkFire();
+        }
     }
-}
-
-void Player::print(void)
-{
-    printf("I am a Player!\n");
 }
 
 int Player::calculateAngle(bool& change)

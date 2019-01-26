@@ -42,8 +42,6 @@
  *  Local prototypes declaration
  * *************************************/
 
-static void ISR_RootCounter2(void);
-
 /* *************************************
  * Functions definition
  * *************************************/
@@ -71,23 +69,6 @@ void TimersInit(void)
 
     //~ /* Enable RCnt2 interrupt. */
     //~ InterruptsEnableInt(INT_SOURCE_RCNT2);
-}
-
-/*******************************************************************//**
-*
-* \brief    Root counter 2 interrupt handler.
-*
-*           Root counter 2 counter value is increased at a rate of
-*           System clock (33.868800 MHz).
-*
-* \remarks  Executed under interrupt context on timer compare value
-*           reached (according to RCNT2_COMPARE_VALUE).
-*
-* \see      TimersInit() for timer compare value configuration.
-*
-************************************************************************/
-static void ISR_RootCounter2(void)
-{
 }
 
 unsigned int RootCounter1Get(void)
