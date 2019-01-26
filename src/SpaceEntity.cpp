@@ -30,6 +30,8 @@ void SpaceEntity::render(const Camera& camera)
 
     GetRenderPosition(x, y);
 
+    camera.getPosition(x, y);
+
     mSpr.x = x;
     mSpr.y = y;
 

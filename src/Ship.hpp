@@ -12,7 +12,7 @@ public:
     virtual void Update(void* const);
 
     int GetRenderAngle() const;
-    void GetRenderPosition(int& X, int& Y) const;
+    void GetRenderPosition(short& X, short& Y) const;
 
 protected:
 

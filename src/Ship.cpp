@@ -28,7 +28,7 @@ int Ship::GetRenderAngle() const
     return GfxFromDegrees(fix16_to_int(intermediate.value));
 }
 
-void Ship::GetRenderPosition(int& outX, int& outY) const
+void Ship::GetRenderPosition(short& outX, short& outY) const
 {
     outX = fix16_to_int(mPosition.X);
     outY = fix16_to_int(mPosition.Y);

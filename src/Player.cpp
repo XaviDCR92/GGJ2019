@@ -49,7 +49,8 @@
 Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
     Ship(_spr),
     pad(_player_n),
-    active(_active)
+    active(_active),
+    mUnderCover(false)
 {
     mRotationSpeed = Fix16((uint16_t)3);
     mPosition = Vector2(40, 20);
@@ -58,6 +59,11 @@ Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
 bool Player::isActive(void) const
 {
     return active;
+}
+
+bool Player::isUnderCover(void) const
+{
+    return mUnderCover;
 }
 
 void Player::Update(void* const data)
@@ -153,7 +159,7 @@ void Player::checkFire(void)
 
 void Player::render(const Camera& camera)
 {
-    int x, y;
+    short x, y;
 
     Ship::GetRenderPosition(x, y);
 

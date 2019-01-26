@@ -34,12 +34,14 @@ public:
 
     Player(const playern _player_n, const bool _active, GsSprite& _spr);
     bool isActive(void) const;
+    bool isUnderCover(void) const;
     void Update(void* const data);
     void render(const Camera& camera);
 
 private:
     Pad pad;
-    const bool active;
+    bool active;
+    bool mUnderCover;
     int calculateAngle(bool& change);
     void checkFire(void);
 };

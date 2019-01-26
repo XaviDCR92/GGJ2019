@@ -2,7 +2,9 @@
 
 #include "Ship.hpp"
 
-class Camera;
+class Player;
+template<class T>
+class ArrayManager;
 
 class Enemy : public Ship
 {
@@ -11,6 +13,7 @@ public:
     virtual void Update(void* const data) override;
 
 private:
-    void Attack();
+    Player* nearestPlayer(ArrayManager<Player>& playerData) const;
+    void Attack(Player& player);
     void SpawnBullet();
 };

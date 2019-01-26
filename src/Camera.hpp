@@ -8,7 +8,7 @@ public:
     Camera();
     void Update(const Vector2& p1);
     void Update(const Vector2& p1, const Vector2& p2);
-    void getPosition(int& x, int& y) const;
+    void getPosition(short& x, short& y) const;
 
 private:
     Vector2 mPosition;

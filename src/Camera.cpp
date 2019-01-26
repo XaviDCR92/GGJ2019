@@ -40,7 +40,7 @@ void Camera::Update(const Vector2& p1, const Vector2& p2)
     }
 }
 
-void Camera::getPosition(int& x, int& y) const
+void Camera::getPosition(short& x, short& y) const
 {
     x += (X_SCREEN_RESOLUTION >> 1) - fix16_to_int(mPosition.X.value);
     y += (Y_SCREEN_RESOLUTION >> 1) - fix16_to_int(mPosition.Y.value);

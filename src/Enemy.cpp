@@ -6,25 +6,59 @@
 Enemy::Enemy(GsSprite& spr) :
     Ship(spr)
 {
+    mPosition = Vector2(60, 60);
 }
 
 void Enemy::Update(void* const data)
 {
     Ship::Update(data);
 
+    Vector2 minDistance(0x7FFF, 0x7FFF);
     ArrayManager<Player>& playerData = *static_cast<ArrayManager<Player> *>(data);
 
-    // TODO: Change the objective for the actual players position
-    Vector2 objective(200, 200);
-    mDesiredDirection = objective - mPosition;
+    Player* const nearest_player = nearestPlayer(playerData);
 
-    Attack();
-
-    Ship::Update(data);
+    if (nearest_player)
+    {
+        Attack(*nearest_player);
+    }
+    else
+    {
+        // Retreat?
+    }
 }
 
-void Enemy::Attack()
+Player* Enemy::nearestPlayer(ArrayManager<Player>& playerData) const
 {
+    Player* targetPlayer = nullptr;
+
+    for (size_t i = 0; i < playerData.count(); i++)
+    {
+        Player& player = *playerData.get(i);
+
+        if (not player.isUnderCover())
+        {
+            const Vector2 position = player.getPosition();
+            const Vector2 enemyPosition = getPosition();
+            const Fix16 distance = position.DistanceToPoint(enemyPosition);
+
+            if (!targetPlayer
+                    ||
+                (distance < targetPlayer->getPosition().DistanceToPoint(enemyPosition)))
+            {
+                targetPlayer = &player;
+            }
+        }
+    }
+
+    return targetPlayer;
+}
+
+void Enemy::Attack(Player& player)
+{
+    Vector2 dist = player.getPosition() - getPosition();
+
+    SetDesiredDirection(Fix16(fix16_atan2(dist.X, dist.Y)));
 }
 
 void Enemy::SpawnBullet()

@@ -58,7 +58,7 @@ void Planet::render(const Camera& cam)
     GetSpriteOrigin(u, v);
     //mSpr.u = u + offset;
     //mSpr.v = v;
-    mSpr.w = 16; // adder
+    mSpr.w = 64; // adder
     mSpr.h = 64; // adder
 
     SpaceEntity::render(cam);
