@@ -10,7 +10,7 @@ Ship::Ship(GsSprite& spr) :
 {
 }
 
-void Ship::Update(GlobalData& gData)
+void Ship::Update(GlobalData&)
 {
     UpdateLocation();
     UpdateRotation();
@@ -30,8 +30,8 @@ int Ship::GetRenderAngle() const
 
 void Ship::GetRenderPosition(short& outX, short& outY) const
 {
-    outX = fix16_to_int(mPosition.X);
-    outY = fix16_to_int(mPosition.Y);
+    outX = fix16_to_int(mPosition.X) - (mSpr.w >> 1);
+    outY = fix16_to_int(mPosition.Y) - (mSpr.h >> 1);
 }
 
 void Ship::SetDesiredDirection(const int desiredAngle)
@@ -48,23 +48,13 @@ void Ship::SetDesiredDirection(const Fix16 desiredAngle)
     mDesiredDirection.X.value = fix16_cos(mDesiredAngle);
     mDesiredDirection.Y.value = fix16_sin(mDesiredAngle);
 
-    enum
+    if (mSpeed < mMaxSpeed)
     {
-        MAX_SPEED = FIX16_FROM_INT(3)
-    };
-
-    if (mSpeed < MAX_SPEED)
-    {
-        enum
-        {
-            ACCEL_RATE = 0x1000
-        };
-
-        mSpeed += ACCEL_RATE;
+        mSpeed += mAccel;
     }
     else
     {
-        mSpeed = MAX_SPEED;
+        mSpeed = mMaxSpeed;
     }
 
     brake = false;
@@ -81,7 +71,7 @@ void Ship::UpdateLocation()
     {
         enum
         {
-            DECCELERATION = 0xA00
+            DECCELERATION = 0xF00
         };
 
         if (mSpeed > DECCELERATION)
@@ -110,15 +100,15 @@ void Ship::UpdateRotation()
     const fix16_t dist4 = abs(angle - mDesiredAngle.value);
     const fix16_t& dest_angle = dist3 < dist4 ? same2: mDesiredAngle.value;
 
-    if (abs(angle - dest_angle) >= 0x2200)
+    if (abs(angle - dest_angle) >= mTurnRate.value)
     {
         if (angle < dest_angle)
         {
-            mCurrentAngle.value = angle + 0x2200;
+            mCurrentAngle.value = angle + mTurnRate.value;
         }
         else if (angle > dest_angle)
         {
-            mCurrentAngle.value = angle - 0x2200;
+            mCurrentAngle.value = angle - mTurnRate.value;
         }
     }
     else

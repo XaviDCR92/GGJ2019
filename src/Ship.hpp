@@ -9,7 +9,7 @@ class Ship : public SpaceEntity
 public:
 
     Ship(GsSprite& spr);
-    virtual void Update(GlobalData& gData);
+    virtual void Update(GlobalData&);
 
     int GetRenderAngle() const;
     void GetRenderPosition(short& X, short& Y) const;
@@ -25,10 +25,10 @@ protected:
     Fix16 mDesiredAngle, mCurrentAngle;
     Fix16 mSpeed, mRotationSpeed;
     Vector2 mDesiredDirection, mCurrentDirection;
+    Fix16 mMaxSpeed, mAccel, mTurnRate;
 
 private:
     bool brake;
     void UpdateLocation();
     void UpdateRotation();
-
 };

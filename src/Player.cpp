@@ -54,6 +54,9 @@ Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
 {
     mRotationSpeed = Fix16((uint16_t)3);
     mPosition = Vector2(40, 20);
+    mMaxSpeed = FIX16_FROM_INT(3);
+    mAccel = 0x1000;
+    mTurnRate = 0x2200;
 }
 
 bool Player::isActive(void) const

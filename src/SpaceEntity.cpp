@@ -40,8 +40,8 @@ void SpaceEntity::render(const Camera& camera)
 
 void SpaceEntity::GetRenderPosition(short& outX, short &outY) const
 {
-    outX = fix16_to_int(mPosition.X.value);
-    outY = fix16_to_int(mPosition.Y.value);
+    outX = fix16_to_int(mPosition.X.value) - (mSpr.w >> 1);
+    outY = fix16_to_int(mPosition.Y.value) - (mSpr.h >> 1);
 }
 
 Vector2 SpaceEntity::getPosition(void) const
