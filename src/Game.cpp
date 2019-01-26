@@ -166,6 +166,13 @@ static void GameLoop(const size_t players)
     };
     ArrayManager<Planet> planets(ARRAY_SIZE(planet_array), planet_array);
 
+    // Resources
+    CollectableSource resources_array[1] =
+    {
+        {planetSprite, cam}
+    };
+    ArrayManager<CollectableSource> resources(ARRAY_SIZE(resources_array), resources_array);
+
     GlobalData data =
     {
         // ArrayManager<Player>& Players;
@@ -174,6 +181,8 @@ static void GameLoop(const size_t players)
         e,
         // ArrayManager<Planet>& Planets;
         planets,
+        // ArrayManager<CollectableSource>& Resources
+        resources,
         // Camera& cam;
         cam
     };
@@ -204,6 +213,7 @@ static void GameLoop(const size_t players)
         while (GfxIsBusy());
         GfxClear();
         planets.render(cam);
+        resources.render(cam);
         pl.render(cam);
         e.render(cam);
 

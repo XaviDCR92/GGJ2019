@@ -274,7 +274,7 @@ static const uint8_t* IOLoadFileFromSerial(char* const buffer, size_t* const fil
     struct CdFileInfo finfo;
     /* […init…] */
 
-    if(CdFsFindFile(&bundleinfo, "FILE.EXT;1") == false)
+    if (CdFsFindFile(&bundleinfo, "FILE.EXT;1") == false)
     {
         /* [error handling] */
     }
