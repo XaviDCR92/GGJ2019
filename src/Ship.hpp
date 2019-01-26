@@ -7,7 +7,7 @@ class Ship
 public:
 
     Ship();
-    void UpdateTransform();
+    virtual void Update();
 
     int GetRenderAngle();
     void GetRenderPosition(int& X, int& Y);    
