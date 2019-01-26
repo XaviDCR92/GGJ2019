@@ -175,8 +175,8 @@ static void GameLoop(const size_t players)
         e.Update(&data);
 
 
-        Vector2 pos = planets.get(0)->mPosition;
-        printf("planet render pos: %d %d", fix16_to_int(pos.X), fix16_to_int(pos.Y));
+        //Vector2 pos = planets.get(0)->mPosition;
+        //printf("planet render pos: %d %d", fix16_to_int(pos.X), fix16_to_int(pos.Y));
 
         // Rendering
         while (GfxIsBusy());

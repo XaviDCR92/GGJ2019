@@ -5,6 +5,7 @@ Planet::Planet(GsSprite& spr) : SpaceEntity(spr),
     mConsumerAmount(0), mHealth(3000), mConsuptionSpeed(3)
 {
     mPosition = Vector2(40, 20);
+    mActive = true;
 }
 
 void Planet::Update(void* const data)
@@ -36,4 +37,11 @@ void Planet::Update(void* const data)
     mHealth -= mConsumerAmount*mConsuptionSpeed;
     if(mHealth <= 0)
         mActive = false;
+}
+
+void Planet::render()
+{
+
+
+    SpaceEntity::render();
 }

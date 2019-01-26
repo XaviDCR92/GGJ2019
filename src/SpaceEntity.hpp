@@ -12,7 +12,7 @@ public:
     bool isActive(void) const;
     void setActive(const bool state);
     bool IsColliding(const SpaceEntity& otherEntity) const;
-    void render(void);
+    virtual void render(void);
 
 Vector2 mPosition;
 
