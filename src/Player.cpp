@@ -68,7 +68,7 @@ void Player::handler(void)
     {
         pad.handler();
 
-        Ship::UpdateTransform();
+        Ship::Update();
 
         SetDesiredDirection(calculateAngle());
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Vector2.hpp"
+#include "SpaceEntity.hpp"
 
-class Ship
+class Ship : public SpaceEntity
 {
 public:
 
@@ -19,7 +19,6 @@ protected:
     void SetDesiredDirection(Fix16 desiredAngle);
     int GetAngleToDesired();
 
-    Vector2 mPosition;
     Fix16 mAngle;
     Fix16 mSpeed, mRotationSpeed;
     Vector2 mDesiredDirection, mCurrentDirection;

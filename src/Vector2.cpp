@@ -6,13 +6,13 @@ Vector2::Vector2() :
 {
 }
 
-Vector2::Vector2(int initialX, int initialY) :
+Vector2::Vector2(const int& initialX, const int& initialY) :
     X(Fix16((int16_t)initialX)),
     Y(Fix16((int16_t)initialY))
 {
 }
 
-Vector2::Vector2(Fix16 initialX, Fix16 initialY) :
+Vector2::Vector2(const Fix16& initialX, const Fix16& initialY) :
     X(initialX),
     Y(initialY)
 {
