@@ -22,6 +22,7 @@ public:
     Vector2 operator-(const Vector2& rhs) const;
     Vector2 operator-=(const Vector2& rhs);
     Vector2 operator*(const Fix16& rhs) const;
+    Vector2 operator/=(const Fix16& rhs) const;
 
     Fix16 X, Y;
 

@@ -1,9 +1,11 @@
 #include "Planet.hpp"
 #include "GlobalData.h"
+#include "Gfx.h"
 
-Planet::Planet(GsSprite& spr) : SpaceEntity(spr), 
-    mConsumerAmount(0), mHealth(3000), mConsuptionSpeed(3)
+Planet::Planet(GsSprite& spr, const Camera* cam) : SpaceEntity(spr, cam),
+    mConsumerAmount(0), mHealth(3000), mConsuptionSpeed(3), mMaxHealth(4000)
 {
+    setActive(true);
     mPosition = Vector2(40, 20);
     mActive = true;
 }
@@ -15,20 +17,18 @@ void Planet::Update(void* const data)
 
     if(gData)
     {
-        if(ArrayManager<Player>* players = gData->Players)
+        ArrayManager<Player>& players = gData->Players;
+
+        for (size_t i = 0; i < players.count(); i++)
         {
-            for(unsigned i = 0; i < players->count(); i++)
+            Player& player = *players.get(i);
+
+            if(player.isActive())
             {
-                if(Player* player = players->get(i))
+                if(IsColliding(player))
                 {
-                    if(player->isActive())
-                    {
-                        if(IsColliding(*player))
-                        {
-                            mConsumerAmount++;
-                            break;
-                        }
-                    }
+                    mConsumerAmount++;
+                    break;
                 }
             }
         }
@@ -36,12 +36,18 @@ void Planet::Update(void* const data)
 
     mHealth -= mConsumerAmount*mConsuptionSpeed;
     if(mHealth <= 0)
-        mActive = false;
+        setActive(false);
 }
 
 void Planet::render()
 {
-
+    int divisor = mMaxHealth / 6;
+    int idx = mHealth / divisor;
+    const sprite_width = 32;
+    mSpr.u = sprite_width*idx;
+    mSpr.v = 0;
+    mSpre.w = 32;
+    mSpre.h = 32;
 
     SpaceEntity::render();
 }

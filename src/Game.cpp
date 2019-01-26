@@ -19,6 +19,7 @@
 #include "Timers.h"
 #include "ArrayManager.hpp"
 #include "GlobalData.h"
+#include "Camera.hpp"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -71,7 +72,7 @@ void Game(void)
     {
         case MENU_RESULT_GAME_START:
             /* Start gameplay given number of players. */
-            GameStart(2);
+            GameStart(1);
         break;
 
         case MENU_RESULT_UNDEFINED:
@@ -139,34 +140,43 @@ static void GameInitFiles(void)
 
 static void GameLoop(const size_t players)
 {
-    GlobalData data;
-
+    Camera cam;
     // Players
     Player player_array[2] =
     {
-        {Player::PLAYER_ONE, players >= Player::PLAYER_ONE, playerSpr},
-        {Player::PLAYER_TWO, players >= Player::PLAYER_TWO, playerSpr}
+        {Player::PLAYER_ONE, players >= Player::PLAYER_ONE, playerSpr, cam},
+        {Player::PLAYER_TWO, players >= Player::PLAYER_TWO, playerSpr, cam}
     };
+
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
-    data.Players = &pl;
 
     // Enemies
     Enemy enemy_array[2] =
     {
-        {enemyShip},
-        {enemyShip}
+        {enemyShip, cam},
+        {enemyShip, cam}
     };
     ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
-    data.Enemies = &e;
 
     // Planets
-    Planet planet_array[2] = 
+    Planet planet_array[2] =
     {
-        {planetSprite},
-        {planetSprite}
+        {planetSprite, cam},
+        {planetSprite, cam}
     };
     ArrayManager<Planet> planets(ARRAY_SIZE(planet_array), planet_array);
-    data.Planets = &planets;
+
+    GlobalData data =
+    {
+        // ArrayManager<Player>& Players;
+        pl,
+        // ArrayManager<Enemy>& Enemies;
+        e,
+        // ArrayManager<Planet>& Planets;
+        planets,
+        // Camera& cam;
+        cam
+    };
 
     for (;;)
     {
@@ -174,9 +184,7 @@ static void GameLoop(const size_t players)
         pl.Update(&data);
         e.Update(&data);
 
-
-        //Vector2 pos = planets.get(0)->mPosition;
-        //printf("planet render pos: %d %d", fix16_to_int(pos.X), fix16_to_int(pos.Y));
+        cam.Update(pl);
 
         // Rendering
         while (GfxIsBusy());

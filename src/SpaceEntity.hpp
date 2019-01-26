@@ -2,17 +2,21 @@
 
 #include "Vector2.hpp"
 #include "Gfx.h"
+#include "Camera.hpp"
 #include <fixmath.h>
+
+class Camera;
 
 class SpaceEntity
 {
 public:
-    explicit SpaceEntity(GsSprite& spr);
+    SpaceEntity(GsSprite& spr, const Camera& cam);
     virtual void Update(void* const) = 0;
     bool isActive(void) const;
     void setActive(const bool state);
     bool IsColliding(const SpaceEntity& otherEntity) const;
     virtual void render(void);
+    Vector2 getPosition(void) const;
 
 Vector2 mPosition;
 
@@ -21,8 +25,7 @@ protected:
 
     bool mActive;
     Fix16 mRadius;
-    
     GsSprite& mSpr;
-
-    uint16_t mArrayIdx;
+    const Camera& mCamera;
+    size_t mArrayIdx;
 };

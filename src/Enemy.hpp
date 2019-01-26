@@ -2,11 +2,12 @@
 
 #include "Ship.hpp"
 
+class Camera;
+
 class Enemy : public Ship
 {
 public:
-
-    Enemy(GsSprite& spr);
+    Enemy(GsSprite& spr, const Camera& camera);
     virtual void Update(void* const data) override;
 
 private:

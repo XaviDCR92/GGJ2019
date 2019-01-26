@@ -3,8 +3,8 @@
 #include "ArrayManager.hpp"
 #include <stdio.h>
 
-Enemy::Enemy(GsSprite& spr) :
-    Ship(spr)
+Enemy::Enemy(GsSprite& spr, const Camera& camera) :
+    Ship(spr, camera)
 {
     printf("Enemy constructor\n");
 }

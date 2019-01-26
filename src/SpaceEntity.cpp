@@ -2,9 +2,11 @@
 #include "Gfx.h"
 #include <stdio.h>
 
-SpaceEntity::SpaceEntity(GsSprite& spr) :
+SpaceEntity::SpaceEntity(GsSprite& spr, const Camera& cam) :
     mActive(false),
-    mSpr(spr)
+    mSpr(spr),
+    mCamera(cam),
+    mArrayIdx(0)
 {
 }
 
@@ -39,4 +41,9 @@ void SpaceEntity::GetRenderPosition(short& outX, short &outY) const
 {
     outX = fix16_to_int(mPosition.X.value);
     outY = fix16_to_int(mPosition.Y.value);
+}
+
+Vector2 SpaceEntity::getPosition(void) const
+{
+    return mPosition;
 }

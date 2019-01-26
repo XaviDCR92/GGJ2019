@@ -2,11 +2,13 @@
 
 #include "SpaceEntity.hpp"
 
+class Camera;
+
 class Ship : public SpaceEntity
 {
 public:
 
-    explicit Ship(GsSprite& spr);
+    Ship(GsSprite& spr, const Camera& cam);
     virtual void Update(void* const);
 
     int GetRenderAngle() const;
