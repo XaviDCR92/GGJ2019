@@ -335,6 +335,11 @@ int GfxFromDegrees(const int degrees)
     return degrees << 12;
 }
 
+void GfxDrawRectangle(GsRectangle* const rect)
+{
+    GsSortRectangle(rect);
+}
+
 /***************************************************************************//**
 *
 * \brief    Processes big sprites (e.g.: more than 256 px wide) by drawing two

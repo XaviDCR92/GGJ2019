@@ -183,14 +183,14 @@ static void GameLoop(const size_t players)
         // Game logic
         pl.Update(&data);
         e.Update(&data);
-        cam.Update( pl.get(Player::PLAYER_ONE)->getPosition(),
-                    pl.get(Player::PLAYER_TWO)->getPosition());
 
         // Rendering
         while (GfxIsBusy());
         GfxClear();
+        cam.Update( pl.get(Player::PLAYER_ONE)->getPosition(),
+                    pl.get(Player::PLAYER_TWO)->getPosition());
         pl.render(cam);
-        planets.render(cam);
+        //~ planets.render(cam);
         //e.render();
 
         GfxDrawScene();

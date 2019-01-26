@@ -28,7 +28,7 @@ CDROM_ROOT=$(PROJECT_DIR)/src/cdimg
 BIN_TARGET_PATH = $(PROJECT_DIR)/release
 
 #Uncomment this DEFINE below to use Pinballoid together with OpenSend + QPSXSerial toolchain.
-#DEFINE +=  -DSERIAL_INTERFACE
+DEFINE +=  -DSERIAL_INTERFACE
 
 # PSXSDK tools definitions
 # ELF2EXE:

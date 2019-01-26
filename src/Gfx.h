@@ -66,6 +66,7 @@ EXTERNC void GfxClear(void);
 EXTERNC int GfxToDegrees(const int rotate);
 EXTERNC int GfxFromDegrees(const int degrees);
 EXTERNC bool GfxIsBusy(void);
+EXTERNC void GfxDrawRectangle(GsRectangle* const rect);
 
 /** \} */
 
