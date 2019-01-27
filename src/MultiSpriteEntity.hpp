@@ -6,14 +6,19 @@ class CompositeSpriteEntity
 {
 public:
 
-    CompositeSpriteEntity(GsSprite& spr) : mOriginSet(false), mStartU(spr.u), mStartV(spr.v)
+    CompositeSpriteEntity(const GsSprite& spr) :
+        mStartU(spr.u),
+        mStartV(spr.v),
+        mStartTPage(spr.tpage)
     {}
 
-    void SetSpriteOrigin(unsigned char startU, unsigned char startV);
-    void GetSpriteOrigin(unsigned char& startU, unsigned char& startV) const;
+protected:
+
+    void GetSpriteOrigin(unsigned char& startU,
+                         unsigned char& startV,
+                         unsigned char& startTpage) const;
 
 private:
 
-    bool mOriginSet;
-    unsigned char mStartU, mStartV;
+    const unsigned char mStartU, mStartV, mStartTPage;
 };

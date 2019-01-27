@@ -2,17 +2,17 @@
 
 #include "SpaceEntity.hpp"
 #include "MultiSpriteEntity.hpp"
+#include "GlobalData.h"
 
 class CollectableSource : public SpaceEntity, public CompositeSpriteEntity
 {
 public:
-    CollectableSource(GsSprite& spr, const Camera& cam);
-    virtual void Update(void* const data) override;
+    CollectableSource(GsSprite& spr);
+    virtual void Update(GlobalData& gData) override;
     virtual void render(const Camera& cam);
 
 private:
 
-    int mHealth, mConsuptionSpeed, mMaxHealth;
-    const int mSpriteAmount;
-    int mSpriteOffsets[5];
+    unsigned int mHealth, mConsumptionSpeed, mMaxHealth;
+    const int mSpriteAmount, mSpriteOffsets[5];
 };

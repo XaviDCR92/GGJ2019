@@ -14,11 +14,14 @@
 
 #include "Player.hpp"
 #include "Pad.hpp"
+#include "Timers.h"
 #include <assert.h>
 #include <psx.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <limits.h>
 
 /* *************************************
  * Defines
@@ -37,6 +40,8 @@
 /* *************************************
  * Local variables definition
  * *************************************/
+
+static uint64_t timer;
 
 /* *************************************
  *  Local prototypes declaration
@@ -74,6 +79,8 @@ Pad::Pad(const unsigned int _pad_n) :
 
 void Pad::handler(void)
 {
+        timer++;
+
     prev = state;
     pad_read_raw(pad_n, rawData);
     PSX_PollPad_Fast_Ex(rawData, &state);
@@ -86,6 +93,19 @@ psx_pad_types Pad::getType(void)
 
 bool Pad::keyPressed(const enum Pad::Key key)
 {
+    static bool entered;
+
+    if (not entered)
+    {
+        /* Calculate random seed based on timer counter values. */
+        const int rootcounters = RootCounter1Get() ^ RootCounter2Get();
+
+        /* Set random seed based on timer counters. */
+        srand(rootcounters ^ ~timer);
+
+        entered = true;
+    }
+
     return state.buttons & (1 << key);
 }
 

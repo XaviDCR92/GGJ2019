@@ -15,9 +15,13 @@ public:
     virtual void render(const Camera& cam);
 
 private:
-
-    int mConsumerAmount, mHealth, mConsuptionSpeed, mMaxHealth;
+    unsigned int mConsumerAmount, mHealth, mConsumptionSpeed, mMaxHealth;
     const int mSpriteAmount;
-    int mSpriteOffsets[5];
+    const struct
+    {
+        short d;
+        unsigned char u;
+        unsigned char v;
+    } mSpriteOffsets[5];
 
 };

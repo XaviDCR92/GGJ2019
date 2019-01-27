@@ -122,15 +122,7 @@ void Ship::UpdateRotation()
 
 void Ship::render(const Camera& camera)
 {
-    short x, y;
-
-    Ship::GetRenderPosition(x, y);
-
-    camera.getPosition(x, y);
-
-    mSpr.x = x;
-    mSpr.y = y;
     mSpr.rotate = GetRenderAngle();
 
-    GfxSortSprite(&mSpr);
+    SpaceEntity::render(camera);
 }

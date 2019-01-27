@@ -1,6 +1,7 @@
 #include "SpaceEntity.hpp"
 #include "Gfx.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 SpaceEntity::SpaceEntity(GsSprite& spr) :
     mActive(false),
@@ -10,9 +11,19 @@ SpaceEntity::SpaceEntity(GsSprite& spr) :
 {
 }
 
-bool SpaceEntity::IsColliding(const SpaceEntity& otherEntity) const
+bool SpaceEntity::IsColliding(const SpaceEntity& other, const Camera& camera) const
 {
-    return (mPosition - otherEntity.mPosition).Distance() < (mRadius+otherEntity.mRadius);
+    unsigned int x = abs(fix16_to_int(getPosition().X.value) - fix16_to_int(other.getPosition().X.value));
+    x *= x;
+
+    unsigned int y = abs(fix16_to_int(getPosition().Y.value) - fix16_to_int(other.getPosition().Y.value));
+    y *= y;
+
+    const int distance = x + y;
+    int radius = fix16_to_int(mRadius);
+    radius *= radius;
+
+    return distance < radius;
 }
 
 bool SpaceEntity::isActive(void) const

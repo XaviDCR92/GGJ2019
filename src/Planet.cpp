@@ -5,16 +5,24 @@
 #include "Gfx.h"
 
 Planet::Planet(GsSprite& spr, const Camera& cam) : SpaceEntity(spr), CompositeSpriteEntity(spr),
-    mConsumerAmount(0), mHealth(4000), mConsuptionSpeed(5), mMaxHealth(4000), mSpriteAmount(5)
+    mConsumerAmount(0),
+    mHealth(4000),
+    mConsumptionSpeed(5),
+    mMaxHealth(4000),
+    mSpriteAmount(ARRAY_SIZE(mSpriteOffsets)),
+    mSpriteOffsets
+    {
+        // d   u    v
+        {128, 0, 0},
+        {96, 128, 16},
+        {64, 0, 158},
+        {48, 64, 163},
+        {32, 112, 169}
+    }
 {
     setActive(true);
-    mPosition = Vector2(210, 0);
-
-    mSpriteOffsets[0] = 64;
-    mSpriteOffsets[1] = 48;
-    mSpriteOffsets[2] = 32;
-    mSpriteOffsets[3] = 24;
-    mSpriteOffsets[4] = 16;
+    mPosition = Vector2(210, 200);
+    mRadius = fix16_from_int(mSpriteOffsets[0].d >> 1);
 }
 
 void Planet::Update(GlobalData& gData)
@@ -29,38 +37,57 @@ void Planet::Update(GlobalData& gData)
 
         if (player.isActive())
         {
-            if (IsColliding(player))
+            if (IsColliding(player, gData.camera))
             {
-                if (IsColliding(player))
-                {
-                    mConsumerAmount++;
-                }
+                player.setUnderCover(true);
+                mConsumerAmount++;
+            }
+            else
+            {
+                player.setUnderCover(false);
             }
         }
     }
 
-    mHealth -= mConsumerAmount*mConsuptionSpeed;
+    const unsigned int mDiff = mConsumerAmount * mConsumptionSpeed;
+
+    if (mHealth >= mDiff)
+    {
+        mHealth -= mDiff;
+    }
+    else
+    {
+        mHealth = 0;
+    }
+
     if (mHealth <= 0)
         setActive(false);
 }
 
 void Planet::render(const Camera& cam)
 {
-    int divisor = mMaxHealth /mSpriteAmount;
-    int safe_health = mHealth - 1;
-    int idx = safe_health / divisor;
-    idx = mSpriteAmount - idx;
-
-    unsigned char u, v;
-    GetSpriteOrigin(u, v);
-    mSpr.u = u;
-    mSpr.v = v;
-
-    for (int i = 0; i < idx; i++)
+    static unsigned int healthThresholds[ARRAY_SIZE(mSpriteOffsets) - 1] =
     {
-        mSpr.u += mSpriteOffsets[i];
-        mSpr.w = mSpriteOffsets[i];
-        mSpr.h = mSpriteOffsets[i];
+        3000,
+        2000,
+        1000,
+        500,
+    };
+
+    mSpr.w = mSpr.h = mSpriteOffsets[0].d;
+    mSpr.u = mSpriteOffsets[0].u;
+    mSpr.v = mSpriteOffsets[0].v;
+    mRadius = fix16_from_int(mSpriteOffsets[0].d >> 1);
+
+    for (size_t i = 0; i < ARRAY_SIZE(healthThresholds); i++)
+    {
+        if (mHealth < healthThresholds[i])
+        {
+            mSpr.w = mSpr.h = mSpriteOffsets[i + 1].d;
+            mSpr.u = mSpriteOffsets[i + 1].u;
+            mSpr.v = mSpriteOffsets[i + 1].v;
+            mRadius = fix16_from_int(mSpriteOffsets[i + 1].d >> 1);
+        }
     }
 
     SpaceEntity::render(cam);

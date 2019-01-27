@@ -1,19 +1,14 @@
-<<<<<<< HEAD
 #pragma once
 
 class Player;
 class Enemy;
 class Planet;
 class Camera;
+class CollectableSource;
 template<class T>
 class ArrayManager;
-=======
-#include "ArrayManager.hpp"
-#include "Player.hpp"
-#include "Enemy.hpp"
-#include "Planet.hpp"
-#include "CollectableSource.hpp"
->>>>>>> 35d44e679297229ea7c185e1fb3bc291926a4053
+
+#define ARRAY_SIZE(a)   (sizeof (a) / sizeof (a[0]))
 
 struct GlobalData
 {

@@ -2,7 +2,7 @@
 PROJECT = GGJ2019
 
 # Make flags
-#MAKEFLAGS := -j$(NUMBER_OF_PROCESSORS)
+MAKEFLAGS := -j$(NUMBER_OF_PROCESSORS)
 
 # GNU Toolchain definitions
 PREFIX = mipsel-unknown-elf
@@ -85,7 +85,8 @@ SOUND_OBJECTS =
 BMP2TIM = bmp2tim
 SRC_SPRITES_PATH = $(PROJECT_DIR)/src/sprites
 OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
-SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, PLAYER.TIM ENEMY.TIM PLANET.TIM)
+SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, \
+					PLAYER.TIM ENEMY.TIM PLANET.TIM RESOURCE.TIM)
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.
@@ -122,13 +123,13 @@ clean:
 	rm -f $(OBJ_FONTS_PATH)/*.TIM
 
 $(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
-	$(CXX) $< $(DEFINE) $(CC_FLAGS) -MM > $@
+	$(CXX) $< $(DEFINE) $(CC_FLAGS) -std=c++11 -MM > $@
 
 $(OBJ_DIR)/%.d: $(SRC_DIR)/%.c
 	$(CC) $< $(DEFINE) $(CC_FLAGS) -MM > $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
-	$(CXX) $< -o $@ $(DEFINE) $(CC_FLAGS) -MMD
+	$(CXX) $< -o $@ $(DEFINE) $(CC_FLAGS) -std=c++11 -MMD
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(OBJ_DIR)/%.d
 	$(CC) $< -o $@ $(DEFINE) $(CC_FLAGS) -MMD

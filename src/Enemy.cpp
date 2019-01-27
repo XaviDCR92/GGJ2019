@@ -1,14 +1,16 @@
 #include "Enemy.hpp"
 #include "Player.hpp"
+#include "Planet.hpp"
 #include "ArrayManager.hpp"
 #include "GlobalData.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 Enemy::Enemy(GsSprite& spr) :
-    Ship(spr)
+    Ship(spr),
+    mInitPosition(Vector2(10, 200))
 {
-    mPosition = Vector2(10, 200);
+    mPosition = mInitPosition;
     mMaxSpeed = 0x17FFE;
     mAccel = 0x400;
     mTurnRate = 0x1000;
@@ -21,13 +23,21 @@ void Enemy::Update(GlobalData& gData)
 
     if (nearest_player)
     {
-        Attack(*nearest_player);
+        if (!nearestPlanet(gData.Planets))
+        {
+            Attack(*nearest_player);
+        }
+        else
+        {
+            // Retreat
+            printf("Retreat\n");
+            MoveTo(mInitPosition, false);
+        }
     }
     else
     {
-        // Retreat?
-        Brake();
-        printf("No target\n");
+        // Retreat
+        MoveTo(mInitPosition, false);
     }
 
     Ship::Update(gData);
@@ -62,11 +72,41 @@ Player* Enemy::nearestPlayer(ArrayManager<Player>& playerData) const
     return targetPlayer;
 }
 
+Planet* Enemy::nearestPlanet(ArrayManager<Planet>& planets) const
+{
+    Planet* targetPlanet = nullptr;
+
+    for (size_t i = 0; i < planets.count(); i++)
+    {
+        Planet& planet = *planets.get(i);
+
+        if (planet.isActive())
+        {
+            const Vector2 position = planet.getPosition();
+            const Vector2 enemyPosition = getPosition();
+            const Fix16 distance = position.DistanceToPoint(enemyPosition);
+
+            if (distance >= 0)
+            {
+                if (distance < (mRadius << 1))
+                {
+                    targetPlanet = &planet;
+                }
+            }
+        }
+    }
+
+    return targetPlanet;
+}
+
 void Enemy::Attack(Player& player)
 {
-    Vector2 dist = player.getPosition() - getPosition();
+    MoveTo(player.getPosition(), true);
+}
 
-    printf("X = %d, Y = %d\n", fix16_to_int(dist.X.value), fix16_to_int(dist.Y.value));
+void Enemy::MoveTo(const Vector2& position, const bool min)
+{
+    Vector2 dist = position - getPosition();
 
     Fix16 angle(fix16_atan2(dist.Y.value, dist.X.value));
 
@@ -75,8 +115,9 @@ void Enemy::Attack(Player& player)
         angle += fix16_pi << 1;
     }
 
-    if (abs(fix16_to_int(dist.DistanceSqrt().value)) < (96 * 96))
+    if (min && abs(fix16_to_int(dist.DistanceSqrt().value)) < (96 * 96))
     {
+        // Stare at the player without moving.
         mDesiredAngle = angle;
         Brake();
     }
@@ -85,6 +126,7 @@ void Enemy::Attack(Player& player)
         angle *= FIX16_FROM_INT(180);
         angle /= fix16_pi;
 
+        printf("Moving..\n");
         SetDesiredDirection(angle);
     }
 }

@@ -1,62 +1,62 @@
 #include "CollectableSource.hpp"
 #include "GlobalData.h"
+#include "ArrayManager.hpp"
+#include "Player.hpp"
 #include "Gfx.h"
 
-CollectableSource::CollectableSource(GsSprite& spr, const Camera& cam): SpaceEntity(spr), CompositeSpriteEntity(spr),
-    mHealth(4000), mConsuptionSpeed(5), mMaxHealth(4000), mSpriteAmount(5)
+CollectableSource::CollectableSource(GsSprite& spr):
+    SpaceEntity(spr), CompositeSpriteEntity(spr),
+    mHealth(4000),
+    mConsumptionSpeed(5),
+    mMaxHealth(4000),
+    mSpriteAmount(ARRAY_SIZE(mSpriteOffsets)),
+    mSpriteOffsets {64, 48, 32, 24, 16}
 {
     setActive(true);
     mPosition = Vector2(100, 100);
-
-    mSpriteOffsets[0] = 64;
-    mSpriteOffsets[1] = 48;
-    mSpriteOffsets[2] = 32;
-    mSpriteOffsets[3] = 24;
-    mSpriteOffsets[4] = 16;
 }
 
-void CollectableSource::Update(void* const data)
+void CollectableSource::Update(GlobalData& gData)
 {
-    GlobalData* gData = static_cast<GlobalData*>(data);
-    if(gData)
+    ArrayManager<Player>& players = gData.Players;
+
+    for (size_t i = 0; i < players.count(); i++)
     {
-        ArrayManager<Player>& players = gData->Players;
+        Player& player = *players.get(i);
 
-        for (size_t i = 0; i < players.count(); i++)
+        if(player.isActive())
         {
-            Player& player = *players.get(i);
-
-            if(player.isActive())
+            if(IsColliding(player, gData.camera))
             {
-                if(IsColliding(player))
-                {
-                    mHealth -= mConsuptionSpeed;
+                mHealth -= mConsumptionSpeed;
+                printf("mHealth = %d\n", mHealth);
 
-                    // Player needs get resources here
+                // Player needs get resources here
 
-                    if(mHealth <= 0)
-                        break;
-                }
+                if(mHealth <= 0)
+                    break;
             }
         }
     }
 }
 void CollectableSource::render(const Camera& cam)
 {
-    int divisor = mMaxHealth /mSpriteAmount;
-    int safe_health = mHealth - 1;
+    #if 0
+    const int divisor = mMaxHealth /mSpriteAmount;
+    const int safe_health = mHealth - 1;
     int idx = safe_health / divisor;
     idx = mSpriteAmount - idx;
 
-    unsigned char u, v;
-    GetSpriteOrigin(u, v);
-    mSpr.u = u;
-    mSpr.v = v;
+    //~ unsigned char u, v;
+    //~ GetSpriteOrigin(u, v);
+    //~ mSpr.u = u;
+    //~ mSpr.v = v;
     int i;
-    for(i = 0; i < idx; i++)
-        mSpr.u += mSpriteOffsets[i];
-    mSpr.w = mSpriteOffsets[i];
-    mSpr.h = mSpriteOffsets[i];
-    
+    //~ for(i = 0; i < idx; i++)
+        //~ mSpr.u += mSpriteOffsets[i];
+    //~ mSpr.w = 96;
+    //~ mSpr.h = 96;
+    #endif
+
     SpaceEntity::render(cam);
 }

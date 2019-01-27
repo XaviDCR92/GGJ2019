@@ -149,6 +149,11 @@ int Player::calculateAngle(bool& change)
     return angle;
 }
 
+void Player::setUnderCover(const bool state)
+{
+    mUnderCover = state;
+}
+
 void Player::checkFire(void)
 {
 }

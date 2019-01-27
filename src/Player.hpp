@@ -36,6 +36,7 @@ public:
     Player(const playern _player_n, const bool _active, GsSprite& _spr);
     bool isActive(void) const;
     bool isUnderCover(void) const;
+    void setUnderCover(const bool state);
     void Update(GlobalData& gData);
 
 private:

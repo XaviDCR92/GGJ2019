@@ -15,7 +15,7 @@ public:
     virtual void Update(GlobalData& gData) = 0;
     bool isActive(void) const;
     void setActive(const bool state);
-    bool IsColliding(const SpaceEntity& otherEntity) const;
+    bool IsColliding(const SpaceEntity& other, const Camera& camera) const;
 
     virtual void render(const Camera& cam);
     Vector2 getPosition(void) const;
@@ -26,7 +26,7 @@ protected:
     void GetRenderPosition(short& outX, short &outY) const;
 
     bool mActive;
-    Fix16 mRadius;
     GsSprite& mSpr;
     size_t mArrayIdx;
+    Fix16 mRadius;
 };

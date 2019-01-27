@@ -15,6 +15,7 @@
 #include "Gfx.h"
 #include "Menu.h"
 #include "Enemy.hpp"
+#include "CollectableSource.hpp"
 #include "Player.hpp"
 #include "Planet.hpp"
 #include "Timers.h"
@@ -45,6 +46,7 @@
 static GsSprite planetSprite;
 static GsSprite enemyShip;
 static GsSprite playerSpr;
+static GsSprite resourceSprite;
 
 /* *****************************************************************************
  * Local prototypes declaration
@@ -115,12 +117,6 @@ static void GameInit(const size_t players)
 
     if (!initDone)
     {
-        /* Calculate random seed based on timer counter values. */
-        const int seed = RootCounter1Get() ^ RootCounter2Get();
-
-        /* Set random seed based on timer counters. */
-        srand(seed);
-
         /* Load needed files. */
         GameInitFiles();
 
@@ -134,9 +130,8 @@ static void GameInitFiles(void)
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
     GfxSpriteFromFile("DATA\\SPRITES\\ENEMY.TIM", &enemyShip);
     GfxSpriteFromFile("DATA\\SPRITES\\PLANET.TIM", &planetSprite);
+    GfxSpriteFromFile("DATA\\SPRITES\\RESOURCE.TIM", &resourceSprite);
 }
-
-#define ARRAY_SIZE(a)   (sizeof (a) / sizeof (a[0]))
 
 static void GameLoop(const size_t players)
 {
@@ -159,9 +154,8 @@ static void GameLoop(const size_t players)
     ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
 
     // Planets
-    Planet planet_array[2] =
+    Planet planet_array[1] =
     {
-        {planetSprite, cam},
         {planetSprite, cam}
     };
     ArrayManager<Planet> planets(ARRAY_SIZE(planet_array), planet_array);
@@ -169,7 +163,7 @@ static void GameLoop(const size_t players)
     // Resources
     CollectableSource resources_array[1] =
     {
-        {planetSprite, cam}
+        {resourceSprite}
     };
     ArrayManager<CollectableSource> resources(ARRAY_SIZE(resources_array), resources_array);
 
@@ -192,10 +186,14 @@ static void GameLoop(const size_t players)
 
     for (;;)
     {
+        // Rendering
+        while (GfxIsBusy());
+        GfxClear();
         // Game logic
         pl.Update(data);
         e.Update(data);
         planets.Update(data);
+        //~ resources.Update(data);
 
         switch (players)
         {
@@ -209,11 +207,9 @@ static void GameLoop(const size_t players)
             break;
         }
 
-        // Rendering
-        while (GfxIsBusy());
-        GfxClear();
+
         planets.render(cam);
-        resources.render(cam);
+        //~ resources.render(cam);
         pl.render(cam);
         e.render(cam);
 

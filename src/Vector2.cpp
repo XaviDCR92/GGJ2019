@@ -26,7 +26,7 @@ Vector2::Vector2(const Vector2& otherVector)
 
 Fix16 Vector2::Distance() const
 {
-    return fix16_sqrt(DistanceSqrt());
+    return Fix16(fix16_sqrt(DistanceSqrt()));
 }
 
 Fix16 Vector2::DistanceSqrt() const
