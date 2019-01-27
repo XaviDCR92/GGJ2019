@@ -8,16 +8,22 @@ void EarthInit()
 }
 
 Earth::Earth() : 
-    Planet(2000), 
+    Planet(1900), 
     mEarthSpr(earthSprite),
     mHealthPerResource(800)    
 {
 
 }
 
+void Earth::Update(GlobalData& data)
+{
+    Planet::Update(data);
+}
+
 void Earth::render(const Camera& cam)
 {
     short x,y;
+    GetRenderPosition(x,y);
     cam.getPosition(x, y);
     mEarthSpr.x = x;
     mEarthSpr.y = y;

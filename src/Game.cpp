@@ -195,6 +195,7 @@ static void GameLoop(const size_t players)
         e.Update(data);
         planets.Update(data);
         resources.Update(data);
+        earth.Update(data);
 
         switch (players)
         {
