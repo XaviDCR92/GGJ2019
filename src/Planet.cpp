@@ -31,7 +31,6 @@ Planet::Planet() : SpaceEntity(planetSprite), CompositeSpriteEntity(planetSprite
     mFlicker(false)
 {
     setActive(true);
-    mPosition = Vector2(Vector2(rand() % (300 - 10 + 1) + 10, rand() % (300 - 10 + 1) + 10));
     mRadius = fix16_from_int(mSpriteOffsets[0].d >> 1);
     mHealth = mMaxHealth;
 }
@@ -39,6 +38,12 @@ Planet::Planet() : SpaceEntity(planetSprite), CompositeSpriteEntity(planetSprite
 Planet::Planet(const unsigned int health) : Planet()
 {
     mHealth = health;
+}
+
+void Planet::config(const unsigned int health, const Vector2& pos)
+{
+    mHealth = health;
+    mPosition = pos;
 }
 
 void Planet::Update(GlobalData& gData)

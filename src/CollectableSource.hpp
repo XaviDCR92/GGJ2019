@@ -10,6 +10,7 @@ public:
     CollectableSource();
     virtual void Update(GlobalData& gData) override;
     virtual void render(const Camera& cam);
+    void config(const Vector2& pos);
 
 private:
 

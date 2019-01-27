@@ -23,6 +23,7 @@
 #include "ArrayManager.hpp"
 #include "Camera.hpp"
 #include "Earth.hpp"
+#include "Serial.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -69,11 +70,12 @@ void Game(void)
 {
     /* Execute game main menu and determine
      * next steps depending on its result. */
-    switch (Menu())
+     size_t players;
+    switch (Menu(&players))
     {
         case MENU_RESULT_GAME_START:
             /* Start gameplay given number of players. */
-            GameStart(2);
+            GameStart(players);
         break;
 
         case MENU_RESULT_UNDEFINED:
@@ -153,16 +155,43 @@ static void GameLoop(const size_t players)
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
 
     // Enemies
-    Enemy enemy_array[2];
+    Enemy enemy_array[16];
     ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
 
+    for (size_t i = 0; i < e.count(); i++)
+    {
+        Enemy& enemy = *e.get(i);
+
+        enemy.setInitPos(Vector2(   rand() % (1600 - 200 + 1) + 200,
+                                    rand() % (1600 - 200 + 1) + 200));
+    }
+
+    e.setActive(true);
+
     // Planets
-    Planet planet_array[1];
+    Planet planet_array[10];
     ArrayManager<Planet> planets(ARRAY_SIZE(planet_array), planet_array);
 
+    for (size_t i = 0; i < planets.count(); i++)
+    {
+        Planet& planet = *planets.get(i);
+
+        planet.config(rand() % (4000 - 500 + 1) + 500,
+                        Vector2(   rand() % (1600 - 200 + 1) + 200,
+                                rand() % (1600 - 200 + 1) + 200));
+    }
+
     // Resources
-    CollectableSource resources_array[1];
+    CollectableSource resources_array[8];
     ArrayManager<CollectableSource> resources(ARRAY_SIZE(resources_array), resources_array);
+
+    for (size_t i = 0; i < resources.count(); i++)
+    {
+        CollectableSource& resource = *resources.get(i);
+
+        resource.config(Vector2(   rand() % (2000 - 200 + 1) + 200,
+                                rand() % (2000 - 200 + 1) + 200));
+    }
 
     // Blasters (lasers)
     Blaster blaster_array[20];
@@ -186,8 +215,7 @@ static void GameLoop(const size_t players)
         cam
     };
 
-    e.setActive(true);
-
+    while (GfxIsBusy());
     for (;;)
     {
         // Game logic
@@ -204,8 +232,20 @@ static void GameLoop(const size_t players)
             break;
 
             case 2:
+            {
+                int activeplayers = 0;
+
+                for (size_t i = 0; i < pl.count(); i++)
+                {
+                    if (pl.get(i)->isActive())
+                    {
+                        activeplayers++;
+                    }
+                }
+
                 cam.Update( pl.get(Player::PLAYER_ONE)->getPosition(),
                             pl.get(Player::PLAYER_TWO)->getPosition());
+            }
             break;
         }
 

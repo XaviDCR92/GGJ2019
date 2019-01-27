@@ -15,6 +15,7 @@
 #include "Pad.hpp"
 #include "Player.hpp"
 #include "GlobalData.h"
+#include "Earth.hpp"
 #include "Blaster.hpp"
 #include "Gfx.h"
 #include "Sfx.h"
@@ -189,7 +190,14 @@ void Player::Update(GlobalData& gData)
         }
     }
 
+
     mWasUnderCover = isUnderCover();
+
+    if(mResources.mStacks > 0 && isCollidingWith(gData.PlanetEarth))
+    {
+       gData.PlanetEarth.DumpResources(mResources.mStacks);
+        mResources.mStacks = 0;
+    }
 }
 
 bool Player::isInvincible(void)

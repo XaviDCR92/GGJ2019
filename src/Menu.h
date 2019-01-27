@@ -48,7 +48,7 @@ EXTERNC enum tMenuResult
  * Public functions declaration
  * *************************************/
 
-EXTERNC enum tMenuResult Menu(void);
+EXTERNC enum tMenuResult Menu(size_t* players);
 EXTERNC enum tLevel MenuGetSelectedLevel(void);
 EXTERNC size_t MenuGetSelectedPlayers(void);
 

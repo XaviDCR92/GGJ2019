@@ -30,6 +30,11 @@ CollectableSource::CollectableSource():
     mPosition = Vector2(100, 100);
 }
 
+void CollectableSource::config(const Vector2& pos)
+{
+    mPosition = pos;
+}
+
 void CollectableSource::Update(GlobalData& gData)
 {
     ArrayManager<Player>& players = gData.Players;

@@ -81,7 +81,7 @@ OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
 SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, \
 					PLAYER.TIM ENEMY.TIM PLANET.TIM \
 					RESOURCE.TIM BLASTER.TIM PLAYER2.TIM\
-					HISTORY.TIM RES_BAR.TIM HEART.TIM START.TIM)
+					HISTORY.TIM RES_BAR.TIM HEART.TIM START.TIM EARTH.TIM)
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.

@@ -41,7 +41,7 @@ static GsSprite historySpr, menuSpr;
  * *************************************/
 
 static bool MenuInit(void);
-static enum tMenuResult MenuLoop(void);
+static enum tMenuResult MenuLoop(size_t* players);
 
 /* *************************************
  * Functions definition
@@ -70,11 +70,12 @@ static bool MenuInit(void)
 * \brief    Game logic entry point.
 *
 ************************************************************************/
-enum tMenuResult Menu(void)
+enum tMenuResult Menu(size_t* players)
 {
+
     if (MenuInit())
     {
-        return MenuLoop();
+        return MenuLoop(players);
     }
     else
     {
@@ -87,7 +88,7 @@ enum tMenuResult Menu(void)
     return MENU_RESULT_GAME_START;
 }
 
-static enum tMenuResult MenuLoop(void)
+static enum tMenuResult MenuLoop(size_t* players)
 {
     {
         unsigned char lum = 0;
@@ -171,6 +172,17 @@ static enum tMenuResult MenuLoop(void)
 
                 GfxDrawScene();
             } while (lum);
+        }
+
+        if ((pads[0] &= PAD_SQUARE)
+                ||
+            (pads[1] &= PAD_SQUARE))
+        {
+            *players = 2;
+        }
+        else
+        {
+            *players = 1;
         }
     }
 

@@ -13,6 +13,7 @@ public:
     Enemy();
     virtual void Update(GlobalData& gData) override;
     virtual void injured(void) override;
+    void setInitPos(const Vector2& vec);
 
 private:
     Player* nearestPlayer(ArrayManager<Player>& playerData);
@@ -22,6 +23,7 @@ private:
     void SpawnBullet(ArrayManager<Blaster>& blasters);
     void MoveTo(const Vector2& position, const bool min);
     uint32_t mFireCounter;
+    Vector2 mInitPosition;
 };
 
 void EnemyInit(void);

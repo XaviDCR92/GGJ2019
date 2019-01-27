@@ -13,6 +13,7 @@ public:
     Planet(const unsigned int health);
     virtual void Update(GlobalData& data) override;
     virtual void render(const Camera& cam);
+    void config(const unsigned int health, const Vector2& pos);
 
 protected:
     const unsigned int mMaxHealth, mConsumptionSpeed;
@@ -28,7 +29,7 @@ private:
         unsigned char v;
     } mSpriteOffsets[5];
     bool mFlicker;
-    
+
 
 };
 

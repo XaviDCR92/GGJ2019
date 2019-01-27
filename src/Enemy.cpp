@@ -18,10 +18,8 @@ void EnemyInit(void)
 
 Enemy::Enemy() :
     Ship(enemyShip),
-    mInitPosition(0),
     mFireCounter(0)
 {
-    mPosition = mInitPosition;
     mMaxSpeed = 0x17FFE;
     mAccel = 0x400;
     mTurnRate = 0x1000;
@@ -30,6 +28,7 @@ Enemy::Enemy() :
 
 void Enemy::setInitPos(const Vector2& vec)
 {
+    mInitPosition = vec;
     mPosition = vec;
 }
 
