@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Camera.hpp"
+#include "SpaceEntity.hpp"
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -60,6 +61,32 @@ public:
             if (t.isActive())
             {
                 t.Update(data);
+            }
+        }
+    }
+
+    void collision(SpaceEntity& other)
+    {
+        if (other.isActive())
+        {
+            for (size_t i = 0; i < count(); i++)
+            {
+                T* const entptr = dynamic_cast<T*>(get(i));
+
+                if (entptr)
+                {
+                    T& entity = *entptr;
+
+                    if (entity.isActive())
+                    {
+                        if (other.isCollidingWith(entity))
+                        {
+                            entity.injured();
+                            other.setActive(false);
+                            break;
+                        }
+                    }
+                }
             }
         }
     }

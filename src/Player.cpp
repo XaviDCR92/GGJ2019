@@ -25,7 +25,8 @@
 
 enum
 {
-    INVINCIBILITY_TIME = 50 * 2
+    INVINCIBILITY_TIME = 50 * 2,
+    WAIT_TIME = 70
 };
 
 /* *************************************
@@ -48,13 +49,13 @@ enum
  * Functions definition
  * *************************************/
 
-Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
+Player::Player(const playern _player_n, const bool _active, GsSprite& _spr, GsSprite& _sprRes) :
     Ship(_spr),
     pad(_player_n),
+    mResources(_sprRes),
     active(_active),
     mUnderCover(false),
-    mCollected(0),
-    mWaitTime(0),
+    mWaitTime(WAIT_TIME),
     mInvincibleTime(INVINCIBILITY_TIME),
     mFlicker(false)
 {
@@ -79,10 +80,10 @@ bool Player::isUnderCover(void) const
 void Player::setCollected(const bool state)
 {
     if(state)
-        mCollected++;
-    else if(mCollected > 0)
-        mCollected--;
-    
+        mResources.mStacks++;
+    else if(mResources.mStacks > 0)
+        mResources.mStacks--;
+
 }
 
 void Player::Update(GlobalData& gData)
@@ -105,11 +106,6 @@ void Player::Update(GlobalData& gData)
         {
             Brake();
         }
-
-        enum
-        {
-            WAIT_TIME = 50 * 3
-        };
 
         if (mWaitTime < USHRT_MAX)
         {
@@ -142,8 +138,16 @@ void Player::injured(void)
     }
     else
     {
+        printf("You have died!\n");
         setActive(false);
     }
+}
+
+bool Player::isFull()
+{
+    if(mResources.mStacks >= mResources.mMaxStacks)
+        return true;
+    return false;
 }
 
 void Player::render(const Camera& camera)
@@ -163,6 +167,10 @@ void Player::render(const Camera& camera)
         {
             Ship::render(camera);
         }
+
+        short x,y;
+        GetRenderPosition(x,y);
+        mResources.render(camera, x, y);
     }
 }
 

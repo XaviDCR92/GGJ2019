@@ -6,6 +6,7 @@
 #include "Interrupts.h"
 #include <psxsio.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 /* *************************************
  *  Defines

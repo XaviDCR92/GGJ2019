@@ -53,7 +53,7 @@ OBJECTS = $(addprefix $(OBJ_DIR)/,	\
 			Menu.o Game.o Threads.o FileData.o Player.o 	\
 			Pad.o Serial.o Planet.o Camera.o Blaster.o \
 			Ship.o Player.o Vector2.o Enemy.o SpaceEntity.o ArrayManager.o \
-			MultiSpriteEntity.o Planet.o CollectableSource.o)
+			MultiSpriteEntity.o Planet.o CollectableSource.o ResourceBar.o)
 
 # Source dependencies:
 DEPS = $(OBJECTS:.o=.d)
@@ -86,7 +86,9 @@ BMP2TIM = bmp2tim
 SRC_SPRITES_PATH = $(PROJECT_DIR)/src/sprites
 OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
 SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, \
-					PLAYER.TIM ENEMY.TIM PLANET.TIM RESOURCE.TIM BLASTER.TIM)
+					PLAYER.TIM ENEMY.TIM PLANET.TIM \
+					RESOURCE.TIM BLASTER.TIM PLAYER2.TIM\
+					HISTORY0.TIM RES_BAR.TIM)
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.

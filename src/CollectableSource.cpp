@@ -41,7 +41,7 @@ void CollectableSource::Update(GlobalData& gData)
 
         if(player.isActive())
         {
-            if(isCollidingWith(player))
+            if(isCollidingWith(player) && !player.isFull())
             {
                 being_gathered = true;
                 if(mCurrentCollectionCounter > 0)

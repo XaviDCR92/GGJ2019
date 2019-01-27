@@ -39,7 +39,7 @@
 * \see      GfxSortSprite().
 *
 ************************************************************************/
-#define MAX_SIZE_FOR_GSSPRITE   ((short)0xFF)
+#define MAX_SIZE_FOR_GSSPRITE   ((short)256)
 
 /* *****************************************************************************
  * Types definition

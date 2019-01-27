@@ -33,6 +33,26 @@ void Blaster::render(const Camera& camera)
 {
     mSpr.rotate = GetRenderAngle();
 
+    switch (mShooter)
+    {
+        case PLAYER:
+            mSpr.r = 0;
+            mSpr.g = NORMAL_LUMINANCE;
+            mSpr.b = 0;
+            break;
+
+        case ENEMY:
+            mSpr.r = NORMAL_LUMINANCE;
+            mSpr.g = 0;
+            mSpr.b = 0;
+            break;
+
+        case UNDEFINED:
+            // Fall through.
+        default:
+        break;
+    }
+
     SpaceEntity::render(camera);
 
     if (!GfxIsSpriteInsideScreenArea(&mSpr))
@@ -48,12 +68,11 @@ void Blaster::Update(GlobalData& data)
     switch (mShooter)
     {
         case Shooter::ENEMY:
-            PlayerCollision(data.Players);
-            PlanetCollision(data.Planets);
+            data.Players.collision(*this);
         break;
 
         case Shooter::PLAYER:
-            EnemyCollision(data.Enemies);
+            data.Enemies.collision(*this);
         break;
 
         case Shooter::UNDEFINED:
@@ -63,69 +82,13 @@ void Blaster::Update(GlobalData& data)
     }
 }
 
-void Blaster::PlayerCollision(ArrayManager<Player>& players)
-{
-    if (isActive())
-    {
-        for (size_t i = 0; i < players.count(); i++)
-        {
-            Player& player = *players.get(i);
-
-            if (isCollidingWith(player))
-            {
-                if (!player.isInvincible())
-                {
-                    player.injured();
-                    setActive(false);
-                    break;
-                }
-            }
-        }
-    }
-}
-
-void Blaster::PlanetCollision(ArrayManager<Planet>& planets)
-{
-    if (isActive())
-    {
-        for (size_t i = 0; i < planets.count(); i++)
-        {
-            Planet& planet = *planets.get(i);
-
-            if (isCollidingWith(planet))
-            {
-                setActive(false);
-                break;
-            }
-        }
-    }
-}
-
-void Blaster::EnemyCollision(ArrayManager<Enemy>& enemies)
-{
-    if (isActive())
-    {
-        for (size_t i = 0; i < enemies.count(); i++)
-        {
-            Enemy& enemy = *enemies.get(i);
-
-            if (isCollidingWith(enemy))
-            {
-                printf("Enemy got injured!\n");
-                setActive(false);
-                break;
-            }
-        }
-    }
-}
-
 void Blaster::UpdateLocation(void)
 {
     if (isActive())
     {
         enum
         {
-            SPEED = 0x47FFB
+            SPEED = 0x50FB0
         };
 
         mPosition += mCurrentDirection * SPEED;

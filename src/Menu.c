@@ -16,6 +16,7 @@
 #include "Gfx.h"
 #include <psxgpu.h>
 #include <stdio.h>
+#include <psx.h>
 
 /* *************************************
  * Defines
@@ -32,6 +33,8 @@
 /* *************************************
  * Local variables definition
  * *************************************/
+
+static GsSprite historySpr, menuSpr;
 
 /* *************************************
  *  Local prototypes declaration
@@ -51,7 +54,7 @@ static enum tMenuResult MenuLoop(void);
 ************************************************************************/
 static bool MenuInit(void)
 {
-    return true;
+    return GfxSpriteFromFile("\\DATA\\SPRITES\\HISTORY0.TIM", &historySpr);
 }
 
 /*******************************************************************//**
@@ -78,6 +81,33 @@ enum tMenuResult Menu(void)
 
 static enum tMenuResult MenuLoop(void)
 {
+    unsigned char lum = 0;
+    unsigned short pads[2] = {0};
+
+    //~ do
+    //~ {
+        //~ if (lum < NORMAL_LUMINANCE)
+        //~ {
+            //~ lum++;
+        //~ }
+        //~ else
+        //~ {
+            //~ PSX_ReadPad(&pads[0], &pads[1]);
+        //~ }
+
+        //~ historySpr.x = 0;
+        //~ historySpr.w = X_SCREEN_RESOLUTION;
+        //~ historySpr.h = Y_SCREEN_RESOLUTION;
+
+        //~ historySpr.r =
+        //~ historySpr.g =
+        //~ historySpr.b = lum;
+
+        //~ GfxSortSprite(&historySpr);
+
+        //~ GfxDrawScene();
+    //~ } while (!pads[0] && !pads[1]);
+
     return MENU_RESULT_GAME_START;
 }
 

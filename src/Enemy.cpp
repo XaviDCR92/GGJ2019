@@ -25,6 +25,7 @@ Enemy::Enemy() :
     mMaxSpeed = 0x17FFE;
     mAccel = 0x400;
     mTurnRate = 0x1000;
+    mHealth = 3;
 }
 
 void Enemy::Update(GlobalData& gData)
@@ -90,7 +91,7 @@ Enemy* Enemy::nearestEnemy(ArrayManager<Enemy>& enemies) const
     return targetEnemy;
 }
 
-Player* Enemy::nearestPlayer(ArrayManager<Player>& playerData) const
+Player* Enemy::nearestPlayer(ArrayManager<Player>& playerData)
 {
     Player* targetPlayer = nullptr;
 
@@ -108,11 +109,19 @@ Player* Enemy::nearestPlayer(ArrayManager<Player>& playerData) const
 
                 if (distance >= 0)
                 {
-                    if (!targetPlayer
-                            ||
-                        (distance < targetPlayer->getPosition().DistanceToPoint(enemyPosition)))
+                    if (not isCollidingWith(player))
                     {
-                        targetPlayer = &player;
+                        if (!targetPlayer
+                                ||
+                            (distance < targetPlayer->getPosition().DistanceToPoint(enemyPosition)))
+                        {
+                            targetPlayer = &player;
+                        }
+                    }
+                    else
+                    {
+                        player.injured();
+                        setActive(false);
                     }
                 }
             }
@@ -155,8 +164,8 @@ void Enemy::Attack(Player& player, GlobalData& gData)
 
     enum
     {
-        MIN_TIMER = 200,
-        MAX_TIMER = 400
+        MIN_TIMER = 100,
+        MAX_TIMER = 200
     };
 
     const unsigned int random = rand() % (MAX_TIMER - MIN_TIMER + 1) + MIN_TIMER;
@@ -197,4 +206,8 @@ void Enemy::MoveTo(const Vector2& position, const bool min)
 void Enemy::SpawnBullet(ArrayManager<Blaster>& blasters)
 {
     blasters.AddElement(Blaster(mPosition, mCurrentAngle, Blaster::Shooter::ENEMY));
+}
+
+void Enemy::injured(void)
+{
 }

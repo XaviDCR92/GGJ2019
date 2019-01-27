@@ -12,9 +12,10 @@ class Enemy : public Ship
 public:
     Enemy();
     virtual void Update(GlobalData& gData) override;
+    virtual void injured(void) override;
 
 private:
-    Player* nearestPlayer(ArrayManager<Player>& playerData) const;
+    Player* nearestPlayer(ArrayManager<Player>& playerData);
     Planet* nearestPlanet(ArrayManager<Planet>& planets) const;
     Enemy* nearestEnemy(ArrayManager<Enemy>& enemies) const;
     void Attack(Player& player, GlobalData& gData);
