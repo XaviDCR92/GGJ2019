@@ -54,6 +54,14 @@ static enum tMenuResult MenuLoop(void);
 ************************************************************************/
 static bool MenuInit(void)
 {
+    static bool init;
+
+    if (!init)
+    {
+        init = true;
+        GfxSpriteFromFile("\\DATA\\SPRITES\\START.TIM", &menuSpr);
+    }
+
     return GfxSpriteFromFile("\\DATA\\SPRITES\\HISTORY0.TIM", &historySpr);
 }
 
@@ -81,33 +89,81 @@ enum tMenuResult Menu(void)
 
 static enum tMenuResult MenuLoop(void)
 {
-    unsigned char lum = 0;
-    unsigned short pads[2] = {0};
+#if 0
+    {
+        unsigned char lum = 0;
+        unsigned short pads[2] = {0};
 
-    //~ do
-    //~ {
-        //~ if (lum < NORMAL_LUMINANCE)
-        //~ {
-            //~ lum++;
-        //~ }
-        //~ else
-        //~ {
-            //~ PSX_ReadPad(&pads[0], &pads[1]);
-        //~ }
+        do
+        {
+            if (lum < NORMAL_LUMINANCE)
+            {
+                lum++;
+            }
+            else
+            {
+                PSX_ReadPad(&pads[0], &pads[1]);
+            }
 
-        //~ historySpr.x = 0;
-        //~ historySpr.w = X_SCREEN_RESOLUTION;
-        //~ historySpr.h = Y_SCREEN_RESOLUTION;
+            menuSpr.x = 0;
+            menuSpr.w = X_SCREEN_RESOLUTION;
+            menuSpr.h = Y_SCREEN_RESOLUTION;
 
-        //~ historySpr.r =
-        //~ historySpr.g =
-        //~ historySpr.b = lum;
+            menuSpr.r =
+            menuSpr.g =
+            menuSpr.b = lum;
 
-        //~ GfxSortSprite(&historySpr);
+            GfxSortSprite(&menuSpr);
 
-        //~ GfxDrawScene();
-    //~ } while (!pads[0] && !pads[1]);
+            GfxDrawScene();
+        } while (!pads[0] && !pads[1]);
+    }
+    {
+        unsigned char lum = 0;
+        unsigned short pads[2] = {0};
+        static bool init;
 
+        if (!init)
+        {
+            bool exit = false;
+            init = true;
+
+            do
+            {
+                if (exit)
+                {
+                    if (lum)
+                        lum--;
+                }
+                else if (lum < NORMAL_LUMINANCE)
+                {
+                    lum++;
+                }
+                else
+                {
+                    PSX_ReadPad(&pads[0], &pads[1]);
+
+                    if (pads[0] || pads[1])
+                    {
+                        exit = true;
+                    }
+                }
+
+                historySpr.x = 0;
+                historySpr.w = X_SCREEN_RESOLUTION;
+                historySpr.h = Y_SCREEN_RESOLUTION;
+
+                historySpr.r =
+                historySpr.g =
+                historySpr.b = lum;
+
+                GfxSortSprite(&historySpr);
+
+                GfxDrawScene();
+            } while (lum);
+        }
+    }
+#endif
     return MENU_RESULT_GAME_START;
 }
 

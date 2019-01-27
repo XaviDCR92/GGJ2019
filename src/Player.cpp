@@ -17,6 +17,7 @@
 #include "GlobalData.h"
 #include "Blaster.hpp"
 #include <limits.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 /* *************************************
@@ -26,7 +27,7 @@
 enum
 {
     INVINCIBILITY_TIME = 50 * 2,
-    WAIT_TIME = 70
+    WAIT_TIME = 30
 };
 
 /* *************************************
@@ -41,6 +42,8 @@ enum
  * Local variables definition
  * *************************************/
 
+static GsSprite heartSpr;
+
 /* *************************************
  *  Local prototypes declaration
  * *************************************/
@@ -49,27 +52,30 @@ enum
  * Functions definition
  * *************************************/
 
+void PlayerInit(void)
+{
+    GfxSpriteFromFile("DATA\\SPRITES\\HEART.TIM", &heartSpr);
+}
+
 Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
     Ship(_spr),
+    mId(_player_n),
+    mMaxHealth(5),
     pad(_player_n),
-    active(_active),
     mUnderCover(false),
     mCollected(false),
     mWaitTime(WAIT_TIME),
     mInvincibleTime(INVINCIBILITY_TIME),
+    mUnderCoverTime(0),
     mFlicker(false)
 {
     mRotationSpeed = Fix16((uint16_t)3);
-    mPosition = Vector2(40, 20);
+    mPosition = Vector2(rand() % (100 + 1) + 100, rand() % (100 + 1) + 100);
     mMaxSpeed = FIX16_FROM_INT(3);
     mAccel = 0x1000;
     mTurnRate = 0x2200;
-    mHealth = 5;
-}
-
-bool Player::isActive(void) const
-{
-    return active;
+    mHealth = mMaxHealth;
+    mActive = _active;
 }
 
 bool Player::isUnderCover(void) const
@@ -88,34 +94,58 @@ void Player::setCollected(const bool state)
 
 void Player::Update(GlobalData& gData)
 {
-    if (isActive())
+    pad.handler();
+
+    Ship::Update(gData);
+
+    bool any_pressed;
+
+    const int angle = calculateAngle(any_pressed);
+
+    if (any_pressed)
     {
-        pad.handler();
+        SetDesiredDirection(angle);
+    }
+    else
+    {
+        Brake();
+    }
 
-        Ship::Update(gData);
+    if (mWaitTime < USHRT_MAX)
+    {
+        mWaitTime++;
+    }
 
-        bool any_pressed;
+    if (mWaitTime >= WAIT_TIME)
+    {
+        checkFire(gData.Blasters);
+    }
 
-        const int angle = calculateAngle(any_pressed);
-
-        if (any_pressed)
+    if (isUnderCover())
+    {
+        enum
         {
-            SetDesiredDirection(angle);
-        }
-        else
+            HEALTH_RESTORE_TIME = 60
+        };
+
+        if (mUnderCoverTime < USHRT_MAX)
         {
-            Brake();
+            mUnderCoverTime++;
         }
 
-        if (mWaitTime < USHRT_MAX)
+        if (mUnderCoverTime > HEALTH_RESTORE_TIME)
         {
-            mWaitTime++;
-        }
+            if (mHealth < mMaxHealth)
+            {
+                mHealth++;
+            }
 
-        if (mWaitTime >= WAIT_TIME)
-        {
-            checkFire(gData.Blasters);
+            mUnderCoverTime = 0;
         }
+    }
+    else
+    {
+        mUnderCoverTime = 0;
     }
 }
 
@@ -133,33 +163,56 @@ void Player::injured(void)
 
     if (mHealth)
     {
-        printf("Lives remaining: %d\n", mHealth);
         mInvincibleTime = INVINCIBILITY_TIME;
     }
     else
     {
-        printf("You have died!\n");
         setActive(false);
     }
 }
 
 void Player::render(const Camera& camera)
 {
-    if (isActive())
+    if (mInvincibleTime)
     {
-        if (mInvincibleTime)
-        {
-            if (mFlicker ^= true)
-            {
-                Ship::render(camera);
-            }
-
-            mInvincibleTime--;
-        }
-        else
+        if (mFlicker ^= true)
         {
             Ship::render(camera);
         }
+
+        mInvincibleTime--;
+    }
+    else
+    {
+        Ship::render(camera);
+    }
+
+    heartSpr.y = 16;
+
+    switch (mId)
+    {
+        case playern::PLAYER_ONE:
+        {
+            for (unsigned int h = 0; h < mHealth; h++)
+            {
+                heartSpr.x = 16 + ((heartSpr.w + 2) * h);
+                GfxSortSprite(&heartSpr);
+            }
+        }
+        break;
+
+        case playern::PLAYER_TWO:
+        {
+            for (unsigned int h = 0; h < mHealth; h++)
+            {
+                heartSpr.x = 256 + (heartSpr.w * h);
+                GfxSortSprite(&heartSpr);
+            }
+        }
+        break;
+
+        default:
+        break;
     }
 }
 
@@ -172,7 +225,7 @@ int Player::calculateAngle(bool& change)
     {
         if (pad.keyPressed(Pad::LEFT))
         {
-            angle = 235;
+            angle = 225;
             mDesiredDirection = Vector2(-1, -1);
         }
         else if (pad.keyPressed(Pad::RIGHT))
@@ -228,7 +281,9 @@ void Player::checkFire(ArrayManager<Blaster>& blasters)
     if (pad.singlePress(Pad::CROSS))
     {
         // Fire!
-        blasters.AddElement(Blaster(mPosition, mCurrentAngle, Blaster::Shooter::PLAYER));
+        Vector2 pos(mPosition.X + (mRadius * mCurrentAngle.cos()),
+                    mPosition.Y + (mRadius * mCurrentAngle.sin()));
+        blasters.AddElement(Blaster(pos, mCurrentAngle, Blaster::Shooter::PLAYER));
 
         mWaitTime = 0;
     }

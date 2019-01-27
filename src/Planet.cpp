@@ -39,7 +39,6 @@ Planet::Planet() : SpaceEntity(planetSprite), CompositeSpriteEntity(planetSprite
 Planet::Planet(const unsigned int health) : Planet()
 {
     mHealth = health;
-    printf("Active ? %s\n", mActive ? "true" : "false");
 }
 
 void Planet::Update(GlobalData& gData)

@@ -53,7 +53,7 @@ OBJECTS = $(addprefix $(OBJ_DIR)/,	\
 			Menu.o Game.o Threads.o FileData.o Player.o 	\
 			Pad.o Serial.o Planet.o Camera.o Blaster.o \
 			Ship.o Player.o Vector2.o Enemy.o SpaceEntity.o ArrayManager.o \
-			MultiSpriteEntity.o Planet.o CollectableSource.o)
+			MultiSpriteEntity.o Planet.o CollectableSource.o Sfx.o)
 
 # Source dependencies:
 DEPS = $(OBJECTS:.o=.d)
@@ -68,18 +68,9 @@ FFMPEG_FLAGS = -f s16le -acodec pcm_s16le
 DOXYFILE_PATH = $(PROJECT_DIR)/Documentation/Doxygen
 
 # VAG objects:
-SOURCE_SOUNDS_FOLDER = ../Sounds
-OBJ_SOUNDS_DIR = ../src/cdimg/DATA/SOUNDS
-#SOUND_OBJECTS = $(addprefix $(OBJ_SOUNDS_DIR)/,	BELL.VAG		\
-#												ACCEPT.VAG		\
-#												TRAYCL.VAG		\
-#												SPINDISK.VAG	\
-#												BEEP.VAG		\
-#												TAKEOFF1.VAG	\
-#												RCTM1F1.VAG		\
-#												RCPW1A1.VAG		\
-#												RCPM1A1.VAG		)
-SOUND_OBJECTS =
+SOURCE_SOUNDS_FOLDER = $(PROJECT_DIR)/src/sounds
+OBJ_SOUNDS_DIR = $(CDROM_ROOT)/DATA/SOUNDS
+SOUND_OBJECTS = $(addprefix $(OBJ_SOUNDS_DIR)/,	BLASTER.VAG)
 
 # Sprite objects:
 BMP2TIM = bmp2tim
@@ -88,7 +79,7 @@ OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
 SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, \
 					PLAYER.TIM ENEMY.TIM PLANET.TIM \
 					RESOURCE.TIM BLASTER.TIM PLAYER2.TIM\
-					HISTORY0.TIM)
+					HISTORY0.TIM HEART.TIM START.TIM)
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.
@@ -167,7 +158,8 @@ $(OBJ_FONTS_PATH)/%.TIM: $(SRC_SPRITES_PATH)/%.bmp $(SRC_SPRITES_PATH)/%.flags
 	$(BMP2TIM) $< $@ `cat $(word 2,$^)`
 
 $(OBJ_SOUNDS_DIR)/%.VAG: $(SOURCE_SOUNDS_FOLDER)/%.wav
-	wav2vag $^	$@
+	mkdir -p $(OBJ_SOUNDS_DIR)
+	wav2vag $^ $@
 
 %.bin: %.mp3
 	rm -f ../Bin/$@1

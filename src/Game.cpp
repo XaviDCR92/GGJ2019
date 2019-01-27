@@ -129,6 +129,7 @@ static void GameInitFiles(void)
     PlanetInit();
     ResourcesInit();
     BlasterInit();
+    PlayerInit();
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER2.TIM", &player2Spr);
 }
@@ -200,6 +201,17 @@ static void GameLoop(const size_t players)
         }
 
         blasters.Update(data);
+
+        if (pl.areAllInactive())
+        {
+            static uint16_t gameoverCounter;
+
+            if (++gameoverCounter >= 250)
+            {
+                gameoverCounter = 0;
+                break;
+            }
+        }
 
         // Rendering
         while (GfxIsBusy());

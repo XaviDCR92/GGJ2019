@@ -166,8 +166,6 @@ bool GfxSpriteFromFile(const char* const strFilePath, GsSprite* const pSpr)
             /* sGsi is now filled with data. Create
              * a GsSprite instance from it. */
 
-            printf("Opening %s...\n", strFilePath);
-
             /* Call PSXSDK libs to upload image data to VRAM. "const" flag must be removed. */
             if (GsSpriteFromImage(pSpr, &sGsi, UPLOAD_IMAGE_FLAG) == 1 /* Success code. */)
             {

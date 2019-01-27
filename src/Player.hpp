@@ -34,7 +34,6 @@ public:
     };
 
     Player(const playern _player_n, const bool _active, GsSprite& _spr);
-    bool isActive(void) const;
     bool isUnderCover(void) const;
     void setUnderCover(const bool state);
     void setCollected(const bool state);
@@ -44,14 +43,17 @@ public:
     virtual void injured(void) override;
 
 private:
+    const enum playern mId;
+    const unsigned int mMaxHealth;
     Pad pad;
-    bool active;
     bool mUnderCover;
     int mCollected;
     int calculateAngle(bool& change);
-    unsigned short mWaitTime, mInvincibleTime;
+    unsigned short mWaitTime, mInvincibleTime, mUnderCoverTime;
     bool mFlicker;
     void checkFire(ArrayManager<Blaster>& blasters);
 };
+
+void PlayerInit(void);
 
 #endif /* PLAYER_H */

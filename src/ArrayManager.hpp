@@ -24,6 +24,21 @@ public:
         }
     }
 
+    bool areAllInactive(void)
+    {
+        for (size_t i = 0; i < mSize; i++)
+        {
+            T& t = mArray[i];
+
+            if (t.isActive())
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     T* AddElement(const T& element)
     {
         for (size_t i = mLast + 1; ; i++)

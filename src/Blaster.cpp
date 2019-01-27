@@ -1,5 +1,6 @@
 #include "Blaster.hpp"
 #include "Gfx.h"
+#include "Sfx.h"
 #include "SpaceEntity.hpp"
 #include "GlobalData.h"
 #include "ArrayManager.hpp"
@@ -8,10 +9,12 @@
 #include <stdio.h>
 
 static GsSprite blasterSprite;
+static SsVag blastSnd;
 
 void BlasterInit(void)
 {
     GfxSpriteFromFile("DATA\\SPRITES\\BLASTER.TIM", &blasterSprite);
+    SfxUploadSound("DATA\\SOUNDS\\BLASTER.VAG", &blastSnd);
 }
 
 Blaster::Blaster() : SpaceEntity(blasterSprite),
@@ -27,6 +30,7 @@ Blaster::Blaster(const Vector2& pos, const Fix16 angle, const Blaster::Shooter s
     mCurrentDirection(Vector2(Fix16(fix16_cos(mAngle)), Fix16(fix16_sin(mAngle))))
 {
     mPosition = pos;
+    SfxPlaySound(&blastSnd);
 }
 
 void Blaster::render(const Camera& camera)

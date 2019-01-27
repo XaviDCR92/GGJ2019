@@ -25,7 +25,7 @@ Enemy::Enemy() :
     mMaxSpeed = 0x17FFE;
     mAccel = 0x400;
     mTurnRate = 0x1000;
-    mHealth = 3;
+    mHealth = 2;
 }
 
 void Enemy::Update(GlobalData& gData)
@@ -205,9 +205,15 @@ void Enemy::MoveTo(const Vector2& position, const bool min)
 
 void Enemy::SpawnBullet(ArrayManager<Blaster>& blasters)
 {
-    blasters.AddElement(Blaster(mPosition, mCurrentAngle, Blaster::Shooter::ENEMY));
+    Vector2 pos(mPosition.X + (mRadius * mCurrentAngle.cos()),
+                mPosition.Y + (mRadius * mCurrentAngle.sin()));
+    blasters.AddElement(Blaster(pos, mCurrentAngle, Blaster::Shooter::ENEMY));
 }
 
 void Enemy::injured(void)
 {
+    if (!--mHealth)
+    {
+        setActive(false);
+    }
 }

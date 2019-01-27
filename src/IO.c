@@ -175,6 +175,8 @@ static const uint8_t* IOLoadFileFromCd(char* const buffer, size_t* const fileSiz
 
                             /* Finally, return address to buffer so it can be
                              * used by external modules. */
+
+                            printf("%s has been successfully uploaded\n", buffer);
                             return fileBuffer;
                         }
                         else
@@ -212,6 +214,7 @@ static const uint8_t* IOLoadFileFromCd(char* const buffer, size_t* const fileSiz
     else
     {
         /* File does not exist. Fall through. */
+        printf("File %s does not exist\n", buffer);
     }
 
     return NULL;
