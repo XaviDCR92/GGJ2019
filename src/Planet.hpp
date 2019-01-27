@@ -16,7 +16,7 @@ public:
 
 private:
     const unsigned int mMaxHealth, mConsumptionSpeed;
-    unsigned int mConsumerAmount, mHealth;
+    unsigned int mConsumerAmount;
     const size_t mSpriteAmount;
     const struct
     {

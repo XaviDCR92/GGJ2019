@@ -23,10 +23,10 @@
  * Defines
  * *************************************/
 
-// Here I have used an old macro that I found on nextvolume's source code for "A Small Journey", IIRC.
-// Totally fool-proof, so I dint' want to complicate things!
-#define check_bb_collision(x1,y1,w1,h1,x2,y2,w2,h2) (!( ((x1)>=(x2)+(w2)) || ((x2)>=(x1)+(w1)) || \
-                                                        ((y1)>=(y2)+(h2)) || ((y2)>=(y1)+(h1)) ))
+enum
+{
+    INVINCIBILITY_TIME = 50 * 2
+};
 
 /* *************************************
  * Types definition
@@ -54,13 +54,16 @@ Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
     active(_active),
     mUnderCover(false),
     mCollected(false),
-    mWaitTime(0)
+    mWaitTime(0),
+    mInvincibleTime(INVINCIBILITY_TIME),
+    mFlicker(false)
 {
     mRotationSpeed = Fix16((uint16_t)3);
     mPosition = Vector2(40, 20);
     mMaxSpeed = FIX16_FROM_INT(3);
     mAccel = 0x1000;
     mTurnRate = 0x2200;
+    mHealth = 5;
 }
 
 bool Player::isActive(void) const
@@ -112,6 +115,49 @@ void Player::Update(GlobalData& gData)
         if (mWaitTime >= WAIT_TIME)
         {
             checkFire(gData.Blasters);
+        }
+    }
+}
+
+bool Player::isInvincible(void)
+{
+    return mInvincibleTime;
+}
+
+void Player::injured(void)
+{
+    if (mHealth)
+    {
+        mHealth--;
+    }
+
+    if (mHealth)
+    {
+        printf("Lives remaining: %d\n", mHealth);
+        mInvincibleTime = INVINCIBILITY_TIME;
+    }
+    else
+    {
+        setActive(false);
+    }
+}
+
+void Player::render(const Camera& camera)
+{
+    if (isActive())
+    {
+        if (mInvincibleTime)
+        {
+            if (mFlicker ^= true)
+            {
+                Ship::render(camera);
+            }
+
+            mInvincibleTime--;
+        }
+        else
+        {
+            Ship::render(camera);
         }
     }
 }

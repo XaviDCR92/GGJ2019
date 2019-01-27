@@ -39,6 +39,9 @@ public:
     void setUnderCover(const bool state);
     void setCollected(const bool state);
     void Update(GlobalData& gData);
+    void render(const Camera& camera);
+    bool isInvincible(void);
+    void injured(void);
 
 private:
     Pad pad;
@@ -46,7 +49,8 @@ private:
     bool mUnderCover;
     bool mCollected;
     int calculateAngle(bool& change);
-    unsigned short mWaitTime;
+    unsigned short mWaitTime, mInvincibleTime;
+    bool mFlicker;
     void checkFire(ArrayManager<Blaster>& blasters);
 };
 
