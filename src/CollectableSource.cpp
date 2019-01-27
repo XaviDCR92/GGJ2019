@@ -13,19 +13,17 @@ void ResourcesInit(void)
 
 CollectableSource::CollectableSource():
     SpaceEntity(resourceSprite), CompositeSpriteEntity(resourceSprite),
-    mHealth(4000),
-    mConsumptionSpeed(5),
-    mMaxHealth(4000),
+    mStacks(3),
     mSpriteAmount(ARRAY_SIZE(mSpriteOffsets)),
-    mCollectionCounter(50),
+    mCollectionCounter(150),
     mCurrentCollectionCounter(0),
+    mFlickerCountStart(20),
+    mFlicker(false),
     mSpriteOffsets
     {
-        {64, 48, 32},
-        {64, 48, 32},
-        {64, 48, 32},
-        {64, 48, 32},
-        {64, 48, 32}
+        {48, 32, 0},
+        {32, 80, 0},
+        {16, 80, 32}
     }
 {
     setActive(true);
@@ -35,7 +33,7 @@ CollectableSource::CollectableSource():
 void CollectableSource::Update(GlobalData& gData)
 {
     ArrayManager<Player>& players = gData.Players;
-    //if(mCu)
+    bool being_gathered = false;
 
     for (size_t i = 0; i < players.count(); i++)
     {
@@ -45,51 +43,41 @@ void CollectableSource::Update(GlobalData& gData)
         {
             if(isCollidingWith(player))
             {
-                if (mHealth >= mConsumptionSpeed)
-                {
-                    mHealth -= mConsumptionSpeed;
-                }
+                being_gathered = true;
+                if(mCurrentCollectionCounter > 0)
+                    mCurrentCollectionCounter--;
                 else
                 {
-                    mHealth = 0;
-                }
-
-                if (!mHealth)
-                {
-                    // Player needs get resources here
                     player.setCollected(true);
-
+                    mCurrentCollectionCounter = mCollectionCounter;
+                    mStacks--;
+                    if(mStacks <= 0)
+                        setActive(false);
                     break;
                 }
             }
         }
     }
+
+    if(!being_gathered && mCurrentCollectionCounter < mFlickerCountStart)
+        mCurrentCollectionCounter = mFlickerCountStart;
 }
 void CollectableSource::render(const Camera& cam)
 {
-    static unsigned int healthThresholds[ARRAY_SIZE(mSpriteOffsets) - 1] =
-    {
-        3000,
-        2000,
-        1000,
-        500,
-    };
+    const size_t size = ARRAY_SIZE(mSpriteOffsets);
+    size_t idx = size - mStacks;
 
-    mSpr.w = mSpr.h = mSpriteOffsets[0].d;
-    mSpr.u = mSpriteOffsets[0].u;
-    mSpr.v = mSpriteOffsets[0].v;
-    mRadius = fix16_from_int(mSpriteOffsets[0].d >> 1);
+    size_t radius_idx = idx;
+    if ((mFlicker ^= true) && mCurrentCollectionCounter < mFlickerCountStart)
+        idx++;
 
-    for (size_t i = 0; i < ARRAY_SIZE(healthThresholds); i++)
-    {
-        if (mHealth < healthThresholds[i])
-        {
-            mSpr.w = mSpr.h = mSpriteOffsets[i + 1].d;
-            mSpr.u = mSpriteOffsets[i + 1].u;
-            mSpr.v = mSpriteOffsets[i + 1].v;
-            mRadius = fix16_from_int(mSpriteOffsets[i + 1].d >> 1);
-        }
-    }
+    if(idx >= size)
+        return;
+
+    mSpr.w = mSpr.h = mSpriteOffsets[idx].d;
+    mSpr.u = mSpriteOffsets[idx].u;
+    mSpr.v = mSpriteOffsets[idx].v;
+    mRadius = fix16_from_int(mSpriteOffsets[radius_idx].d >> 1);
 
     SpaceEntity::render(cam);
 }

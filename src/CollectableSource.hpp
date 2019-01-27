@@ -13,16 +13,18 @@ public:
 
 private:
 
-    unsigned int mHealth, mConsumptionSpeed, mMaxHealth;
+    unsigned int mStacks;
     const int mSpriteAmount;
     const int mCollectionCounter;
     int mCurrentCollectionCounter;
+    const int mFlickerCountStart;
+    bool mFlicker;
     const struct
     {
         short d;
         unsigned char u;
         unsigned char v;
-    } mSpriteOffsets[5];
+    } mSpriteOffsets[3];
 };
 
 void ResourcesInit(void);
