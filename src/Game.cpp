@@ -243,8 +243,17 @@ static void GameLoop(const size_t players)
                     }
                 }
 
-                cam.Update( pl.get(Player::PLAYER_ONE)->getPosition(),
-                            pl.get(Player::PLAYER_TWO)->getPosition());
+                if (activeplayers == 2)
+                {
+                    cam.Update( pl.get(Player::PLAYER_ONE)->getPosition(),
+                                pl.get(Player::PLAYER_TWO)->getPosition());
+                }
+                else if (activeplayers == 1)
+                {
+                    cam.Update(pl.get(Player::PLAYER_ONE)->isActive() ?
+                                pl.get(Player::PLAYER_ONE)->getPosition()
+                                :pl.get(Player::PLAYER_TWO)->getPosition());
+                }
             }
             break;
         }

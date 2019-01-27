@@ -110,6 +110,26 @@ void Player::Update(GlobalData& gData)
 
     const int angle = calculateAngle(any_pressed);
 
+    ArrayManager<Planet>& planets = gData.Planets;
+
+    mUnderCover = false;
+
+    for (size_t i = 0; i < planets.count(); i++)
+    {
+        Planet& planet = *planets.get(i);
+
+        if (isCollidingWith(planet))
+        {
+            mUnderCover = true;
+            break;
+        }
+    }
+
+    if (isCollidingWith(gData.PlanetEarth))
+    {
+        mUnderCover = true;
+    }
+
     if (any_pressed)
     {
         SetDesiredDirection(angle);

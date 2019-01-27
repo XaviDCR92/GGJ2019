@@ -4,6 +4,7 @@
 #include "ArrayManager.hpp"
 #include "GlobalData.h"
 #include "Blaster.hpp"
+#include "Earth.hpp"
 #include "Gfx.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,7 +45,7 @@ void Enemy::Update(GlobalData& gData)
 
     if (nearest_player)
     {
-        if (!nearestPlanet(gData.Planets)
+        if (!nearestPlanet(gData.Planets, gData.PlanetEarth)
                     &&
             !nearestEnemy(gData.Enemies))
         {
@@ -135,7 +136,7 @@ Player* Enemy::nearestPlayer(ArrayManager<Player>& playerData)
     return targetPlayer;
 }
 
-Planet* Enemy::nearestPlanet(ArrayManager<Planet>& planets) const
+Planet* Enemy::nearestPlanet(ArrayManager<Planet>& planets, Earth& earth) const
 {
     Planet* targetPlanet = nullptr;
 

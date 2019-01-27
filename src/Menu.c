@@ -60,9 +60,10 @@ static bool MenuInit(void)
     {
         init = true;
         GfxSpriteFromFile("\\DATA\\SPRITES\\START.TIM", &menuSpr);
+        GfxSpriteFromFile("\\DATA\\SPRITES\\HISTORY.TIM", &historySpr);
     }
 
-    return GfxSpriteFromFile("\\DATA\\SPRITES\\HISTORY.TIM", &historySpr);
+    return true;
 }
 
 /*******************************************************************//**
