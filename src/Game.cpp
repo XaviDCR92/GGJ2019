@@ -198,6 +198,8 @@ static void GameLoop(const size_t players)
             break;
         }
 
+        blasters.Update(data);
+
         // Rendering
         while (GfxIsBusy());
         GfxClear();
@@ -205,6 +207,7 @@ static void GameLoop(const size_t players)
         resources.render(cam);
         pl.render(cam);
         e.render(cam);
+        blasters.render(cam);
 
         GfxDrawScene();
     }

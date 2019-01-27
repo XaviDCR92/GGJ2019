@@ -15,12 +15,11 @@ public:
     virtual void Update(GlobalData& gData) = 0;
     bool isActive(void) const;
     void setActive(const bool state);
-    bool IsColliding(const SpaceEntity& other, const Camera& camera) const;
+    bool isCollidingWith(const SpaceEntity& other) const;
 
     virtual void render(const Camera& cam);
     Vector2 getPosition(void) const;
-
-Vector2 mPosition;
+    Vector2 mPosition;
 
 protected:
     void GetRenderPosition(short& outX, short &outY) const;

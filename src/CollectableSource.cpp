@@ -40,7 +40,7 @@ void CollectableSource::Update(GlobalData& gData)
 
         if(player.isActive())
         {
-            if(IsColliding(player, gData.camera))
+            if(isCollidingWith(player))
             {
                 if (mHealth >= mConsumptionSpeed)
                 {

@@ -61,6 +61,7 @@ EXTERNC void GfxInit(void);
 EXTERNC bool GfxSpriteFromFile(const char* const strFilePath, GsSprite* const pSpr);
 EXTERNC void GfxSortSprite(GsSprite* const psSpr);
 EXTERNC bool GfxIsInsideScreenArea(const short x, const short y, const short w, const short h);
+EXTERNC bool GfxIsSpriteInsideScreenArea(const GsSprite* const psSpr);
 EXTERNC void GfxDrawScene(void);
 EXTERNC void GfxClear(void);
 EXTERNC int GfxToDegrees(const int rotate);

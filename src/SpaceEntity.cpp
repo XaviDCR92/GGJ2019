@@ -11,7 +11,7 @@ SpaceEntity::SpaceEntity(GsSprite& spr) :
 {
 }
 
-bool SpaceEntity::IsColliding(const SpaceEntity& other, const Camera& camera) const
+bool SpaceEntity::isCollidingWith(const SpaceEntity& other) const
 {
     unsigned int x = abs(fix16_to_int(getPosition().X.value) - fix16_to_int(other.getPosition().X.value));
     x *= x;

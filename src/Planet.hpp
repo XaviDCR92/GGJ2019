@@ -11,7 +11,6 @@ public:
 
     Planet();
     virtual void Update(GlobalData& data) override;
-
     virtual void render(const Camera& cam);
 
 private:

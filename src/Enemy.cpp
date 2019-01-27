@@ -164,7 +164,9 @@ void Enemy::MoveTo(const Vector2& position, const bool min)
 
 void Enemy::SpawnBullet(ArrayManager<Blaster>& blasters)
 {
-    Blaster b;
+    Blaster b(mPosition, mCurrentAngle, Blaster::Shooter::ENEMY);
+
+    printf("Fire!\n");
 
     blasters.AddElement(b);
 }

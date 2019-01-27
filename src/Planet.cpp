@@ -44,7 +44,7 @@ void Planet::Update(GlobalData& gData)
 
         if (player.isActive())
         {
-            if (IsColliding(player, gData.camera))
+            if (isCollidingWith(player))
             {
                 player.setUnderCover(true);
                 mConsumerAmount++;
