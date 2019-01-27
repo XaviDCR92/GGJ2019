@@ -33,6 +33,7 @@ private:
     void UpdateLocation(void);
     void PlayerCollision(ArrayManager<Player>& players);
     void EnemyCollision(ArrayManager<Enemy>& enemies);
+    void PlanetCollision(ArrayManager<Planet>& planets);
 };
 
 void BlasterInit(void);

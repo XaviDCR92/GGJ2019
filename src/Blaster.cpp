@@ -3,6 +3,7 @@
 #include "SpaceEntity.hpp"
 #include "GlobalData.h"
 #include "ArrayManager.hpp"
+#include "Planet.hpp"
 #include "Player.hpp"
 #include <stdio.h>
 
@@ -48,6 +49,7 @@ void Blaster::Update(GlobalData& data)
     {
         case Shooter::ENEMY:
             PlayerCollision(data.Players);
+            PlanetCollision(data.Planets);
         break;
 
         case Shooter::PLAYER:
@@ -73,6 +75,25 @@ void Blaster::PlayerCollision(ArrayManager<Player>& players)
             {
                 printf("You got injured!\n");
                 setActive(false);
+
+                break;
+            }
+        }
+    }
+}
+
+void Blaster::PlanetCollision(ArrayManager<Planet>& planets)
+{
+    if (isActive())
+    {
+        for (size_t i = 0; i < planets.count(); i++)
+        {
+            Planet& planet = *planets.get(i);
+
+            if (isCollidingWith(planet))
+            {
+                setActive(false);
+                break;
             }
         }
     }
@@ -90,6 +111,7 @@ void Blaster::EnemyCollision(ArrayManager<Enemy>& enemies)
             {
                 printf("Enemy got injured!\n");
                 setActive(false);
+                break;
             }
         }
     }

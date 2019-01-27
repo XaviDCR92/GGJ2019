@@ -10,6 +10,7 @@ class Planet : public SpaceEntity, public CompositeSpriteEntity
 public:
 
     Planet();
+    Planet(const unsigned int health);
     virtual void Update(GlobalData& data) override;
     virtual void render(const Camera& cam);
 
@@ -23,6 +24,7 @@ private:
         unsigned char u;
         unsigned char v;
     } mSpriteOffsets[5];
+    bool mFlicker;
 
 };
 

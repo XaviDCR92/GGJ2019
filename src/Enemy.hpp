@@ -16,6 +16,7 @@ public:
 private:
     Player* nearestPlayer(ArrayManager<Player>& playerData) const;
     Planet* nearestPlanet(ArrayManager<Planet>& planets) const;
+    Enemy* nearestEnemy(ArrayManager<Enemy>& enemies) const;
     void Attack(Player& player, GlobalData& gData);
     void SpawnBullet(ArrayManager<Blaster>& blasters);
     void MoveTo(const Vector2& position, const bool min);

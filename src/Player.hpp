@@ -46,7 +46,8 @@ private:
     bool mUnderCover;
     bool mCollected;
     int calculateAngle(bool& change);
-    void checkFire(void);
+    unsigned short mWaitTime;
+    void checkFire(ArrayManager<Blaster>& blasters);
 };
 
 #endif /* PLAYER_H */

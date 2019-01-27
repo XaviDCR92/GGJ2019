@@ -3,6 +3,8 @@
 #include "Player.hpp"
 #include "ArrayManager.hpp"
 #include "Gfx.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 static GsSprite planetSprite;
 
@@ -25,11 +27,18 @@ Planet::Planet() : SpaceEntity(planetSprite), CompositeSpriteEntity(planetSprite
         {64, 0, 158},
         {48, 64, 163},
         {32, 112, 169}
-    }
+    },
+    mFlicker(false)
 {
     setActive(true);
-    mPosition = Vector2(210, 200);
+    mPosition = Vector2(Vector2(rand() % (300 - 10 + 1) + 10, rand() % (300 - 10 + 1) + 10));
     mRadius = fix16_from_int(mSpriteOffsets[0].d >> 1);
+}
+
+Planet::Planet(const unsigned int health) : Planet()
+{
+    mHealth = health;
+    printf("Active ? %s\n", mActive ? "true" : "false");
 }
 
 void Planet::Update(GlobalData& gData)
@@ -94,6 +103,20 @@ void Planet::render(const Camera& cam)
             mSpr.u = mSpriteOffsets[i + 1].u;
             mSpr.v = mSpriteOffsets[i + 1].v;
             mRadius = fix16_from_int(mSpriteOffsets[i + 1].d >> 1);
+
+        }
+        else if (mHealth - healthThresholds[i] < 200)
+        {
+            if (mFlicker ^= true)
+            {
+                mSpr.w = mSpr.h = mSpriteOffsets[i + 1].d;
+                mSpr.u = mSpriteOffsets[i + 1].u;
+                mSpr.v = mSpriteOffsets[i + 1].v;
+                mRadius = fix16_from_int(mSpriteOffsets[i + 1].d >> 1);
+            }
+            else
+            {
+            }
         }
     }
 

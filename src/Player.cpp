@@ -15,6 +15,8 @@
 #include "Pad.hpp"
 #include "Player.hpp"
 #include "GlobalData.h"
+#include "Blaster.hpp"
+#include <limits.h>
 #include <stdio.h>
 
 /* *************************************
@@ -51,7 +53,8 @@ Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
     pad(_player_n),
     active(_active),
     mUnderCover(false),
-    mCollected(false)
+    mCollected(false),
+    mWaitTime(0)
 {
     mRotationSpeed = Fix16((uint16_t)3);
     mPosition = Vector2(40, 20);
@@ -96,7 +99,20 @@ void Player::Update(GlobalData& gData)
             Brake();
         }
 
-        checkFire();
+        enum
+        {
+            WAIT_TIME = 50 * 3
+        };
+
+        if (mWaitTime < USHRT_MAX)
+        {
+            mWaitTime++;
+        }
+
+        if (mWaitTime >= WAIT_TIME)
+        {
+            checkFire(gData.Blasters);
+        }
     }
 }
 
@@ -160,6 +176,13 @@ void Player::setUnderCover(const bool state)
     mUnderCover = state;
 }
 
-void Player::checkFire(void)
+void Player::checkFire(ArrayManager<Blaster>& blasters)
 {
+    if (pad.singlePress(Pad::CROSS))
+    {
+        // Fire!
+        blasters.AddElement(Blaster(mPosition, mCurrentAngle, Blaster::Shooter::PLAYER));
+
+        mWaitTime = 0;
+    }
 }

@@ -18,7 +18,7 @@ void EnemyInit(void)
 
 Enemy::Enemy() :
     Ship(enemyShip),
-    mInitPosition(Vector2(10, 200)),
+    mInitPosition(Vector2(rand() % (300 - 10 + 1) + 10, rand() % (300 - 10 + 1) + 10)),
     mFireCounter(0)
 {
     mPosition = mInitPosition;
@@ -39,7 +39,9 @@ void Enemy::Update(GlobalData& gData)
 
     if (nearest_player)
     {
-        if (!nearestPlanet(gData.Planets))
+        if (!nearestPlanet(gData.Planets)
+                    &&
+            !nearestEnemy(gData.Enemies))
         {
             Attack(*nearest_player, gData);
         }
@@ -56,6 +58,36 @@ void Enemy::Update(GlobalData& gData)
     }
 
     Ship::Update(gData);
+}
+
+Enemy* Enemy::nearestEnemy(ArrayManager<Enemy>& enemies) const
+{
+    Enemy* targetEnemy = nullptr;
+
+    for (size_t i = 0; i < enemies.count(); i++)
+    {
+        if (enemies.get(i) != this)
+        {
+            Enemy& enemy = *enemies.get(i);
+
+            if (enemy.isActive())
+            {
+                const Vector2 position = enemy.getPosition();
+                const Vector2 enemyPosition = getPosition();
+                const Fix16 distance = position.DistanceToPoint(enemyPosition);
+
+                if (distance >= 0)
+                {
+                    if (distance < (mRadius << 1))
+                    {
+                        targetEnemy = &enemy;
+                    }
+                }
+            }
+        }
+    }
+
+    return targetEnemy;
 }
 
 Player* Enemy::nearestPlayer(ArrayManager<Player>& playerData) const
@@ -123,13 +155,13 @@ void Enemy::Attack(Player& player, GlobalData& gData)
 
     enum
     {
-        MIN_TIMER = 300,
-        MAX_TIMER = 1500
+        MIN_TIMER = 200,
+        MAX_TIMER = 400
     };
 
     const unsigned int random = rand() % (MAX_TIMER - MIN_TIMER + 1) + MIN_TIMER;
 
-    if (random < mFireCounter)
+    if (mFireCounter >= random)
     {
         SpawnBullet(gData.Blasters);
         mFireCounter = 0;
@@ -164,9 +196,5 @@ void Enemy::MoveTo(const Vector2& position, const bool min)
 
 void Enemy::SpawnBullet(ArrayManager<Blaster>& blasters)
 {
-    Blaster b(mPosition, mCurrentAngle, Blaster::Shooter::ENEMY);
-
-    printf("Fire!\n");
-
-    blasters.AddElement(b);
+    blasters.AddElement(Blaster(mPosition, mCurrentAngle, Blaster::Shooter::ENEMY));
 }
