@@ -7,7 +7,8 @@ SpaceEntity::SpaceEntity(GsSprite& spr) :
     mActive(false),
     mSpr(spr),
     mArrayIdx(0),
-    mRadius(fix16_from_int(32))
+    mRadius(fix16_from_int(32)),
+    mHealth(0)
 {
 }
 

@@ -35,6 +35,7 @@ CollectableSource::CollectableSource():
 void CollectableSource::Update(GlobalData& gData)
 {
     ArrayManager<Player>& players = gData.Players;
+    //if(mCu)
 
     for (size_t i = 0; i < players.count(); i++)
     {

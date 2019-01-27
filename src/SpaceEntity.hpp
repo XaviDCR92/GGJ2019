@@ -28,4 +28,5 @@ protected:
     GsSprite& mSpr;
     size_t mArrayIdx;
     Fix16 mRadius;
+    unsigned int mHealth;
 };

@@ -73,10 +73,12 @@ void Blaster::PlayerCollision(ArrayManager<Player>& players)
 
             if (isCollidingWith(player))
             {
-                printf("You got injured!\n");
-                setActive(false);
-
-                break;
+                if (!player.isInvincible())
+                {
+                    player.injured();
+                    setActive(false);
+                    break;
+                }
             }
         }
     }
