@@ -9,14 +9,15 @@ class Planet : public SpaceEntity, public CompositeSpriteEntity
 {
 public:
 
-    Planet(GsSprite& spr, const Camera& cam);
+    Planet();
     virtual void Update(GlobalData& data) override;
 
     virtual void render(const Camera& cam);
 
 private:
-    unsigned int mConsumerAmount, mHealth, mConsumptionSpeed, mMaxHealth;
-    const int mSpriteAmount;
+    const unsigned int mMaxHealth, mConsumptionSpeed;
+    unsigned int mConsumerAmount, mHealth;
+    const size_t mSpriteAmount;
     const struct
     {
         short d;
@@ -25,3 +26,5 @@ private:
     } mSpriteOffsets[5];
 
 };
+
+void PlanetInit(void);

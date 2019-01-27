@@ -4,11 +4,18 @@
 #include "ArrayManager.hpp"
 #include "Gfx.h"
 
-Planet::Planet(GsSprite& spr, const Camera& cam) : SpaceEntity(spr), CompositeSpriteEntity(spr),
-    mConsumerAmount(0),
-    mHealth(4000),
-    mConsumptionSpeed(5),
+static GsSprite planetSprite;
+
+void PlanetInit(void)
+{
+    GfxSpriteFromFile("DATA\\SPRITES\\PLANET.TIM", &planetSprite);
+}
+
+Planet::Planet() : SpaceEntity(planetSprite), CompositeSpriteEntity(planetSprite),
     mMaxHealth(4000),
+    mConsumptionSpeed(5),
+    mConsumerAmount(0),
+    mHealth(mMaxHealth),
     mSpriteAmount(ARRAY_SIZE(mSpriteOffsets)),
     mSpriteOffsets
     {

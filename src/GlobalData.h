@@ -5,6 +5,7 @@ class Enemy;
 class Planet;
 class Camera;
 class CollectableSource;
+class Blaster;
 template<class T>
 class ArrayManager;
 
@@ -16,5 +17,6 @@ struct GlobalData
     ArrayManager<Enemy>& Enemies;
     ArrayManager<Planet>& Planets;
     ArrayManager<CollectableSource>& Resources;
+    ArrayManager<Blaster>& Blasters;
     Camera& camera;
 };

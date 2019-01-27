@@ -4,13 +4,27 @@
 #include "Player.hpp"
 #include "Gfx.h"
 
-CollectableSource::CollectableSource(GsSprite& spr):
-    SpaceEntity(spr), CompositeSpriteEntity(spr),
+static GsSprite resourceSprite;
+
+void ResourcesInit(void)
+{
+    GfxSpriteFromFile("DATA\\SPRITES\\RESOURCE.TIM", &resourceSprite);
+}
+
+CollectableSource::CollectableSource():
+    SpaceEntity(resourceSprite), CompositeSpriteEntity(resourceSprite),
     mHealth(4000),
     mConsumptionSpeed(5),
     mMaxHealth(4000),
     mSpriteAmount(ARRAY_SIZE(mSpriteOffsets)),
-    mSpriteOffsets {64, 48, 32, 24, 16}
+    mSpriteOffsets
+    {
+        {64, 48, 32},
+        {64, 48, 32},
+        {64, 48, 32},
+        {64, 48, 32},
+        {64, 48, 32}
+    }
 {
     setActive(true);
     mPosition = Vector2(100, 100);
@@ -28,35 +42,51 @@ void CollectableSource::Update(GlobalData& gData)
         {
             if(IsColliding(player, gData.camera))
             {
-                mHealth -= mConsumptionSpeed;
-                printf("mHealth = %d\n", mHealth);
+                if (mHealth >= mConsumptionSpeed)
+                {
+                    mHealth -= mConsumptionSpeed;
+                }
+                else
+                {
+                    mHealth = 0;
+                }
 
-                // Player needs get resources here
+                if (!mHealth)
+                {
+                    // Player needs get resources here
+                    player.setCollected(true);
 
-                if(mHealth <= 0)
                     break;
+                }
             }
         }
     }
 }
 void CollectableSource::render(const Camera& cam)
 {
-    #if 0
-    const int divisor = mMaxHealth /mSpriteAmount;
-    const int safe_health = mHealth - 1;
-    int idx = safe_health / divisor;
-    idx = mSpriteAmount - idx;
+    static unsigned int healthThresholds[ARRAY_SIZE(mSpriteOffsets) - 1] =
+    {
+        3000,
+        2000,
+        1000,
+        500,
+    };
 
-    //~ unsigned char u, v;
-    //~ GetSpriteOrigin(u, v);
-    //~ mSpr.u = u;
-    //~ mSpr.v = v;
-    int i;
-    //~ for(i = 0; i < idx; i++)
-        //~ mSpr.u += mSpriteOffsets[i];
-    //~ mSpr.w = 96;
-    //~ mSpr.h = 96;
-    #endif
+    mSpr.w = mSpr.h = mSpriteOffsets[0].d;
+    mSpr.u = mSpriteOffsets[0].u;
+    mSpr.v = mSpriteOffsets[0].v;
+    mRadius = fix16_from_int(mSpriteOffsets[0].d >> 1);
+
+    for (size_t i = 0; i < ARRAY_SIZE(healthThresholds); i++)
+    {
+        if (mHealth < healthThresholds[i])
+        {
+            mSpr.w = mSpr.h = mSpriteOffsets[i + 1].d;
+            mSpr.u = mSpriteOffsets[i + 1].u;
+            mSpr.v = mSpriteOffsets[i + 1].v;
+            mRadius = fix16_from_int(mSpriteOffsets[i + 1].d >> 1);
+        }
+    }
 
     SpaceEntity::render(cam);
 }

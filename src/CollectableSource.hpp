@@ -7,12 +7,20 @@
 class CollectableSource : public SpaceEntity, public CompositeSpriteEntity
 {
 public:
-    CollectableSource(GsSprite& spr);
+    CollectableSource();
     virtual void Update(GlobalData& gData) override;
     virtual void render(const Camera& cam);
 
 private:
 
     unsigned int mHealth, mConsumptionSpeed, mMaxHealth;
-    const int mSpriteAmount, mSpriteOffsets[5];
+    const int mSpriteAmount;
+    const struct
+    {
+        short d;
+        unsigned char u;
+        unsigned char v;
+    } mSpriteOffsets[5];
 };
+
+void ResourcesInit(void);

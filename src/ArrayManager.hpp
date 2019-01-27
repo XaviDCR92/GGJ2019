@@ -39,15 +39,7 @@ public:
                 t = element;
 
                 t.setActive(true);
-                printf("Planet is active: %b", t.isActive());
-
-                printf("Inserted element into offset %d\n", i);
-
                 return &t;
-            }
-            else
-            {
-                printf("Offset %d is busy, mLast = %d\n", i, mLast);
             }
 
             if (i == mLast)
@@ -97,6 +89,16 @@ public:
             {
                 t.render(cam);
             }
+        }
+    }
+
+    void setActive(const bool state)
+    {
+        for (size_t i = 0; i < mSize; i++)
+        {
+            T& t = mArray[i];
+
+            t.setActive(state);
         }
     }
 

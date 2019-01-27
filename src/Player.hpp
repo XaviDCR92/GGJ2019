@@ -37,12 +37,14 @@ public:
     bool isActive(void) const;
     bool isUnderCover(void) const;
     void setUnderCover(const bool state);
+    void setCollected(const bool state);
     void Update(GlobalData& gData);
 
 private:
     Pad pad;
     bool active;
     bool mUnderCover;
+    bool mCollected;
     int calculateAngle(bool& change);
     void checkFire(void);
 };

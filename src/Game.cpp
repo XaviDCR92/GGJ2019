@@ -16,6 +16,7 @@
 #include "Menu.h"
 #include "Enemy.hpp"
 #include "CollectableSource.hpp"
+#include "Blaster.hpp"
 #include "Player.hpp"
 #include "Planet.hpp"
 #include "Timers.h"
@@ -43,10 +44,7 @@
  * Local variables definition
  * ****************************************************************************/
 
-static GsSprite planetSprite;
-static GsSprite enemyShip;
 static GsSprite playerSpr;
-static GsSprite resourceSprite;
 
 /* *****************************************************************************
  * Local prototypes declaration
@@ -127,10 +125,11 @@ static void GameInit(const size_t players)
 
 static void GameInitFiles(void)
 {
+    EnemyInit();
+    PlanetInit();
+    ResourcesInit();
+    BlasterInit();
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
-    GfxSpriteFromFile("DATA\\SPRITES\\ENEMY.TIM", &enemyShip);
-    GfxSpriteFromFile("DATA\\SPRITES\\PLANET.TIM", &planetSprite);
-    GfxSpriteFromFile("DATA\\SPRITES\\RESOURCE.TIM", &resourceSprite);
 }
 
 static void GameLoop(const size_t players)
@@ -146,26 +145,20 @@ static void GameLoop(const size_t players)
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
 
     // Enemies
-    Enemy enemy_array[2] =
-    {
-        {enemyShip},
-        {enemyShip}
-    };
+    Enemy enemy_array[2];
     ArrayManager<Enemy> e(ARRAY_SIZE(enemy_array), enemy_array);
 
     // Planets
-    Planet planet_array[1] =
-    {
-        {planetSprite, cam}
-    };
+    Planet planet_array[1];
     ArrayManager<Planet> planets(ARRAY_SIZE(planet_array), planet_array);
 
     // Resources
-    CollectableSource resources_array[1] =
-    {
-        {resourceSprite}
-    };
+    CollectableSource resources_array[1];
     ArrayManager<CollectableSource> resources(ARRAY_SIZE(resources_array), resources_array);
+
+    // Blasters (lasers)
+    Blaster blaster_array[20];
+    ArrayManager<Blaster> blasters(ARRAY_SIZE(blaster_array), blaster_array);
 
     GlobalData data =
     {
@@ -177,23 +170,21 @@ static void GameLoop(const size_t players)
         planets,
         // ArrayManager<CollectableSource>& Resources
         resources,
+        //ArrayManager<Blaster>& Blasters
+        blasters,
         // Camera& cam;
         cam
     };
 
-    enemy_array[0].setActive(true);
-    enemy_array[1].setActive(true);
+    e.setActive(true);
 
     for (;;)
     {
-        // Rendering
-        while (GfxIsBusy());
-        GfxClear();
         // Game logic
         pl.Update(data);
         e.Update(data);
         planets.Update(data);
-        //~ resources.Update(data);
+        resources.Update(data);
 
         switch (players)
         {
@@ -207,9 +198,11 @@ static void GameLoop(const size_t players)
             break;
         }
 
-
+        // Rendering
+        while (GfxIsBusy());
+        GfxClear();
         planets.render(cam);
-        //~ resources.render(cam);
+        resources.render(cam);
         pl.render(cam);
         e.render(cam);
 

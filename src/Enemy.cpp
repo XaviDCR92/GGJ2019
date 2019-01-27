@@ -3,12 +3,23 @@
 #include "Planet.hpp"
 #include "ArrayManager.hpp"
 #include "GlobalData.h"
+#include "Blaster.hpp"
+#include "Gfx.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
-Enemy::Enemy(GsSprite& spr) :
-    Ship(spr),
-    mInitPosition(Vector2(10, 200))
+static GsSprite enemyShip;
+
+void EnemyInit(void)
+{
+    GfxSpriteFromFile("DATA\\SPRITES\\ENEMY.TIM", &enemyShip);
+}
+
+Enemy::Enemy() :
+    Ship(enemyShip),
+    mInitPosition(Vector2(10, 200)),
+    mFireCounter(0)
 {
     mPosition = mInitPosition;
     mMaxSpeed = 0x17FFE;
@@ -21,16 +32,20 @@ void Enemy::Update(GlobalData& gData)
     ArrayManager<Player>& playerData = gData.Players;
     Player* const nearest_player = nearestPlayer(playerData);
 
+    if (mFireCounter < ULONG_MAX)
+    {
+        mFireCounter++;
+    }
+
     if (nearest_player)
     {
         if (!nearestPlanet(gData.Planets))
         {
-            Attack(*nearest_player);
+            Attack(*nearest_player, gData);
         }
         else
         {
             // Retreat
-            printf("Retreat\n");
             MoveTo(mInitPosition, false);
         }
     }
@@ -59,11 +74,14 @@ Player* Enemy::nearestPlayer(ArrayManager<Player>& playerData) const
                 const Vector2 enemyPosition = getPosition();
                 const Fix16 distance = position.DistanceToPoint(enemyPosition);
 
-                if (!targetPlayer
-                        ||
-                    (distance < targetPlayer->getPosition().DistanceToPoint(enemyPosition)))
+                if (distance >= 0)
                 {
-                    targetPlayer = &player;
+                    if (!targetPlayer
+                            ||
+                        (distance < targetPlayer->getPosition().DistanceToPoint(enemyPosition)))
+                    {
+                        targetPlayer = &player;
+                    }
                 }
             }
         }
@@ -99,9 +117,23 @@ Planet* Enemy::nearestPlanet(ArrayManager<Planet>& planets) const
     return targetPlanet;
 }
 
-void Enemy::Attack(Player& player)
+void Enemy::Attack(Player& player, GlobalData& gData)
 {
     MoveTo(player.getPosition(), true);
+
+    enum
+    {
+        MIN_TIMER = 300,
+        MAX_TIMER = 1500
+    };
+
+    const unsigned int random = rand() % (MAX_TIMER - MIN_TIMER + 1) + MIN_TIMER;
+
+    if (random < mFireCounter)
+    {
+        SpawnBullet(gData.Blasters);
+        mFireCounter = 0;
+    }
 }
 
 void Enemy::MoveTo(const Vector2& position, const bool min)
@@ -126,12 +158,13 @@ void Enemy::MoveTo(const Vector2& position, const bool min)
         angle *= FIX16_FROM_INT(180);
         angle /= fix16_pi;
 
-        printf("Moving..\n");
         SetDesiredDirection(angle);
     }
 }
 
-void Enemy::SpawnBullet()
+void Enemy::SpawnBullet(ArrayManager<Blaster>& blasters)
 {
-    return;
+    Blaster b;
+
+    blasters.AddElement(b);
 }
