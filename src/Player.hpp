@@ -47,7 +47,7 @@ private:
     Pad pad;
     bool active;
     bool mUnderCover;
-    bool mCollected;
+    int mCollected;
     int calculateAngle(bool& change);
     unsigned short mWaitTime, mInvincibleTime;
     bool mFlicker;

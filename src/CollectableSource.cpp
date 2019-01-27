@@ -17,6 +17,8 @@ CollectableSource::CollectableSource():
     mConsumptionSpeed(5),
     mMaxHealth(4000),
     mSpriteAmount(ARRAY_SIZE(mSpriteOffsets)),
+    mCollectionCounter(50),
+    mCurrentCollectionCounter(0),
     mSpriteOffsets
     {
         {64, 48, 32},
@@ -33,6 +35,7 @@ CollectableSource::CollectableSource():
 void CollectableSource::Update(GlobalData& gData)
 {
     ArrayManager<Player>& players = gData.Players;
+    //if(mCu)
 
     for (size_t i = 0; i < players.count(); i++)
     {

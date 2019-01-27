@@ -25,6 +25,7 @@ private:
         unsigned char v;
     } mSpriteOffsets[5];
     bool mFlicker;
+    bool mProvidingSafety;
 
 };
 

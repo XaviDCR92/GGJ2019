@@ -15,6 +15,8 @@ private:
 
     unsigned int mHealth, mConsumptionSpeed, mMaxHealth;
     const int mSpriteAmount;
+    const int mCollectionCounter;
+    int mCurrentCollectionCounter;
     const struct
     {
         short d;

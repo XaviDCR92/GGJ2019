@@ -79,7 +79,11 @@ bool Player::isUnderCover(void) const
 
 void Player::setCollected(const bool state)
 {
-    mCollected = state;
+    if(state)
+        mCollected++;
+    else if(mCollected > 0)
+        mCollected--;
+
 }
 
 void Player::Update(GlobalData& gData)
