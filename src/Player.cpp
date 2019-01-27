@@ -15,6 +15,7 @@
 #include "Pad.hpp"
 #include "Player.hpp"
 #include "GlobalData.h"
+#include "Earth.hpp"
 #include "Blaster.hpp"
 #include <limits.h>
 #include <stdio.h>
@@ -118,11 +119,11 @@ void Player::Update(GlobalData& gData)
         }
     }
 
-    //if(mResources.mStacks > 0 && isCollidingWith(gData.PlanetEarth))
-    //{
-    //   gData.PlanetEarth.DumpResources(mResources.mStacks);
-    //    mResources.mStacks = 0;
-    //}
+    if(mResources.mStacks > 0 && isCollidingWith(gData.PlanetEarth))
+    {
+       gData.PlanetEarth.DumpResources(mResources.mStacks);
+        mResources.mStacks = 0;
+    }
 }
 
 bool Player::isInvincible(void)
