@@ -21,6 +21,7 @@
 #include "Enemy.hpp"
 #include "ArrayManager.hpp"
 #include "GlobalData.h"
+#include "ResourceBar.h"
 #include <stddef.h>
 #include <stdbool.h>
 
@@ -33,7 +34,7 @@ public:
         PLAYER_TWO
     };
 
-    Player(const playern _player_n, const bool _active, GsSprite& _spr);
+    Player(const playern _player_n, const bool _active, GsSprite& _spr, GsSprite& _sprRes);
     bool isUnderCover(void) const;
     void setUnderCover(const bool state);
     void setCollected(const bool state);
@@ -41,13 +42,15 @@ public:
     void render(const Camera& camera);
     bool isInvincible(void);
     virtual void injured(void) override;
+    bool isFull();
 
 private:
     const enum playern mId;
     const unsigned int mMaxHealth;
     Pad pad;
+    ResourceBar mResources;
+    bool active;
     bool mUnderCover;
-    int mCollected;
     int calculateAngle(bool& change);
     unsigned short mWaitTime, mInvincibleTime, mUnderCoverTime;
     bool mFlicker, mWasUnderCover;

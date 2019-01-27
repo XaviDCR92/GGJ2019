@@ -62,13 +62,14 @@ void PlayerInit(void)
     SfxUploadSound("DATA\\SOUNDS\\CHARGE.VAG", &chargeSnd);
 }
 
-Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
+Player::Player(const playern _player_n, const bool _active, GsSprite& _spr, GsSprite& _sprRes) :
     Ship(_spr),
     mId(_player_n),
     mMaxHealth(5),
     pad(_player_n),
+    mResources(_sprRes),
+    active(_active),
     mUnderCover(false),
-    mCollected(false),
     mWaitTime(WAIT_TIME),
     mInvincibleTime(INVINCIBILITY_TIME),
     mUnderCoverTime(0),
@@ -92,9 +93,9 @@ bool Player::isUnderCover(void) const
 void Player::setCollected(const bool state)
 {
     if(state)
-        mCollected++;
-    else if(mCollected > 0)
-        mCollected--;
+        mResources.mStacks++;
+    else if(mResources.mStacks > 0)
+        mResources.mStacks--;
 
 }
 
@@ -214,6 +215,13 @@ void Player::injured(void)
     }
 }
 
+bool Player::isFull()
+{
+    if(mResources.mStacks >= mResources.mMaxStacks)
+        return true;
+    return false;
+}
+
 void Player::render(const Camera& camera)
 {
     if (mInvincibleTime)
@@ -252,11 +260,16 @@ void Player::render(const Camera& camera)
                 GfxSortSprite(&heartSpr);
             }
         }
+
         break;
 
         default:
         break;
     }
+
+    short x,y;
+    GetRenderPosition(x,y);
+    mResources.render(camera, x, y);
 }
 
 int Player::calculateAngle(bool& change)

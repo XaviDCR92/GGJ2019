@@ -6,6 +6,7 @@ class Planet;
 class Camera;
 class CollectableSource;
 class Blaster;
+class Earth;
 template<class T>
 class ArrayManager;
 
@@ -18,5 +19,7 @@ struct GlobalData
     ArrayManager<Planet>& Planets;
     ArrayManager<CollectableSource>& Resources;
     ArrayManager<Blaster>& Blasters;
+    
+    Earth& PlanetEarth;
     Camera& camera;
 };

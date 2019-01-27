@@ -17,6 +17,7 @@ Planet::Planet() : SpaceEntity(planetSprite), CompositeSpriteEntity(planetSprite
     mMaxHealth(4000),
     mConsumptionSpeed(5),
     mConsumerAmount(0),
+    mProvidingSafety(false),
     mSpriteAmount(ARRAY_SIZE(mSpriteOffsets)),
     mSpriteOffsets
     {
@@ -27,8 +28,7 @@ Planet::Planet() : SpaceEntity(planetSprite), CompositeSpriteEntity(planetSprite
         {48, 64, 163},
         {32, 112, 169}
     },
-    mFlicker(false),
-    mProvidingSafety(false)
+    mFlicker(false)
 {
     setActive(true);
     mPosition = Vector2(Vector2(rand() % (300 - 10 + 1) + 10, rand() % (300 - 10 + 1) + 10));

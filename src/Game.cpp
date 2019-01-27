@@ -22,6 +22,7 @@
 #include "Timers.h"
 #include "ArrayManager.hpp"
 #include "Camera.hpp"
+#include "Earth.hpp"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -44,7 +45,7 @@
  * Local variables definition
  * ****************************************************************************/
 
-static GsSprite playerSpr, player2Spr;
+static GsSprite playerSpr, player2Spr, resourceBar;
 
 /* *****************************************************************************
  * Local prototypes declaration
@@ -127,22 +128,26 @@ static void GameInitFiles(void)
 {
     EnemyInit();
     PlanetInit();
+    EarthInit();
     ResourcesInit();
     BlasterInit();
     PlayerInit();
     ShipInit();
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER2.TIM", &player2Spr);
+    GfxSpriteFromFile("DATA\\SPRITES\\RES_BAR.TIM", &resourceBar);
 }
 
 static void GameLoop(const size_t players)
 {
     Camera cam;
+    Earth earth;
+
     // Players
     Player player_array[2] =
     {
-        {Player::PLAYER_ONE, players > Player::PLAYER_ONE, playerSpr},
-        {Player::PLAYER_TWO, players > Player::PLAYER_TWO, player2Spr}
+        {Player::PLAYER_ONE, players > Player::PLAYER_ONE, playerSpr, resourceBar},
+        {Player::PLAYER_TWO, players > Player::PLAYER_TWO, player2Spr, resourceBar}
     };
 
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);
@@ -175,6 +180,8 @@ static void GameLoop(const size_t players)
         resources,
         //ArrayManager<Blaster>& Blasters
         blasters,
+        // Earth&
+        earth,
         // Camera& cam;
         cam
     };
@@ -218,6 +225,7 @@ static void GameLoop(const size_t players)
         while (GfxIsBusy());
         GfxClear();
         planets.render(cam);
+        earth.render(cam);
         resources.render(cam);
         pl.render(cam);
         e.render(cam);
