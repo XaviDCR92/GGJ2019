@@ -41,7 +41,7 @@ public:
     void Update(GlobalData& gData);
     void render(const Camera& camera);
     bool isInvincible(void);
-    void injured(void);
+    virtual void injured(void) override;
 
 private:
     Pad pad;

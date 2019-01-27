@@ -25,7 +25,8 @@
 
 enum
 {
-    INVINCIBILITY_TIME = 50 * 2
+    INVINCIBILITY_TIME = 50 * 2,
+    WAIT_TIME = 70
 };
 
 /* *************************************
@@ -54,7 +55,7 @@ Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
     active(_active),
     mUnderCover(false),
     mCollected(false),
-    mWaitTime(0),
+    mWaitTime(WAIT_TIME),
     mInvincibleTime(INVINCIBILITY_TIME),
     mFlicker(false)
 {
@@ -102,11 +103,6 @@ void Player::Update(GlobalData& gData)
             Brake();
         }
 
-        enum
-        {
-            WAIT_TIME = 50 * 3
-        };
-
         if (mWaitTime < USHRT_MAX)
         {
             mWaitTime++;
@@ -138,6 +134,7 @@ void Player::injured(void)
     }
     else
     {
+        printf("You have died!\n");
         setActive(false);
     }
 }

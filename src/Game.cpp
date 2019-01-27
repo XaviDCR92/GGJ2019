@@ -44,7 +44,7 @@
  * Local variables definition
  * ****************************************************************************/
 
-static GsSprite playerSpr;
+static GsSprite playerSpr, player2Spr;
 
 /* *****************************************************************************
  * Local prototypes declaration
@@ -72,7 +72,7 @@ void Game(void)
     {
         case MENU_RESULT_GAME_START:
             /* Start gameplay given number of players. */
-            GameStart(1);
+            GameStart(2);
         break;
 
         case MENU_RESULT_UNDEFINED:
@@ -130,6 +130,7 @@ static void GameInitFiles(void)
     ResourcesInit();
     BlasterInit();
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
+    GfxSpriteFromFile("DATA\\SPRITES\\PLAYER2.TIM", &player2Spr);
 }
 
 static void GameLoop(const size_t players)
@@ -139,7 +140,7 @@ static void GameLoop(const size_t players)
     Player player_array[2] =
     {
         {Player::PLAYER_ONE, players > Player::PLAYER_ONE, playerSpr},
-        {Player::PLAYER_TWO, players > Player::PLAYER_TWO, playerSpr}
+        {Player::PLAYER_TWO, players > Player::PLAYER_TWO, player2Spr}
     };
 
     ArrayManager<Player> pl(ARRAY_SIZE(player_array), player_array);

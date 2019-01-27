@@ -83,7 +83,15 @@ void Ship::UpdateLocation()
         }
     }
 
-    mPosition += mCurrentDirection * mSpeed;
+    const Fix16 newX = mPosition.X + (mCurrentDirection.X * mSpeed);
+    const Fix16 newY = mPosition.Y + (mCurrentDirection.Y * mSpeed);
+
+    if ((newX >= 0)
+            &&
+        (newY >= 0))
+    {
+        mPosition += mCurrentDirection * mSpeed;
+    }
 }
 
 void Ship::UpdateRotation()
