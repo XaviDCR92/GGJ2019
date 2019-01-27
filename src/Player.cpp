@@ -53,7 +53,7 @@ Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
     pad(_player_n),
     active(_active),
     mUnderCover(false),
-    mCollected(false),
+    mCollected(0),
     mWaitTime(0)
 {
     mRotationSpeed = Fix16((uint16_t)3);
@@ -75,7 +75,11 @@ bool Player::isUnderCover(void) const
 
 void Player::setCollected(const bool state)
 {
-    mCollected = state;
+    if(state)
+        mCollected++;
+    else if(mCollected > 0)
+        mCollected--;
+    
 }
 
 void Player::Update(GlobalData& gData)

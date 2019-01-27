@@ -28,7 +28,8 @@ Planet::Planet() : SpaceEntity(planetSprite), CompositeSpriteEntity(planetSprite
         {48, 64, 163},
         {32, 112, 169}
     },
-    mFlicker(false)
+    mFlicker(false),
+    mProvidingSafety(false)
 {
     setActive(true);
     mPosition = Vector2(Vector2(rand() % (300 - 10 + 1) + 10, rand() % (300 - 10 + 1) + 10));
@@ -44,6 +45,7 @@ Planet::Planet(const unsigned int health) : Planet()
 void Planet::Update(GlobalData& gData)
 {
     mConsumerAmount = 0;
+    mProvidingSafety = false;
 
     ArrayManager<Player>& players = gData.Players;
 
@@ -55,6 +57,7 @@ void Planet::Update(GlobalData& gData)
         {
             if (isCollidingWith(player))
             {
+                mProvidingSafety = true;
                 player.setUnderCover(true);
                 mConsumerAmount++;
             }
@@ -107,7 +110,7 @@ void Planet::render(const Camera& cam)
         }
         else if (mHealth - healthThresholds[i] < 200)
         {
-            if (mFlicker ^= true)
+            if (mFlicker ^= true && mProvidingSafety)
             {
                 mSpr.w = mSpr.h = mSpriteOffsets[i + 1].d;
                 mSpr.u = mSpriteOffsets[i + 1].u;

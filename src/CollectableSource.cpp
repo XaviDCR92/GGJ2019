@@ -17,6 +17,8 @@ CollectableSource::CollectableSource():
     mConsumptionSpeed(5),
     mMaxHealth(4000),
     mSpriteAmount(ARRAY_SIZE(mSpriteOffsets)),
+    mCollectionCounter(50),
+    mCurrentCollectionCounter(0),
     mSpriteOffsets
     {
         {64, 48, 32},
