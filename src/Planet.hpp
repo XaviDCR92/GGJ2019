@@ -14,9 +14,12 @@ public:
     virtual void Update(GlobalData& data) override;
     virtual void render(const Camera& cam);
 
-private:
+protected:
     const unsigned int mMaxHealth, mConsumptionSpeed;
     unsigned int mConsumerAmount;
+    bool mProvidingSafety;
+
+private:
     const size_t mSpriteAmount;
     const struct
     {
@@ -25,7 +28,7 @@ private:
         unsigned char v;
     } mSpriteOffsets[5];
     bool mFlicker;
-    bool mProvidingSafety;
+    
 
 };
 

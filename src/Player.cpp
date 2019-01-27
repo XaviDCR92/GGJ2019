@@ -117,6 +117,12 @@ void Player::Update(GlobalData& gData)
             checkFire(gData.Blasters);
         }
     }
+
+    //if(mResources.mStacks > 0 && isCollidingWith(gData.PlanetEarth))
+    //{
+    //   gData.PlanetEarth.DumpResources(mResources.mStacks);
+    //    mResources.mStacks = 0;
+    //}
 }
 
 bool Player::isInvincible(void)

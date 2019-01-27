@@ -22,6 +22,7 @@
 #include "Timers.h"
 #include "ArrayManager.hpp"
 #include "Camera.hpp"
+#include "Earth.hpp"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -127,6 +128,7 @@ static void GameInitFiles(void)
 {
     EnemyInit();
     PlanetInit();
+    EarthInit();
     ResourcesInit();
     BlasterInit();
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
@@ -137,6 +139,8 @@ static void GameInitFiles(void)
 static void GameLoop(const size_t players)
 {
     Camera cam;
+    Earth earth;
+
     // Players
     Player player_array[2] =
     {
@@ -174,6 +178,8 @@ static void GameLoop(const size_t players)
         resources,
         //ArrayManager<Blaster>& Blasters
         blasters,
+        // Earth&
+        earth,
         // Camera& cam;
         cam
     };
@@ -206,6 +212,7 @@ static void GameLoop(const size_t players)
         while (GfxIsBusy());
         GfxClear();
         planets.render(cam);
+        earth.render(cam);
         resources.render(cam);
         pl.render(cam);
         e.render(cam);
