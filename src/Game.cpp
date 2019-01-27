@@ -130,6 +130,7 @@ static void GameInitFiles(void)
     ResourcesInit();
     BlasterInit();
     PlayerInit();
+    ShipInit();
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &playerSpr);
     GfxSpriteFromFile("DATA\\SPRITES\\PLAYER2.TIM", &player2Spr);
 }

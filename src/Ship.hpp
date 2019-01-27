@@ -21,6 +21,7 @@ protected:
     void SetDesiredDirection(const int desiredAngle);
     void SetDesiredDirection(const Fix16 desiredAngle);
     void Brake(void);
+    void death(void);
 
     Fix16 mDesiredAngle, mCurrentAngle;
     Fix16 mSpeed, mRotationSpeed;
@@ -29,6 +30,10 @@ protected:
 
 private:
     bool brake;
+    const unsigned char mVoice;
+    unsigned short mVolume;
     void UpdateLocation();
     void UpdateRotation();
 };
+
+void ShipInit(void);

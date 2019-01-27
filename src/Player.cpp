@@ -16,9 +16,12 @@
 #include "Player.hpp"
 #include "GlobalData.h"
 #include "Blaster.hpp"
+#include "Gfx.h"
+#include "Sfx.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 /* *************************************
  * Defines
@@ -43,6 +46,7 @@ enum
  * *************************************/
 
 static GsSprite heartSpr;
+static SsVag chargeSnd;
 
 /* *************************************
  *  Local prototypes declaration
@@ -55,6 +59,7 @@ static GsSprite heartSpr;
 void PlayerInit(void)
 {
     GfxSpriteFromFile("DATA\\SPRITES\\HEART.TIM", &heartSpr);
+    SfxUploadSound("DATA\\SOUNDS\\CHARGE.VAG", &chargeSnd);
 }
 
 Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
@@ -67,7 +72,8 @@ Player::Player(const playern _player_n, const bool _active, GsSprite& _spr) :
     mWaitTime(WAIT_TIME),
     mInvincibleTime(INVINCIBILITY_TIME),
     mUnderCoverTime(0),
-    mFlicker(false)
+    mFlicker(false),
+    mWasUnderCover(false)
 {
     mRotationSpeed = Fix16((uint16_t)3);
     mPosition = Vector2(rand() % (100 + 1) + 100, rand() % (100 + 1) + 100);
@@ -142,11 +148,47 @@ void Player::Update(GlobalData& gData)
 
             mUnderCoverTime = 0;
         }
+
+        ArrayManager<Player>& players = gData.Players;
+        bool connect = true;
+
+        for (size_t i = 0; i < players.count(); i++)
+        {
+            if (players.get(i)->mWasUnderCover)
+            {
+                connect = false;
+                break;
+            }
+        }
+
+        if (connect)
+        {
+            SfxPlaySound(&chargeSnd);
+        }
     }
     else
     {
         mUnderCoverTime = 0;
+
+        ArrayManager<Player>& players = gData.Players;
+        bool disconnect = true;
+
+        for (size_t i = 0; i < players.count(); i++)
+        {
+            if (players.get(i)->isUnderCover())
+            {
+                disconnect = false;
+                break;
+            }
+        }
+
+        if (disconnect)
+        {
+            SfxStopSound(&chargeSnd);
+        }
     }
+
+    mWasUnderCover = isUnderCover();
 }
 
 bool Player::isInvincible(void)
@@ -167,6 +209,7 @@ void Player::injured(void)
     }
     else
     {
+        Ship::death();
         setActive(false);
     }
 }
@@ -205,7 +248,7 @@ void Player::render(const Camera& camera)
         {
             for (unsigned int h = 0; h < mHealth; h++)
             {
-                heartSpr.x = 256 + (heartSpr.w * h);
+                heartSpr.x = 256 + ((heartSpr.w + 2) * h);
                 GfxSortSprite(&heartSpr);
             }
         }

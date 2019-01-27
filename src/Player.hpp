@@ -50,7 +50,7 @@ private:
     int mCollected;
     int calculateAngle(bool& change);
     unsigned short mWaitTime, mInvincibleTime, mUnderCoverTime;
-    bool mFlicker;
+    bool mFlicker, mWasUnderCover;
     void checkFire(ArrayManager<Blaster>& blasters);
 };
 

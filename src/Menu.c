@@ -62,7 +62,7 @@ static bool MenuInit(void)
         GfxSpriteFromFile("\\DATA\\SPRITES\\START.TIM", &menuSpr);
     }
 
-    return GfxSpriteFromFile("\\DATA\\SPRITES\\HISTORY0.TIM", &historySpr);
+    return GfxSpriteFromFile("\\DATA\\SPRITES\\HISTORY.TIM", &historySpr);
 }
 
 /*******************************************************************//**
@@ -89,20 +89,30 @@ enum tMenuResult Menu(void)
 
 static enum tMenuResult MenuLoop(void)
 {
-#if 0
     {
         unsigned char lum = 0;
         unsigned short pads[2] = {0};
+        bool exit = false;
 
         do
         {
-            if (lum < NORMAL_LUMINANCE)
+            if (exit)
+            {
+                if (lum)
+                    lum--;
+            }
+            else if (lum < NORMAL_LUMINANCE)
             {
                 lum++;
             }
             else
             {
                 PSX_ReadPad(&pads[0], &pads[1]);
+
+                if (pads[0] || pads[1])
+                {
+                    exit = true;
+                }
             }
 
             menuSpr.x = 0;
@@ -116,7 +126,7 @@ static enum tMenuResult MenuLoop(void)
             GfxSortSprite(&menuSpr);
 
             GfxDrawScene();
-        } while (!pads[0] && !pads[1]);
+        } while (lum);
     }
     {
         unsigned char lum = 0;
@@ -163,7 +173,7 @@ static enum tMenuResult MenuLoop(void)
             } while (lum);
         }
     }
-#endif
+
     return MENU_RESULT_GAME_START;
 }
 

@@ -70,7 +70,8 @@ DOXYFILE_PATH = $(PROJECT_DIR)/Documentation/Doxygen
 # VAG objects:
 SOURCE_SOUNDS_FOLDER = $(PROJECT_DIR)/src/sounds
 OBJ_SOUNDS_DIR = $(CDROM_ROOT)/DATA/SOUNDS
-SOUND_OBJECTS = $(addprefix $(OBJ_SOUNDS_DIR)/,	BLASTER.VAG)
+SOUND_OBJECTS = $(addprefix $(OBJ_SOUNDS_DIR)/,	BLASTER.VAG SHIP.VAG \
+				CHARGE.VAG DEATH.VAG)
 
 # Sprite objects:
 BMP2TIM = bmp2tim
@@ -79,7 +80,7 @@ OBJ_SPRITES_PATH = $(CDROM_ROOT)/DATA/SPRITES
 SPRITE_OBJECTS += $(addprefix $(OBJ_SPRITES_PATH)/, \
 					PLAYER.TIM ENEMY.TIM PLANET.TIM \
 					RESOURCE.TIM BLASTER.TIM PLAYER2.TIM\
-					HISTORY0.TIM HEART.TIM START.TIM)
+					HISTORY.TIM HEART.TIM START.TIM)
 
 # NOTE:	Fonts, despite still being .TIM files, are separated into another folder,
 # 		so SPRITE_OBJECTS are splitted in two parts.
@@ -157,9 +158,9 @@ $(OBJ_FONTS_PATH)/%.TIM: $(SRC_SPRITES_PATH)/%.bmp $(SRC_SPRITES_PATH)/%.flags
 	mkdir -p $(OBJ_FONTS_PATH)
 	$(BMP2TIM) $< $@ `cat $(word 2,$^)`
 
-$(OBJ_SOUNDS_DIR)/%.VAG: $(SOURCE_SOUNDS_FOLDER)/%.wav
+$(OBJ_SOUNDS_DIR)/%.VAG: $(SOURCE_SOUNDS_FOLDER)/%.wav $(SOURCE_SOUNDS_FOLDER)/%.flags
 	mkdir -p $(OBJ_SOUNDS_DIR)
-	wav2vag $^ $@
+	wav2vag $< $@ `cat $(word 2,$^)`
 
 %.bin: %.mp3
 	rm -f ../Bin/$@1

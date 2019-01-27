@@ -1,19 +1,37 @@
 #include "Ship.hpp"
 #include "Gfx.h"
+#include "Sfx.h"
 #include "Camera.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 
+static SsVag shipSnd, deathSnd;
+static unsigned char voice;
+
+void ShipInit(void)
+{
+    SfxUploadSound("DATA\\SOUNDS\\SHIP.VAG", &shipSnd);
+    SfxUploadSound("DATA\\SOUNDS\\DEATH.VAG", &deathSnd);
+}
+
 Ship::Ship(GsSprite& spr) :
     SpaceEntity(spr),
-    brake(true)
+    brake(true),
+    mVoice(voice++),
+    mVolume(MAX_VOLUME >> 3)
 {
+    SfxPlaySoundVolVoice(&shipSnd, mVoice, mVolume);
 }
 
 void Ship::Update(GlobalData&)
 {
     UpdateLocation();
     UpdateRotation();
+}
+
+void Ship::death()
+{
+    SfxPlaySound(&deathSnd);
 }
 
 int Ship::GetRenderAngle() const
@@ -56,6 +74,17 @@ void Ship::SetDesiredDirection(const Fix16 desiredAngle)
         mSpeed = mMaxSpeed;
     }
 
+    if ((mVolume + 64) < 0x1FFF)
+    {
+        mVolume += 64;
+    }
+    else
+    {
+        mVolume = 0x1FFF;
+    }
+
+    SfxVoiceVol(mVoice, mVolume);
+
     brake = false;
 }
 
@@ -81,6 +110,15 @@ void Ship::UpdateLocation()
         {
             mSpeed = 0;
         }
+    }
+
+    if ((mVolume - 64) >= (MAX_VOLUME >> 3))
+    {
+        mVolume -= 64;
+    }
+    else
+    {
+        mVolume = (MAX_VOLUME >> 3);
     }
 
     const Fix16 newX = mPosition.X + (mCurrentDirection.X * mSpeed);

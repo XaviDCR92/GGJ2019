@@ -11,7 +11,7 @@
 /* *************************************
  *  Defines
  * *************************************/
-#define MAX_VOLUME SPU_MAXVOL
+
 #define NUMBER_OF_VOICES 24
 
 /* *************************************
@@ -23,12 +23,27 @@
  * *************************************/
 static bool usedVoices[NUMBER_OF_VOICES];
 
-void SfxPlaySound(SsVag* const sound)
+void SfxPlaySoundVolVoice(SsVag* sound, const unsigned char voice, const unsigned short vol)
 {
     if (sound->data_size)
     {
-        SsPlayVag(sound, sound->cur_voice, MAX_VOLUME, MAX_VOLUME);
+        SsPlayVag(sound, voice, vol, vol);
     }
+}
+
+void SfxPlaySound(SsVag* const sound)
+{
+    SfxPlaySoundVolVoice(sound, sound->cur_voice, MAX_VOLUME);
+}
+
+void SfxVoiceVol(const unsigned char voice, const unsigned short volume)
+{
+    SsVoiceVol(voice, volume, volume);
+}
+
+void SfxStopSound(SsVag* sound)
+{
+    SsStopVag(sound);
 }
 
 bool SfxUploadSound_Ex(const char* file_path, SsVag* vag, uint8_t voiceIndex)

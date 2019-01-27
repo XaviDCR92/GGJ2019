@@ -16,6 +16,7 @@
 #include "Timers.h"
 #include "Threads.h"
 #include <psx.h>
+#include <psxspu.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <thread.h>
@@ -56,6 +57,9 @@ void SystemInit(void)
 
     /* Initialize Gfx module. */
     GfxInit();
+
+    /* Initialize sound system. */
+    SsInit();
 
     /* Initialize Timers module. */
     TimersInit();

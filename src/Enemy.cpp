@@ -214,6 +214,7 @@ void Enemy::injured(void)
 {
     if (!--mHealth)
     {
+        Ship::death();
         setActive(false);
     }
 }
