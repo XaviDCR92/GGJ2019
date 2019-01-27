@@ -21,7 +21,6 @@ private:
     void Attack(Player& player, GlobalData& gData);
     void SpawnBullet(ArrayManager<Blaster>& blasters);
     void MoveTo(const Vector2& position, const bool min);
-    const Vector2 mInitPosition;
     uint32_t mFireCounter;
 };
 

@@ -18,7 +18,7 @@ void EnemyInit(void)
 
 Enemy::Enemy() :
     Ship(enemyShip),
-    mInitPosition(Vector2(rand() % (300 - 10 + 1) + 10, rand() % (300 - 10 + 1) + 10)),
+    mInitPosition(0),
     mFireCounter(0)
 {
     mPosition = mInitPosition;
@@ -26,6 +26,11 @@ Enemy::Enemy() :
     mAccel = 0x400;
     mTurnRate = 0x1000;
     mHealth = 2;
+}
+
+void Enemy::setInitPos(const Vector2& vec)
+{
+    mPosition = vec;
 }
 
 void Enemy::Update(GlobalData& gData)

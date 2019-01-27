@@ -211,7 +211,9 @@ static void GameLoop(const size_t players)
 
         blasters.Update(data);
 
-        if (pl.areAllInactive())
+        if (pl.areAllInactive()
+                ||
+            !earth.isActive())
         {
             static uint16_t gameoverCounter;
 
