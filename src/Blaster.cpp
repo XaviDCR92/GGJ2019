@@ -11,7 +11,7 @@ static GsSprite blasterSprite;
 
 void BlasterInit(void)
 {
-    GfxSpriteFromFile("DATA\\SPRITES\\PLAYER.TIM", &blasterSprite);
+    GfxSpriteFromFile("DATA\\SPRITES\\BLASTER.TIM", &blasterSprite);
 }
 
 Blaster::Blaster() : SpaceEntity(blasterSprite),
